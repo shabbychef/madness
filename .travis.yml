@@ -3,11 +3,13 @@ sudo: required
 
 language: r
 
+r_packages :
+  - methods
+
 r_binary_packages :
   - matrixcalc
   - expm
   - gtools
-  - methods
   - Matrix
   - testthat
 
