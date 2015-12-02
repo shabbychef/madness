@@ -185,6 +185,12 @@ test_that("reshape functions",{#FOLDUP
 	expect_less_than(test_harness(xval,function(x) { triu(x) },
 																function(x) { x[row(x) > col(x)] <- 0; x }),1e-6)
 	
+
+	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))
+	expect_less_than(test_harness(xval,function(x) { aperm(x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { aperm(x,c(2,1,3,4)) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { aperm(x,c(4,3,2,1)) }),1e-6)
+
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD

@@ -222,6 +222,23 @@ setMethod("[", signature(x="madness",i="ANY",j="ANY"),
 
 #UNFOLD
 
+#' @rdname reshapes
+#' @export 
+#' @method aperm madness
+#' @usage aperm(a, perm=NULL, resize=TRUE, ...)
+#' @inheritParams base::aperm
+#' @aliases aperm
+aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {
+ 	xtag <- x@xtag
+ 	val <- aperm(x@val,perm=perm,resize=resize)
+	oldids <- array(1:length(x@val),dim=dim(x@val))
+	prmids <- aperm(oldids,perm=perm,resize=resize)
+	dvdx <- x@dvdx[as.numeric(prmids),,drop=FALSE]
+	ytag <- paste0('aperm(',x@ytag,', ',perm,')')
+	varx <- x@varx
+
+	new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+}
 # 2FIX: add aperm.
 
 #for vim modeline: (do not edit)

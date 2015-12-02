@@ -2,6 +2,8 @@
 % Please edit documentation in R/reshape.r
 \docType{methods}
 \name{reshapes}
+\alias{aperm}
+\alias{aperm.madness}
 \alias{diag,madness-method}
 \alias{dim<-,madness,ANY-method}
 \alias{dim<-,madness-method}
@@ -47,6 +49,8 @@ todiag(x)
 \S4method{todiag}{madness}(x)
 
 \S4method{dim}{madness}(x) <- value
+
+aperm(a, perm=NULL, resize=TRUE, ...)
 }
 \arguments{
 \item{x}{\code{madness} object.}
@@ -56,6 +60,18 @@ todiag(x)
 \item{...}{Optional arguments used by specific methods. (None used at present.)}
 
 \item{value}{an array of the new dimensions of the object value.}
+
+\item{a}{the array to be transposed.}
+
+\item{perm}{the subscript permutation vector, usually a permutation of
+    the integers \code{1:n}, where \code{n} is the number of dimensions
+    of \code{a}.  When \code{a} has named dimnames, it can be a
+    character vector of length \code{n} giving a permutation of those
+    names. The default (used whenever \code{perm} has zero length) is to
+    reverse the order of the dimensions.}
+
+\item{resize}{a flag indicating whether the vector should be
+    resized as well as having its elements reordered (default \code{TRUE}).}
 }
 \description{
 Basic Reshape Operations
