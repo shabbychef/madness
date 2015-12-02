@@ -10,9 +10,11 @@
 \alias{determinant.madness}
 \title{Matrix Determinant}
 \usage{
-determinant(x, logarithm, ...)
+\method{determinant}{madness}(x, logarithm = TRUE, ...)
 
-determinant(x,logarithm=TRUE,...)
+det(x, ...)
+
+determinant(x, logarithm = TRUE, ...)
 
 \S4method{determinant}{madness,ANY}(x, logarithm = TRUE, ...)
 

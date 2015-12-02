@@ -21,6 +21,8 @@ GNU Lesser General Public License for more details.
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
+
+Steven E. Pav \email{shabbychef@gmail.com}
 }
 \references{
 Griewank, Andreas and Walther, Andrea. "Evaluating Derivatives: principles and techniques of algorithmic differentiation."

@@ -245,30 +245,17 @@ expect_less_than(test_harness(xval, function(x) {
 ```
 
 ```
-## Error in UseMethod("determinant"): no applicable method for 'determinant' applied to an object of class "madness"
+## Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'dvdx' for signature '"list"'
 ```
 
 ```r
 expect_less_than(test_harness(xval, function(x) {
     determinant(x, logarithm = TRUE)$modulus
 }), 1e-06)
-```
-
-```
-## Error in determinant(x, logarithm = TRUE)$modulus: $ operator not defined for this S4 class
-```
-
-```r
 expect_less_than(test_harness(xval, function(x) {
     determinant(x, logarithm = FALSE)$modulus
 }), 1e-06)
-```
 
-```
-## Error in determinant(x, logarithm = FALSE)$modulus: $ operator not defined for this S4 class
-```
-
-```r
 expect_less_than(test_harness(xval, function(x) {
     colSums(x)
 }), 1e-06)

@@ -2,34 +2,26 @@
 % Please edit documentation in R/coerce.r
 \name{as}
 \alias{as}
-\alias{as.array}
 \alias{as.array.madness}
-\alias{as.matrix}
 \alias{as.matrix.madness}
-\alias{as.numeric}
 \alias{as.numeric.madness}
 \title{Coerce madness to something else}
 \usage{
-as.array(x,...)
+\\method{as.array}{madness}(x,...)
 
-as.matrix(x,...)
+\\method{as.matrix}{madness}(x,...)
 
-as.numeric(x,...)
+\\method{as.numeric}{madness}(x,...)
 }
 \arguments{
-\item{x}{a \code{madness} object}
-
-\item{...}{further arguments passed to or from other methods.}
-
-\item{x}{a \code{madness} object}
-
-\item{...}{further arguments passed to or from other methods.}
-
 \item{x}{a \code{madness} object}
 
 \item{...}{further arguments passed to or from other methods.}
 }
 \description{
 Coerce as something else
+}
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
 }
 
