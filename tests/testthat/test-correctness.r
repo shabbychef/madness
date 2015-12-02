@@ -116,12 +116,14 @@ test_that("bind functions",{#FOLDUP
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
 
-	#expect_less_than(test_harness(xval,function(x) { cbind(x,x) }),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { cbind(x,x,x) }),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { cbind(x,yval) }),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { cbind(yval,x) }),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { cbind(x,yval,x) }),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { cbind(yval,x,yval) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(x,x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(x,x,x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(x,yval) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(yval,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(x,yval,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { cbind(yval,x,yval) }),1e-6)
 
 	#expect_less_than(test_harness(xval,function(x) { rbind(x,x) }),1e-6)
 	#expect_less_than(test_harness(xval,function(x) { rbind(x,x,x) }),1e-6)
@@ -199,6 +201,8 @@ test_that("reshape functions",{#FOLDUP
 	set.char.seed("3d06aea4-c339-4630-a8db-3d56d6b6b687")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	xvec <- array(1 + runif(4*4),dim=c(16,1))
+
+	expect_less_than(test_harness(xval,function(x) { t(x) }),1e-6)
 
 	expect_less_than(test_harness(xval,function(x) { vec(x) },
 																function(x) { dim(x) <- c(length(x),1); x }),1e-6)

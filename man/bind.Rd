@@ -3,7 +3,6 @@
 \docType{methods}
 \name{bind}
 \alias{bind}
-\alias{cbind2}
 \alias{cbind2,ANY,madness-method}
 \alias{cbind2,madness,ANY-method}
 \alias{cbind2,madness,madness-method}

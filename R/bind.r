@@ -41,15 +41,6 @@ NULL
 
 # c.f. http://stackoverflow.com/a/28126631/164611
 
-##' @rdname bind
-##' @aliases cbind2
-##' @exportMethod cbind2
-#setGeneric('cbind2', function(x,y,...) standardGeneric('cbind2'))
-##' @rdname bind
-##' @aliases rbind2
-##' @exportMethod rbind2
-#setGeneric('rbind2', function(x,y,...) standardGeneric('rbind2'))
-
 #' @rdname bind
 #' @aliases cbind2,madness,missing-method
 #' @exportMethod cbind2
@@ -170,7 +161,7 @@ setMethod("rbind2", signature(x="ANY",y="madness"),
 													.do_commutator(y@val,y@dvdx))
 						dvdx <- .do_commutator(t(val),dvdx)
 
-						ytag <- paste0('rbind(numeric,',x@ytag,')')
+						ytag <- paste0('rbind(numeric,',y@ytag,')')
 						varx <- y@varx
 
 						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
