@@ -29,7 +29,7 @@ set.char.seed <- function(str) {
 	set.seed(as.integer(charToRaw(str)))
 }
 
-apx_deriv <- function(xval,thefun,eps=1e-9,type=c('forward','central')) {
+apx_deriv <- function(xval,thefun,eps=1e-8,type=c('forward','central')) {
 	type <- match.arg(type)
 	yval <- thefun(xval)
 	dapx <- matrix(0,length(yval),length(xval))
@@ -50,7 +50,7 @@ apx_deriv <- function(xval,thefun,eps=1e-9,type=c('forward','central')) {
 	dapx
 }
 
-test_harness <- function(xval,thefun,scalfun=thefun,eps=1e-7) {
+test_harness <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 	xobj <- madness(val=xval,ytag='x',xtag='x')
 	yobj <- thefun(xobj)
 	xval <- val(xobj)
@@ -111,6 +111,27 @@ test_that("arith functions",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("bind functions",{#FOLDUP
+	set.char.seed("f459e4a4-2b1f-4902-9f5c-a78ee3302e96")
+	xval <- matrix(1 + runif(4*4),nrow=4)
+	yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
+	#expect_less_than(test_harness(xval,function(x) { cbind(x,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { cbind(x,x,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { cbind(x,yval) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { cbind(yval,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { cbind(x,yval,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { cbind(yval,x,yval) }),1e-6)
+
+	#expect_less_than(test_harness(xval,function(x) { rbind(x,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { rbind(x,x,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { rbind(x,yval) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { rbind(yval,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { rbind(x,yval,x) }),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { rbind(yval,x,yval) }),1e-6)
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("elwise functions",{#FOLDUP
 	set.char.seed("05ffaa40-902d-430a-a47f-63938b921306")
 	xval <- matrix(1 + runif(4*4),nrow=4)
@@ -146,10 +167,12 @@ test_that("sums functions",{#FOLDUP
 
 	expect_less_than(test_harness(xval,function(x) { matrix.trace(x) },function(matx) { sum(diag(matx)) }),1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { colSums(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { colMeans(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rowSums(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rowMeans(x) }),1e-6)
+	for (na.rm in c(FALSE,TRUE)) {
+		expect_less_than(test_harness(xval,function(x) { colSums(x,na.rm=na.rm) }),1e-6)
+		expect_less_than(test_harness(xval,function(x) { colMeans(x,na.rm=na.rm) }),1e-6)
+		expect_less_than(test_harness(xval,function(x) { rowSums(x,na.rm=na.rm) }),1e-6)
+		expect_less_than(test_harness(xval,function(x) { rowMeans(x,na.rm=na.rm) }),1e-6)
+	}
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -174,11 +197,21 @@ test_that("determinants",{#FOLDUP
 test_that("reshape functions",{#FOLDUP
 	set.char.seed("3d06aea4-c339-4630-a8db-3d56d6b6b687")
 	xval <- matrix(1 + runif(4*4),nrow=4)
-	expect_less_than(test_harness(xval,function(x) { vec(x) },function(x) { dim(x) <- c(length(x),1); x }),1e-6)
+	xvec <- array(1 + runif(4*4),dim=c(16,1))
+
+	expect_less_than(test_harness(xval,function(x) { vec(x) },
+																function(x) { dim(x) <- c(length(x),1); x }),1e-6)
 	expect_less_than(test_harness(xval,function(x) { vech(x) },
 																function(x) { x <- x[row(x) >= col(x)]; 
-																dim(x) <- c(length(x),1) 
+																dim(x) <- c(length(x),1); 
 																x }),1e-6)
+
+	expect_less_than(test_harness(xval,function(x) { diag(x) }),1e-6)
+	
+	#expect_less_than(test_harness(xval,function(x) { dim(x) <- c(length(x),1); x }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { x[1,1,drop=FALSE] }),1e-6)
+
+	#expect_less_than(test_harness(xvec,function(x) { todiag(x) }),function(x) { diag(x) },1e-6)
 
 	expect_less_than(test_harness(xval,function(x) { tril(x) },
 																function(x) { x[row(x) < col(x)] <- 0; x }),1e-6)
@@ -190,6 +223,19 @@ test_that("reshape functions",{#FOLDUP
 	expect_less_than(test_harness(xval,function(x) { aperm(x) }),1e-6)
 	expect_less_than(test_harness(xval,function(x) { aperm(x,c(2,1,3,4)) }),1e-6)
 	expect_less_than(test_harness(xval,function(x) { aperm(x,c(4,3,2,1)) }),1e-6)
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
+test_that("solve functions",{#FOLDUP
+	set.char.seed("232ba1a1-7751-40be-866f-a8e2122c2ace")
+	prex <- matrix(1 + runif(100*8),ncol=8)
+	xval <- crossprod(prex)
+	yval <- array(1 + runif(nrow(xval)),dim=c(nrow(xval),1))
+
+	expect_less_than(test_harness(xval,function(x) { solve(x) },eps=1e-6),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { solve(x,yval) },eps=1e-9),1e-6)
+	#expect_less_than(test_harness(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-8),1e-6)
 
 	# sentinel:
 	expect_true(TRUE)
@@ -223,10 +269,12 @@ test_that("round one",{#FOLDUP
 	set.char.seed("dee9af9b-cb59-474f-ac3b-acd60faa8ba2")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
-	expect_less_than(test_harness(xval,function(x) { norm(crossprod(x),'O') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(crossprod(x^x),'M') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(abs(x) %*% t(x),'I') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { tcrossprod(sin(x)) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { norm(crossprod(x),'O') },eps=1e-7),1e-5)
+	expect_less_than(test_harness(xval,function(x) { norm(crossprod(x^x),'M') },eps=1e-7),1e-5)
+	expect_less_than(test_harness(xval,function(x) { norm(abs(x) %*% t(x),'I') },eps=1e-7),1e-5)
+
+	expect_less_than(test_harness(xval,function(x) { tcrossprod(sin(x)) },eps=1e-07),1e-5)
+	expect_less_than(test_harness(xval,function(x) { cos(crossprod(sin(x))) },eps=1e-07),1e-5)
 
 	# sentinel:
 	expect_true(TRUE)
