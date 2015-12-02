@@ -50,10 +50,7 @@ setMethod("t", signature(x="madness"),
 					function(x) {
 						xtag <- x@xtag
 						val <- t(x@val)
-						# could use the commutation matrix, but faster
-						# probably to reorder...
-						newidx <- (row(val) - 1) * ncol(val) + col(val)
-						dvdx <- x@dvdx[newidx,,drop=FALSE] 
+						dvdx <- .do_commutator(val,x@dvdx)
 						ytag <- paste0('t(',x@ytag,')')
 						varx <- x@varx
 

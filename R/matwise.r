@@ -150,7 +150,7 @@ chol.madness <- function(x,...) {
  	xtag <- x@xtag
  	val <- chol(x@val)
 	scalby <- t(val) %x% diag(dim(val)[2]) 
-	scalby <- scalby + .do_commutator(val,scalby)
+	scalby <- scalby + .do_commutator(t(val),scalby)
 	Lm <- matrixcalc::L.matrix(dim(val)[2])
 	scalby <- Lm %*% (scalby %*% t(Lm))
 	dvdx <- .do_commutator(val,t(Lm) %*% solve(scalby,Lm %*% x@dvdx))

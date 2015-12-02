@@ -123,9 +123,9 @@ setMethod("rbind2", signature(x="madness",y="madness"),
 						xtag <- .check_common_xtag(x,y)
 						val <- rbind(x@val,y@val)
 
-						dvdx <- rbind(.do_commutator(x@val,x@dvdx),
-													.do_commutator(y@val,y@dvdx))
-						dvdx <- .do_commutator(t(val),dvdx)
+						dvdx <- rbind(.do_commutator(t(x@val),x@dvdx),
+													.do_commutator(t(y@val),y@dvdx))
+						dvdx <- .do_commutator(val,dvdx)
 
 						ytag <- paste0('rbind(',x@ytag,',',y@ytag,')')
 						varx <- .get_a_varx(x,y)
@@ -140,9 +140,9 @@ setMethod("rbind2", signature(x="madness",y="ANY"),
 						xtag <- x@xtag
 						val <- rbind(x@val,y)
 
-						dvdx <- rbind(.do_commutator(x@val,x@dvdx),
+						dvdx <- rbind(.do_commutator(t(x@val),x@dvdx),
 													array(0,dim=c(length(y),ncol(x@dvdx))))
-						dvdx <- .do_commutator(t(val),dvdx)
+						dvdx <- .do_commutator(val,dvdx)
 
 						ytag <- paste0('rbind(',x@ytag,',numeric)')
 						varx <- x@varx
@@ -158,8 +158,8 @@ setMethod("rbind2", signature(x="ANY",y="madness"),
 						val <- rbind(x,y@val)
 
 						dvdx <- rbind(array(0,dim=c(length(x),ncol(y@dvdx))),
-													.do_commutator(y@val,y@dvdx))
-						dvdx <- .do_commutator(t(val),dvdx)
+													.do_commutator(t(y@val),y@dvdx))
+						dvdx <- .do_commutator(val,dvdx)
 
 						ytag <- paste0('rbind(numeric,',y@ytag,')')
 						varx <- y@varx

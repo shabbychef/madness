@@ -42,11 +42,13 @@
 
 # apply commutator to Z, whose rows correspond to 
 # vec(val)
-.do_commutator <- function(val,Z) {
+# note that we require that tval has already been twiddled
+# ('t') but Z has not.
+.do_commutator <- function(tval,Z) {
 	# we could use the commutation matrix from matrixcalc, 
 	# but probably way faster to just reorder:
-	newidx <- (row(val) - 1) * ncol(val) + col(val)
- 	Z <- Z[newidx,,drop=FALSE] 
+	newidx <- (row(tval) - 1) * ncol(tval) + col(tval)
+	Z[newidx,,drop=FALSE] 
 }
 
 
