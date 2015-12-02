@@ -229,13 +229,13 @@ setMethod("[", signature(x="madness",i="ANY",j="ANY"),
 #' @inheritParams base::aperm
 #' @aliases aperm
 aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {
- 	xtag <- x@xtag
- 	val <- aperm(x@val,perm=perm,resize=resize)
-	oldids <- array(1:length(x@val),dim=dim(x@val))
+ 	xtag <- a@xtag
+ 	val <- aperm(a@val,perm=perm,resize=resize)
+	oldids <- array(1:length(a@val),dim=dim(a@val))
 	prmids <- aperm(oldids,perm=perm,resize=resize)
-	dvdx <- x@dvdx[as.numeric(prmids),,drop=FALSE]
-	ytag <- paste0('aperm(',x@ytag,', ',perm,')')
-	varx <- x@varx
+	dvdx <- a@dvdx[as.numeric(prmids),,drop=FALSE]
+	ytag <- paste0('aperm(',a@ytag,', ',perm,')')
+	varx <- a@varx
 
 	new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
 }
