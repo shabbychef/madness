@@ -60,7 +60,7 @@ test_harness <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 	dim(dcmp) <- dim(dapx)
 	
 	merror <- abs(dapx - dcmp)
-	rerror <- merror / (0.5 * pmax(sqrt(eps),(abs(dapx) + abs(dcmp))))
+	rerror <- merror / pmax(eps^0.333,0.5 * (abs(dapx) + abs(dcmp)))
 	rerror[dapx == 0 & dcmp == 0] <- 0
 	max(abs(rerror))
 }
@@ -248,8 +248,9 @@ test_that("solve functions",{#FOLDUP
 	yval <- array(1 + runif(nrow(xval)),dim=c(nrow(xval),1))
 
 	expect_less_than(test_harness(xval,function(x) { solve(x) },eps=1e-6),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { solve(x,yval) },eps=1e-9),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-8),1e-6)
+	expect_less_than(test_harness(xval,function(x) { solve(x,yval) },eps=1e-6),1e-6)
+	expect_less_than(test_harness(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
+	expect_less_than(test_harness(xval,function(x) { solve(xval,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
 
 	# sentinel:
 	expect_true(TRUE)

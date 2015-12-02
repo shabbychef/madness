@@ -3,7 +3,9 @@
 \docType{methods}
 \name{solve}
 \alias{solve}
+\alias{solve,ANY,madness-method}
 \alias{solve,array,madness-method}
+\alias{solve,madness,ANY-method}
 \alias{solve,madness,array-method}
 \alias{solve,madness,madness-method}
 \alias{solve,madness,missing-method}
@@ -15,7 +17,11 @@
 
 \S4method{solve}{madness,array}(a, b)
 
+\S4method{solve}{madness,ANY}(a, b)
+
 \S4method{solve}{array,madness}(a, b)
+
+\S4method{solve}{ANY,madness}(a, b)
 }
 \arguments{
 \item{a, b}{\code{madness} object or matrix value.}
