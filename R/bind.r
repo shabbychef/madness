@@ -1,0 +1,137 @@
+# /usr/bin/r
+#
+# Copyright 2015-2015 Steven E. Pav. All Rights Reserved.
+# Author: Steven E. Pav
+#
+# This file is part of madness.
+#
+# madness is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# madness is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with madness.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Created: 2015.11.20
+# Copyright: Steven E. Pav, 2015
+# Author: Steven E. Pav <shabbychef@gmail.com>
+# Comments: Steven E. Pav
+
+#' @include AllClass.r
+#' @include utils.r
+NULL
+
+#' Row and Column Bind
+#'
+#' @template etc
+#' @include AllClass.r
+#' @param x,y \code{madness} object.
+#' @name bind
+NULL
+
+# bind#FOLDUP
+
+# c.f. http://stackoverflow.com/a/28126631/164611
+
+#' @rdname bind
+setMethod("cbind2", signature(x="madness",y="madness"),
+					function(x,y) {
+						xtag <- .check_common_xtag(x,y)
+						val <- cbind(x@val,y@val)
+						dvdx <- rbind(x@dvdx,y@dvdx)
+
+						ytag <- paste0('cbind(',x@ytag,',',y@ytag,')')
+						varx <- .get_a_varx(x,y)
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+
+#' @rdname bind
+setMethod("cbind2", signature(x="madness",y="ANY"),
+					function(x,y) {
+						xtag <- x@xtag
+						val <- cbind(x@val,y)
+						dvdx <- rbind(x@dvdx,
+													array(0,dim=c(length(y),ncol(x@dvdx))))
+
+						ytag <- paste0('cbind(',x@ytag,', numeric)')
+						varx <- x@varx
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+#' @rdname bind
+setMethod("cbind2", signature(x="ANY",y="madness"),
+					function(x,y) {
+						xtag <- y@xtag
+						val <- cbind(x,y@val)
+						dvdx <- rbind(array(0,dim=c(length(x),ncol(y@dvdx))),
+													y@dvdx)
+
+						ytag <- paste0('cbind(numeric,',y@ytag,')')
+						varx <- y@varx
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+
+# this is way trickier, unfortunately, because of numerator layout.
+# so we apply the commutator to the dvdx, then rbind them, then apply 
+# commutator again
+
+#' @rdname bind
+setMethod("rbind2", signature(x="madness",y="madness"),
+					function(x,y) {
+						xtag <- .check_common_xtag(x,y)
+						val <- rbind(x@val,y@val)
+
+						dvdx <- rbind(.do_commutator(x@val,x@dvdx),
+													.do_commutator(y@val,y@dvdx))
+						dvdx <- .do_commutator(t(val),dvdx)
+
+						ytag <- paste0('rbind(',x@ytag,',',y@ytag,')')
+						varx <- .get_a_varx(x,y)
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+
+#' @rdname bind
+setMethod("rbind2", signature(x="madness",y="ANY"),
+					function(x,y) {
+						xtag <- x@xtag
+						val <- rbind(x@val,y)
+
+						dvdx <- rbind(.do_commutator(x@val,x@dvdx),
+													array(0,dim=c(length(y),ncol(x@dvdx))))
+						dvdx <- .do_commutator(t(val),dvdx)
+
+						ytag <- paste0('rbind(',x@ytag,',numeric)')
+						varx <- x@varx
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+
+#' @rdname bind
+setMethod("rbind2", signature(x="ANY",y="madness"),
+					function(x,y) {
+						xtag <- y@xtag
+						val <- rbind(x,y@val)
+
+						dvdx <- rbind(array(0,dim=c(length(x),ncol(y@dvdx))),
+													.do_commutator(y@val,y@dvdx))
+						dvdx <- .do_commutator(t(val),dvdx)
+
+						ytag <- paste0('rbind(numeric,',x@ytag,')')
+						varx <- y@varx
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+
+#UNFOLD
+
+#for vim modeline: (do not edit)
+# vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
