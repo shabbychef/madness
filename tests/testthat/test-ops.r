@@ -115,6 +115,7 @@ test_that("bind functions",{#FOLDUP
 	set.char.seed("f459e4a4-2b1f-4902-9f5c-a78ee3302e96")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
+
 	#expect_less_than(test_harness(xval,function(x) { cbind(x,x) }),1e-6)
 	#expect_less_than(test_harness(xval,function(x) { cbind(x,x,x) }),1e-6)
 	#expect_less_than(test_harness(xval,function(x) { cbind(x,yval) }),1e-6)

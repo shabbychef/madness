@@ -17,11 +17,12 @@ SHELL 						 = /bin/bash
 
 BIN_TIME          ?= $(shell which time)
 
-R_DEV_FILES 			?= $(wildcard ./R/*.r)
+R_DEV_FILES 			?= $(wildcard ./R/*.[rR])
 R_FILES 					?= $(R_DEV_FILES)
-R_FILES 					+= $(wildcard ./inst/tests/*.r)
+R_FILES 					+= $(wildcard ./inst/tests/*.[rR])
+R_FILES 					+= $(wildcard ./tests/testthat/*.[rR])
 R_FILES 					+= $(wildcard ./man-roxygen/*.R)
-R_FILES 					+= $(wildcard ./tests/*.R)
+R_FILES 					+= $(wildcard ./tests/*.[rR])
 
 R_QPDF 						?= $(shell which qpdf)
 R_GSCMD						?= $(shell which gs)

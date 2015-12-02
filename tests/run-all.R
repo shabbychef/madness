@@ -29,4 +29,5 @@
 library(testthat)
 library(madness)
 
-test_package("madness")
+#test_package("madness")
+test_check("madness")
