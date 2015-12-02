@@ -31,7 +31,9 @@ NULL
 #'
 #' @template etc
 #' @include AllClass.r
-#' @param x,y \code{madness} object.
+#' @param x,y \code{madness} or array, numeric, matrix objects.
+#' @param ... optional arguments for methods (ignored here).
+#' @inheritParams base::cbind2
 #' @name bind
 NULL
 
@@ -39,9 +41,33 @@ NULL
 
 # c.f. http://stackoverflow.com/a/28126631/164611
 
+##' @rdname bind
+##' @aliases cbind2
+##' @exportMethod cbind2
+#setGeneric('cbind2', function(x,y,...) standardGeneric('cbind2'))
+##' @rdname bind
+##' @aliases rbind2
+##' @exportMethod rbind2
+#setGeneric('rbind2', function(x,y,...) standardGeneric('rbind2'))
+
 #' @rdname bind
+#' @aliases cbind2,madness,missing-method
+#' @exportMethod cbind2
+setMethod("cbind2", signature(x="madness",y="missing"),
+					function(x,y,...) {
+						xtag <- x@xtag
+						val <- x@val
+						dvdx <- x@dvdx
+
+						ytag <- paste0('cbind(',x@ytag,')')
+						varx <- x@varx
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+#' @rdname bind
+#' @aliases cbind2,madness,madness-method
 setMethod("cbind2", signature(x="madness",y="madness"),
-					function(x,y) {
+					function(x,y,...) {
 						xtag <- .check_common_xtag(x,y)
 						val <- cbind(x@val,y@val)
 						dvdx <- rbind(x@dvdx,y@dvdx)
@@ -53,8 +79,9 @@ setMethod("cbind2", signature(x="madness",y="madness"),
 					})
 
 #' @rdname bind
+#' @aliases cbind2,madness,ANY-method
 setMethod("cbind2", signature(x="madness",y="ANY"),
-					function(x,y) {
+					function(x,y,...) {
 						xtag <- x@xtag
 						val <- cbind(x@val,y)
 						dvdx <- rbind(x@dvdx,
@@ -66,8 +93,9 @@ setMethod("cbind2", signature(x="madness",y="ANY"),
 						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
 					})
 #' @rdname bind
+#' @aliases cbind2,ANY,madness-method
 setMethod("cbind2", signature(x="ANY",y="madness"),
-					function(x,y) {
+					function(x,y,...) {
 						xtag <- y@xtag
 						val <- cbind(x,y@val)
 						dvdx <- rbind(array(0,dim=c(length(x),ncol(y@dvdx))),
@@ -84,8 +112,23 @@ setMethod("cbind2", signature(x="ANY",y="madness"),
 # commutator again
 
 #' @rdname bind
+#' @aliases rbind2,madness,missing-method
+#' @exportMethod rbind2
+setMethod("rbind2", signature(x="madness",y="missing"),
+					function(x,y,...) {
+						xtag <- x@xtag
+						val <- x@val
+						dvdx <- x@dvdx
+
+						ytag <- paste0('rbind(',x@ytag,')')
+						varx <- x@varx
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+#' @rdname bind
+#' @aliases rbind2,madness,madness-method
 setMethod("rbind2", signature(x="madness",y="madness"),
-					function(x,y) {
+					function(x,y,...) {
 						xtag <- .check_common_xtag(x,y)
 						val <- rbind(x@val,y@val)
 
@@ -100,8 +143,9 @@ setMethod("rbind2", signature(x="madness",y="madness"),
 					})
 
 #' @rdname bind
+#' @aliases rbind2,madness,ANY-method
 setMethod("rbind2", signature(x="madness",y="ANY"),
-					function(x,y) {
+					function(x,y,...) {
 						xtag <- x@xtag
 						val <- rbind(x@val,y)
 
@@ -116,8 +160,9 @@ setMethod("rbind2", signature(x="madness",y="ANY"),
 					})
 
 #' @rdname bind
+#' @aliases rbind2,ANY,madness-method
 setMethod("rbind2", signature(x="ANY",y="madness"),
-					function(x,y) {
+					function(x,y,...) {
 						xtag <- y@xtag
 						val <- rbind(x,y@val)
 

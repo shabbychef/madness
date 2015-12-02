@@ -57,6 +57,12 @@
 #' \url{http://www4.ncsu.edu/~pfackler/MatCalc.pdf}
 #'
 #' @import matrixcalc gtools expm methods
+#' @importFrom methods cbind2
+#' @importFrom methods rbind2
+#' @importFrom methods coerce
+#' @importFrom methods show
+#' @importFrom methods kronecker
+#' @importFrom methods as
 #'
 #' @name madness-pkg
 #' @rdname madness-pkg

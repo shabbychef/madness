@@ -3,28 +3,37 @@
 \docType{methods}
 \name{bind}
 \alias{bind}
+\alias{cbind2}
 \alias{cbind2,ANY,madness-method}
 \alias{cbind2,madness,ANY-method}
 \alias{cbind2,madness,madness-method}
+\alias{cbind2,madness,missing-method}
 \alias{rbind2,ANY,madness-method}
 \alias{rbind2,madness,ANY-method}
 \alias{rbind2,madness,madness-method}
+\alias{rbind2,madness,missing-method}
 \title{Row and Column Bind}
 \usage{
-\S4method{cbind2}{madness,madness}(x, y)
+\S4method{cbind2}{madness,missing}(x, y, ...)
 
-\S4method{cbind2}{madness,ANY}(x, y)
+\S4method{cbind2}{madness,madness}(x, y, ...)
 
-\S4method{cbind2}{ANY,madness}(x, y)
+\S4method{cbind2}{madness,ANY}(x, y, ...)
 
-\S4method{rbind2}{madness,madness}(x, y)
+\S4method{cbind2}{ANY,madness}(x, y, ...)
 
-\S4method{rbind2}{madness,ANY}(x, y)
+\S4method{rbind2}{madness,missing}(x, y, ...)
 
-\S4method{rbind2}{ANY,madness}(x, y)
+\S4method{rbind2}{madness,madness}(x, y, ...)
+
+\S4method{rbind2}{madness,ANY}(x, y, ...)
+
+\S4method{rbind2}{ANY,madness}(x, y, ...)
 }
 \arguments{
-\item{x, y}{\code{madness} object.}
+\item{x, y}{\code{madness} or array, numeric, matrix objects.}
+
+\item{...}{optional arguments for methods (ignored here).}
 }
 \description{
 Row and Column Bind

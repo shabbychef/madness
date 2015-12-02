@@ -212,6 +212,11 @@ setGeneric('val', signature="x", function(x) standardGeneric('val'))
 #' @aliases val,madness-method
 setMethod('val', 'madness', function(x) x@val )
 
+#' @rdname accessor-methods
+#' @aliases dim,madness-method
+#' @exportMethod dim
+setMethod('dim', 'madness', function(x) dim(val(x)) )
+
 #' @name accessor
 #' @rdname accessor-methods
 #' @aliases dvdx

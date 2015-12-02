@@ -3,6 +3,7 @@
 \docType{methods}
 \name{accessor}
 \alias{accessor}
+\alias{dim,madness-method}
 \alias{dvdx}
 \alias{dvdx,madness-method}
 \alias{val}
@@ -18,6 +19,8 @@
 val(x)
 
 \S4method{val}{madness}(x)
+
+\S4method{dim}{madness}(x)
 
 dvdx(x)
 
