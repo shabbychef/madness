@@ -31,6 +31,18 @@ set.char.seed <- function(str) {
 
 context("Basic Operations")#FOLDUP
 
+test_that("initialize",{#FOLDUP
+	set.char.seed("dcb575af-c16c-4bc9-a57e-f8f67b45462d")
+	yt <- 'any'
+	xt <- 'anx'
+
+	xy <- data.frame(x=rnorm(100),y=runif(100),z=runif(100))
+	amod <- lm(z ~ x + y,xy)
+	amad <- as.madness(amod,xtag=xt,ytag=yt)
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("initialize errors",{#FOLDUP
 	set.char.seed("ea2ca251-7b91-4835-a030-610f1835e995")
 

@@ -156,7 +156,7 @@ setMethod('initialize',
 
 #'
 #' @param val an \code{array} of some numeric value, of arbitrary
-#' dimension.
+#' dimension. 
 #' @param dvdx a \code{matrix} of the derivative of 
 #' (the vector of) \code{val} with respect to some independent 
 #' variable, \eqn{X}{X}. 
@@ -167,11 +167,11 @@ setMethod('initialize',
 #' @name madness
 #' @rdname madness-class
 #' @export
-madness <- function(val,dvdx=NULL,xtag=NULL,ytag=NULL,varx=NULL) {
+madness <- function(val,dvdx=NULL,ytag=NULL,xtag=NULL,varx=NULL) {
 	if (missing(ytag)) { 
 		ytag <- deparse(substitute(val))
 	}
-	if (missing(dvdx)) { 
+	if (missing(dvdx) || is.null(dvdx)) { 
 		dvdx <- diag(1,nrow=length(val))
 		if (missing(xtag)) {
 			xtag <- ytag
@@ -191,6 +191,51 @@ madness <- function(val,dvdx=NULL,xtag=NULL,ytag=NULL,varx=NULL) {
 	if (is.null(varx)) { varx <- matrix(nrow=0,ncol=0) }
 	retv <- new("madness", val=val, dvdx=dvdx, xtag=xtag, ytag=ytag, varx=varx)
 	invisible(retv)
+}
+
+#' @title Coerce to a madness object.
+#'
+#' @description 
+#'
+#' Convert model to a madness object.
+#'
+#' @details
+#'
+#' Attempts to stuff the coefficients and variance-covariance matrix of a model
+#' into a madness object.
+#'
+#'
+#' @usage
+#'
+#' as.madness(x, ytag=NULL, xtag=NULL)
+#'
+#' @param x an object which can be fed to \code{coef}, and possibly \code{vcov}
+#' @inheritParams madness
+#' @return A madness object.
+#' @template etc
+#' @examples 
+#' xy <- data.frame(x=rnorm(100),y=runif(100),z=runif(100))
+#' amod <- lm(z ~ x + y,xy)
+#' amad <- as.madness(amod)
+#' @rdname as.madness
+#' @export as.madness
+as.madness <- function(x, ytag=NULL, xtag=NULL) {
+	UseMethod("as.madness", x)
+}
+#' @rdname as.madness
+#' @export
+#' @method as.madness default
+#' @aliases as.madness
+as.madness.default <- function(x, ytag=NULL, xtag=NULL) {
+	if (missing(ytag)) { 
+		ytag <- deparse(substitute(val))
+	}
+	if (missing(xtag)) {
+		xtag <- ytag
+	}
+	val <- coef(x)
+	varx <- tryCatch({ vcov(x) },error = function(e) { NULL })
+	invisible(madness(val,xtag=xtag,ytag=ytag,varx=varx))
 }
 
 # http://www.bioconductor.org/help/course-materials/2010/AdvancedR/S4InBioconductor.pdf

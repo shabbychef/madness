@@ -11,7 +11,7 @@
 \S4method{initialize}{madness}(.Object, val, dvdx, xtag = NA_character_,
   ytag = NA_character_, varx = matrix(nrow = 0, ncol = 0))
 
-madness(val, dvdx = NULL, xtag = NULL, ytag = NULL, varx = NULL)
+madness(val, dvdx = NULL, ytag = NULL, xtag = NULL, varx = NULL)
 }
 \arguments{
 \item{.Object}{a \code{madness} object, or proto-object.}
