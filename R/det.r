@@ -60,12 +60,7 @@ NULL
 #' @export
 determinant.madness <- function(x,logarithm=TRUE,...) {
  	xtag <- x@xtag
-	if (is.na(logarithm)) {
-		ytag <- paste0('det(',x@ytag,')')
-		logarithm <- FALSE
-	} else {
-		ytag <- paste0('determinant(',x@ytag,', logarithm=',as.character(logarithm),')')
-	}
+	ytag <- paste0('determinant(',x@ytag,', logarithm=',as.character(logarithm),')')
 	vdet <- determinant(x@val,logarithm=logarithm)
 
 	varx <- x@varx

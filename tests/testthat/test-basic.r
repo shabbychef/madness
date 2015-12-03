@@ -114,6 +114,22 @@ test_that("basic getters and setters",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("just vcov",{#FOLDUP
+	yt <- 'any'
+	xt <- 'anx'
+
+	set.char.seed("b41fdb74-7fa4-4cbc-908d-4c7763403212")
+	for (nr in c(1,4,8)) {
+		xval <- matrix(1 + runif(nr*nr),nrow=nr)
+		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		blah <- vcov(xmad)
+	}
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 
 #UNFOLD
 

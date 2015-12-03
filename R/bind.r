@@ -43,7 +43,7 @@ NULL
 #' @method c madness
 #' @export
 #' @usage \\method{c}{madness}(...)
-c.madness <- function(...) { rbind(...) }
+c.madness <- function(...) { rbind(...) }  # nocov
 
 # c.f. http://stackoverflow.com/a/28126631/164611
 
