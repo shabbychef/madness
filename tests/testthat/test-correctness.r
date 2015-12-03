@@ -224,10 +224,13 @@ test_that("reshape functions",{#FOLDUP
 
 	expect_less_than(test_harness(xval,function(x) { diag(x) }),1e-6)
 	
-	#expect_less_than(test_harness(xval,function(x) { dim(x) <- c(length(x),1); x }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { dim(x) <- c(prod(dim(x)),1); x }),1e-6)
 	expect_less_than(test_harness(xval,function(x) { x[1,1,drop=FALSE] }),1e-6)
+	expect_less_than(test_harness(xvec,function(x) { dim(x) <- c(prod(dim(x)),1); x }),1e-6)
+	expect_less_than(test_harness(xvec,function(x) { x[1,1,drop=FALSE] }),1e-6)
 
-	#expect_less_than(test_harness(xvec,function(x) { todiag(x) }),function(x) { diag(x) },1e-6)
+	#expect_less_than(test_harness(xval,function(x) { todiag(x) }),
+									 #function(x) { diag(as.numeric(x)) },1e-6)
 
 	expect_less_than(test_harness(xval,function(x) { tril(x) },
 																function(x) { x[row(x) < col(x)] <- 0; x }),1e-6)
@@ -253,6 +256,7 @@ test_that("solve functions",{#FOLDUP
 	expect_less_than(test_harness(xval,function(x) { solve(x,yval) },eps=1e-6),1e-6)
 	expect_less_than(test_harness(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
 	expect_less_than(test_harness(xval,function(x) { solve(xval,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
+	expect_less_than(test_harness(xval,function(x) { solve(x,as.numeric(yval)) },eps=1e-6),1e-6)
 
 	# sentinel:
 	expect_true(TRUE)
