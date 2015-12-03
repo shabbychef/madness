@@ -170,7 +170,12 @@ test_that("matwise functions",{#FOLDUP
 	#expect_less_than(test_harness(xval,function(x) { logm(x) }),1e-6)
 	#expect_less_than(test_harness(xval,function(x) { expm(x) }),1e-6)
 
-	#expect_less_than(test_harness(xval,function(x) { chol(x) }),1e-6)
+	# the 'wrong way to test'
+	expect_gt(test_harness(xval,function(x) { chol(x) }),1e-6)
+
+	# chol has hidden symmetry:
+	fsym <- function(x) { 0.5 * (x + t(x)) }
+	expect_less_than(test_harness(xval,function(x) { chol(fsym(x)) }),1e-6)
 	
 	# sentinel:
 	expect_true(TRUE)
