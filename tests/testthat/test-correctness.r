@@ -169,6 +169,8 @@ test_that("matwise functions",{#FOLDUP
 	expect_less_than(test_harness(xval,function(x) { sqrtm(x) }),1e-6)
 	#expect_less_than(test_harness(xval,function(x) { logm(x) }),1e-6)
 	#expect_less_than(test_harness(xval,function(x) { expm(x) }),1e-6)
+
+	#expect_less_than(test_harness(xval,function(x) { chol(x) }),1e-6)
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -259,6 +261,8 @@ test_that("norm functions",{#FOLDUP
 	set.char.seed("e74da7ce-92f1-41ee-96cd-fe8201da753f")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 
+	expect_less_than(test_harness(xval,function(x) { norm(x) }),1e-6)
+
 	expect_less_than(test_harness(xval,function(x) { norm(x,'O') }),1e-6)
 	expect_less_than(test_harness(xval,function(x) { norm(x,'o') }),1e-6)
 	expect_less_than(test_harness(xval,function(x) { norm(x,'1') }),1e-6)
@@ -271,6 +275,12 @@ test_that("norm functions",{#FOLDUP
 # Matrix::norm does not support type '2'
 	expect_less_than(test_harness(xval,function(x) { norm(x,'2') },
 		function(x) { base::norm(x,'2') }),1e-6)
+
+	expect_less_than(test_harness(xval,function(x) { maxeig(x) },
+																function(x) { 
+																	usv <- svd(x,1,1)
+																	as.numeric(usv$d[1])
+																}),1e-6)
 	
 	# sentinel:
 	expect_true(TRUE)
