@@ -98,6 +98,11 @@ test_that("basic getters and setters",{#FOLDUP
 	expect_equal(xt,xtag(xmad))
 	expect_equal(yt,ytag(xmad))
 
+	# as.foo
+	#expect_equal(as.numeric(xval),as.numeric(xmad))
+	expect_equal(as.matrix(xval),as.matrix(xmad))
+	expect_equal(as.array(xval),as.array(xmad))
+
 	ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 	yt <- 'anewy'
 	xt <- 'anewx'
