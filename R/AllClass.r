@@ -273,7 +273,7 @@ setMethod('varx', 'madness', function(x) x@varx )
 setGeneric('xtag<-', signature="x", function(x,value) standardGeneric('xtag<-'))
 #' @rdname setter-methods
 #' @aliases xtag<-,madness-method
-setReplaceMethod('xtag', 'madness', function(x,value) initialize(x, xtag=value))
+setReplaceMethod('xtag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=value, ytag=x@ytag, varx=x@varx))
 
 #' @name setter
 #' @rdname setter-methods
@@ -282,7 +282,7 @@ setReplaceMethod('xtag', 'madness', function(x,value) initialize(x, xtag=value))
 setGeneric('ytag<-', signature="x", function(x,value) standardGeneric('ytag<-'))
 #' @rdname setter-methods
 #' @aliases ytag<-,madness-method
-setReplaceMethod('ytag', 'madness', function(x,value) initialize(x, ytag=value))
+setReplaceMethod('ytag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=x@xtag, ytag=value, varx=x@varx))
 
 #' @name setter
 #' @rdname setter-methods
@@ -291,7 +291,7 @@ setReplaceMethod('ytag', 'madness', function(x,value) initialize(x, ytag=value))
 setGeneric('varx<-', signature="x", function(x,value) standardGeneric('varx<-'))
 #' @rdname setter-methods
 #' @aliases varx<-,madness-method
-setReplaceMethod('varx', 'madness', function(x,value) initialize(x, varx=value))
+setReplaceMethod('varx', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=x@xtag, ytag=x@xtag, varx=value))
 #UNFOLD
 
 # show#FOLDUP

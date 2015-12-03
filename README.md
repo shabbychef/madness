@@ -238,10 +238,16 @@ expect_less_than(test_harness(xval, function(x) {
     x
 }), 1e-06)
 
-# for now, `det` is basically hosed. sorry.
 expect_less_than(test_harness(xval, function(x) {
     det(x)
 }), 1e-06)
+```
+
+```
+## Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'dvdx' for signature '"list"'
+```
+
+```r
 expect_less_than(test_harness(xval, function(x) {
     determinant(x, logarithm = TRUE)$modulus
 }), 1e-06)

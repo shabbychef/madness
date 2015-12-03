@@ -62,7 +62,6 @@
 #' @importFrom methods coerce
 #' @importFrom methods show
 #' @importFrom methods kronecker
-#' @importFrom methods as
 #'
 #' @name madness-pkg
 #' @rdname madness-pkg
