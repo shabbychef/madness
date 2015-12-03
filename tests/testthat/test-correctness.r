@@ -249,8 +249,8 @@ test_that("reshape functions",{#FOLDUP
 	expect_less_than(test_harness(xvec,function(x) { dim(x) <- c(prod(dim(x)),1); x }),1e-6)
 	expect_less_than(test_harness(xvec,function(x) { x[1,1,drop=FALSE] }),1e-6)
 
-	#expect_less_than(test_harness(xval,function(x) { todiag(x) }),
-									 #function(x) { diag(as.numeric(x)) },1e-6)
+	expect_less_than(test_harness(xval,function(x) { todiag(x) },
+																function(x) { diag(as.numeric(x)) }),1e-6)
 
 	expect_less_than(test_harness(xval,function(x) { tril(x) },
 																function(x) { x[row(x) < col(x)] <- 0; x }),1e-6)

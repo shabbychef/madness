@@ -27,16 +27,16 @@
 .check_common_xtag <- function(e1,e2) {
 	stopifnot(is.null(e1@xtag) || is.null(e2@xtag) || (e1@xtag == e2@xtag))
 	if (is.null(e1@xtag)) {
-		return(e2@xtag) 
+		return(e2@xtag) # nocov
 	} else {
-		return(e1@xtag)
+		return(e1@xtag) # nocov
 	}
 }
 .get_a_varx <- function(e1,e2) {
 	if (is.null(e1@varx)) {
-		return(e2@varx) 
+		return(e2@varx) # nocov
 	} else {
-		return(e1@varx)
+		return(e1@varx) # nocov
 	}
 }
 
