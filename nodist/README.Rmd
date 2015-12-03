@@ -173,7 +173,6 @@ expect_less_than(test_harness(xval,function(x) { tril(x) },
 expect_less_than(test_harness(xval,function(x) { triu(x) },
 															function(x) { x[row(x) > col(x)] <- 0; x }),1e-6)
 
-# for now, `det` is basically hosed. sorry.
 expect_less_than(test_harness(xval,function(x) { det(x) }),1e-6)
 expect_less_than(test_harness(xval,function(x) { determinant(x,logarithm=TRUE)$modulus }),1e-6)
 expect_less_than(test_harness(xval,function(x) { determinant(x,logarithm=FALSE)$modulus }),1e-6)

@@ -39,6 +39,12 @@ NULL
 
 # bind#FOLDUP
 
+#' @rdname bind
+#' @method c madness
+#' @export
+#' @usage \\method{c}{madness}(...)
+c.madness <- function(...) { rbind(...) }
+
 # c.f. http://stackoverflow.com/a/28126631/164611
 
 #' @rdname bind
