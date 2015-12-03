@@ -50,19 +50,34 @@ apx_deriv <- function(xval,thefun,eps=1e-8,type=c('forward','central')) {
 	dapx
 }
 
+# evaluate the error between a numerical approximation and a computed
+# value, both of which may be erroneous?
+errit <- function(apx,cmp,eps) {
+	merror <- abs(apx - cmp)
+	rerror <- merror / pmax(eps^0.333,0.5 * (abs(apx) + abs(cmp)))
+	rerror[(abs(apx) < eps^2) & (abs(cmp) < eps^2)] <- 0
+	rerror
+}
+
+# now the harness
 test_harness <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 	xobj <- madness(val=xval,ytag='x',xtag='x')
 	yobj <- thefun(xobj)
+	# compute the error between the function applied to madness
+	# and the function on the scalar value.
+	ynum <- scalfun(xval)
+	f_err <- errit(ynum,val(yobj),eps)
+
+	# now the derivatives
 	xval <- val(xobj)
   dapx <- apx_deriv(xval,scalfun,eps=eps,type='central')
 	# compute error:
 	dcmp <- dvdx(yobj)
 	dim(dcmp) <- dim(dapx)
+
+	d_err <- errit(dapx,dcmp,eps)
 	
-	merror <- abs(dapx - dcmp)
-	rerror <- merror / pmax(eps^0.333,0.5 * (abs(dapx) + abs(dcmp)))
-	rerror[dapx == 0 & dcmp == 0] <- 0
-	max(abs(rerror))
+	retv <- max(max(abs(d_err)),max(abs(f_err)))
 }
 
 context("Basic Operations")#FOLDUP
@@ -262,6 +277,11 @@ test_that("solve functions",{#FOLDUP
 	expect_less_than(test_harness(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
 	expect_less_than(test_harness(xval,function(x) { solve(xval,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
 	expect_less_than(test_harness(xval,function(x) { solve(x,as.numeric(yval)) },eps=1e-6),1e-6)
+
+	# numeric left only works in 1d case. so be degenerate
+	xval <- array(rnorm(1),dim=c(1,1))
+	yval <- runif(1)
+	expect_less_than(test_harness(xval,function(x) { solve(yval,x) },eps=1e-6),1e-6)
 
 	# sentinel:
 	expect_true(TRUE)
