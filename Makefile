@@ -62,7 +62,7 @@ RSCRIPT   				 = $(RBIN)/Rscript
 R_FLAGS 					?= -q --no-save --no-restore --no-init-file
 
 # packages I need to test this one
-DEV_DEPS           = testthat roxygen2 knitr
+DEV_DEPS           = testthat roxygen2 knitr covr
 PACKAGE_DEPS       = matrixcalc expm gtools
 PACKAGE_SUGGESTS   = sandwich gtools
 TEST_DEPS  				 = $(DEV_DEPS) $(PACKAGE_DEPS) $(PACKAGE_SUGGESTS)

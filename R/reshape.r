@@ -296,25 +296,22 @@ blockrep <- function(x, nreps) {
 		# so. stupid.
 		dim(xval) <- c(dim(xval),rep(1,length(nreps) - length(olddim)))
 	}
+	rm(olddim)
 	outdm <- length(nreps)
 
 	# now replicate!
 	# erk? http://stackoverflow.com/a/13034947/164611
 	totd <- seq_len(outdm)
 	xidx <- array(seq_len(length(xval)),dim=dim(xval))
-	for (iii in seq_len(outdm)) {
-		if (nreps[iii] > 1) {
-			marg <- setdiff(totd,iii)
-			prmd <- rep(1,outdm)
-			prmd[c(iii,marg)] <- seq_len(outdm)
+	for (iii in which(nreps > 1)) {
+		marg <- setdiff(totd,iii)
+		prmd <- rep(1,outdm)
+		prmd[c(iii,marg)] <- seq_len(outdm)
 
-			xval <- apply(xval,MARGIN=marg,FUN=rep,nreps[iii])
-			xval <- aperm(xval,prmd)
-			xidx <- apply(xidx,MARGIN=marg,FUN=rep,nreps[iii])
-			xidx <- aperm(xidx,prmd)
-		}
+		xval <- aperm(apply(xval,MARGIN=marg,FUN=rep,nreps[iii]),prmd)
+		xidx <- aperm(apply(xidx,MARGIN=marg,FUN=rep,nreps[iii]),prmd)
 	}
-	dvdx <- x@dvdx[as.numeric(xidx),]
+	dvdx <- x@dvdx[as.numeric(xidx),,drop=FALSE]
 	ytag <- paste0('blockrep(',x@ytag,', ', as.character(enquote(nreps))[2],')')
 	xtag <- x@xtag
 	varx <- x@varx

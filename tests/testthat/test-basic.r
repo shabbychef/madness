@@ -142,6 +142,65 @@ test_that("just vcov",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("just blockrep",{#FOLDUP
+	yt <- 'any'
+	xt <- 'anx'
+
+	set.char.seed("b41fdb74-7fa4-4cbc-908d-4c7763403212")
+	for (nr in c(1,4,8)) {
+		xval <- matrix(1 + runif(nr*nr),nrow=nr)
+		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		blah <- blockrep(xmad,c(1))
+		blah <- blockrep(xmad,c(1,1,1))
+		blah <- blockrep(xmad,c(1,2,1))
+		blah <- blockrep(xmad,c(2,1))
+		blah <- blockrep(xmad,c(2,2,2))
+		blah <- blockrep(xmad,c(2,2,1,2,3))
+		expect_error(dumb <- blockrep(xmad,c(-1,1,1)))
+		expect_error(dumb <- blockrep(xmad,c(1.5,1,1)))
+		# xmad is nr x nr
+		blah <- repto(xmad,c(nr,nr))
+		blah <- repto(xmad,c(nr,nr,nr))
+		blah <- repto(xmad,c(nr,2*nr))
+		blah <- repto(xmad,c(nr,nr,3))
+		blah <- repto(xmad,c(2*nr,3*nr,1,1,3))
+		blah <- repto(xmad,c(4*nr,2*nr,1,3))
+		expect_error(dumb <- repto(xmad,c(0.5*nr,-1,0)))
+		expect_error(dumb <- repto(xmad,c(nr,0.5,1)))
+		if (nr > 1) {
+			expect_error(dumb <- repto(xmad,c(1,1,1)))
+		}
+	}
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
+test_that("outer?",{#FOLDUP
+	yt <- 'any'
+	xt <- 'anx'
+
+	set.char.seed("b41fdb74-7fa4-4cbc-908d-4c7763403212")
+	for (nr in c(1,4,8)) {
+		xval <- matrix(1 + runif(nr*nr),nrow=nr)
+		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+
+		yval <- matrix(1 + runif(nr*3),nrow=nr)
+		ddd <- matrix(rnorm(length(yval)*5),ncol=5)
+		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		ymad <- madness(yval,ddd,ytag=yt,xtag=xt,varx=vvv)
+
+		blah <- outer(xmad,ymad,'*')
+		blah <- outer(xmad,ymad,'+')
+		blah <- outer(xmad,ymad,'-')
+	}
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 
 #UNFOLD
 
