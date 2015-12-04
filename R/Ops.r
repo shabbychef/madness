@@ -533,7 +533,7 @@ setMethod("outer", signature(X="madness",Y="madness"),
 														 xdy <- outer(X@val,Y@dvdx,FUN='*')
 														 dim(xdy) <- c(length(xdy)/nc,nc)
 														 dxy <- outer(X@dvdx,Y@val,FUN='*')
-														 dxy <- aperm(dxy,c(1,2+seq_len(dim(Y@val)),2))
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y@val)),2))
 														 dim(dxy) <- c(length(dxy)/nc,nc)
 														 dvdx <- xdy + dxy
 													 },
@@ -541,7 +541,7 @@ setMethod("outer", signature(X="madness",Y="madness"),
 														 xdy <- outer(array(1,dim=dim(X@val)),Y@dvdx,FUN='*')
 														 dim(xdy) <- c(length(xdy)/nc,nc)
 														 dxy <- outer(X@dvdx,array(1,dim=dim(Y@val)),FUN='*')
-														 dxy <- aperm(dxy,c(1,2+seq_len(dim(Y@val)),2))
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y@val)),2))
 														 dim(dxy) <- c(length(dxy)/nc,nc)
 														 dvdx <- xdy + dxy
 													 },
@@ -549,11 +549,11 @@ setMethod("outer", signature(X="madness",Y="madness"),
 														 xdy <- outer(array(1,dim=dim(X@val)),Y@dvdx,FUN='*')
 														 dim(xdy) <- c(length(xdy)/nc,nc)
 														 dxy <- outer(X@dvdx,array(1,dim=dim(Y@val)),FUN='*')
-														 dxy <- aperm(dxy,c(1,2+seq_len(dim(Y@val)),2))
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y@val)),2))
 														 dim(dxy) <- c(length(dxy)/nc,nc)
 														 dvdx <- - xdy + dxy
 													 },
-													 error('NYI'))
+													 stop('NYI'))
 						
 						ytag <- paste0('outer(',X@ytag,', ',Y@ytag,', ',FUN,')')
 						varx <- .get_a_varx(X,Y)
