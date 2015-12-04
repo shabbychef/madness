@@ -40,18 +40,23 @@ NULL
 #' dy <- matrix(rnorm(length(y)*2),ncol=2)
 #' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
 #' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#' z <- array(rnorm(3*3),dim=c(3,3))
 #'
 #' anobj <- + obj0
 #' anobj <- - obj0
 #' anobj <- 6 - obj0
 #' anobj <- 1 + obj0
 #' anobj <- obj0 - 3
+#' anobj <- z + obj0 
+#' anobj <- obj0 - z
 #'
 #' obj1 <- obj0 ^ 2
 #' anobj <- (0.3 * obj0) + (5.1 * obj1)
 #'
 #' anobj <- 2 ^ obj0
 #' anobj <- obj1 ^ obj0
+#' anobj <- obj1 / obj0
+#' anobj <- z / obj0
 #'
 #' @include AllClass.r
 #' @param e1,e2 \code{madness} or numeric values
@@ -351,9 +356,12 @@ setMethod("^", signature(e1="array",e2="madness"),ntothem)
 #' dy <- matrix(rnorm(length(y)*2),ncol=2)
 #' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
 #' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#' z <- array(rnorm(3*3),dim=c(3,3))
 #'
 #' anobj <- obj0 %*% obj0
-#' anobj <- crossprod(obj0,obj0)
+#' anobj <- z %*% obj0
+#' anobj <- crossprod(obj0)
+#' anobj <- crossprod(obj0,z)
 #' anobj <- tcrossprod(obj0,obj0)
 #' # NYI: 
 #' # anobj <- obj0 %x% obj0
@@ -464,11 +472,105 @@ setMethod("tcrossprod", signature(x="ANY",y="madness"),
 					function(x,y) { x %*% t(y) })
 #UNFOLD
 
+# outer product!#FOLDUP
+
+#' @title Outer product.
+#'
+#' @description
+#'
+#' Computes the outer product (or sum, quotient, etc) of the Cartesian
+#' product of two inputs.
+#'
+#' @examples 
+#' set.seed(123)
+#' y <- array(rnorm(3*3),dim=c(3,3))
+#' dy <- matrix(rnorm(length(y)*2),ncol=2)
+#' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
+#' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#'
+#' y1 <- array(rnorm(3*3),dim=c(3,3))
+#' dy1 <- matrix(rnorm(length(y1)*2),ncol=2)
+#' dx1 <- crossprod(matrix(rnorm(ncol(dy1)*100),nrow=100))
+#' obj1 <- madness(val=y1,ytag='y1',xtag='x',dvdx=dy1,varx=dx1)
+#'
+#' anobj <- outer(obj0,obj0,'*')
+#' anobj <- outer(obj0,obj0,'+')
+#' anobj <- outer(obj0,obj1,'-')
+#' \dontrun{
+#' anobj <- outer(obj0,obj1,'/')
+#' }
+#'
+#' @include AllClass.r
+#' @param X,Y \code{madness} or numeric matrix values.
+#' @inheritParams base::outer
+#' @return a \code{madness} object.
+#' @template etc
+#' @rdname outer
+#' @name outer
+NULL
+
+#' @name outer
+#' @rdname outer
+#' @aliases outer
+#' @exportMethod outer
+setGeneric('outer', function(X,Y,FUN="*",...) standardGeneric('outer'))
+#' @rdname outer
+#' @aliases outer,ANY,ANY-method
+setMethod("outer", signature(X="ANY",Y="ANY"),
+					function(X,Y,FUN="*",...) { base::outer(X,Y,FUN=FUN,...) })
+
+#' @rdname outer
+#' @aliases outer,madness,madness-method
+setMethod("outer", signature(X="madness",Y="madness"),
+					function(X,Y,FUN="*",...) { 
+						outdim <- c(dim(X@val),dim(Y@val))
+						xtag <- .check_common_xtag(X,Y)
+						val <- base::outer(X@val,Y@val,FUN=FUN,...)
+						nc <- ncol(X@dvdx)
+
+						dvdx <- switch(FUN,
+													 "*"={
+														 xdy <- outer(X@val,Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dxy <- outer(X@dvdx,Y@val,FUN='*')
+														 dxy <- aperm(dxy,c(1,2+seq_len(dim(Y@val)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- xdy + dxy
+													 },
+													 "+"={
+														 xdy <- outer(array(1,dim=dim(X@val)),Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dxy <- outer(X@dvdx,array(1,dim=dim(Y@val)),FUN='*')
+														 dxy <- aperm(dxy,c(1,2+seq_len(dim(Y@val)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- xdy + dxy
+													 },
+													 '-'={
+														 xdy <- outer(array(1,dim=dim(X@val)),Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dxy <- outer(X@dvdx,array(1,dim=dim(Y@val)),FUN='*')
+														 dxy <- aperm(dxy,c(1,2+seq_len(dim(Y@val)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- - xdy + dxy
+													 },
+													 error('NYI'))
+						
+						ytag <- paste0('outer(',X@ytag,', ',Y@ytag,', ',FUN,')')
+						varx <- .get_a_varx(X,Y)
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+})
+
+#UNFOLD
 # 2FIX: 
 # add kron?
 # outer product?
 # kronecker sum?
 # svd!
+#
+						#proval <- switch(FUN,
+														 # '*'={ vec(X) * t(vec(Y)) },
+														 # '+'={ vec(X) + t(vec(Y)) },
+														 # '-'={ vec(X) - t(vec(Y)) },
 
 ## pattern match off this:
 ## http://stackoverflow.com/q/33548341/164611

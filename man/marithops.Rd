@@ -62,9 +62,12 @@ y <- array(rnorm(3*3),dim=c(3,3))
 dy <- matrix(rnorm(length(y)*2),ncol=2)
 dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
 obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+z <- array(rnorm(3*3),dim=c(3,3))
 
 anobj <- obj0 \%*\% obj0
-anobj <- crossprod(obj0,obj0)
+anobj <- z \%*\% obj0
+anobj <- crossprod(obj0)
+anobj <- crossprod(obj0,z)
 anobj <- tcrossprod(obj0,obj0)
 # NYI: 
 # anobj <- obj0 \%x\% obj0

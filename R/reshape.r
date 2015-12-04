@@ -236,7 +236,103 @@ aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {
 
 	new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
 }
-# 2FIX: add aperm.
+
+#' @title Replicate blocks of multidimensional value.
+#'
+#' @description 
+#'
+#' Replicates a multidimensional object a number of times along
+#' given dimensions.
+#'
+#' @details
+#'
+#' Given a k-dimensional object, and an l-vector of positive
+#' integers, for l >= k, copy the input object l_i times in
+#' the ith dimension. Useful for replication and (slow, fake)
+#' outer products.
+#'
+#' \code{repto} replicates to the given dimension, assuming the
+#' given dimension are integer multiples of the input dimensions.
+#'
+#' @usage
+#'
+#' blockrep(x, nreps)
+#'
+#' repto(x, newdim)
+#'
+#' @param x a \code{madness} object, representing a k-dimensional object.
+#' @param nreps an l-vector of positive integers, representing how
+#' many times to copy the object.
+#' @param newdim an l-vector of positive integers of the new dimension
+#' of the output object. These must be integer multiples of the 
+#' input dimensions.
+#' @return A \code{madness} object replicated out.
+#' @note
+#' An error will be thrown if \code{nreps} or \code{newdim} are improper.
+#' @template etc
+#' @examples 
+#' set.seed(123)
+#' y <- array(rnorm(3*3),dim=c(3,3))
+#' dy <- matrix(rnorm(length(y)*2),ncol=2)
+#' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
+#' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#'
+#' anobj <- blockrep(obj0,c(1,2,1))
+#' anobj <- blockrep(obj0,c(1,1,2))
+#' anobj <- repto(obj0,c(9,12,4))
+#' @export
+#' @rdname blockrep
+blockrep <- function(x, nreps) {
+	olddim <- dim(x@val)
+	if (length(nreps) < length(olddim)) {
+		nreps <- c(nreps,rep(1,length(olddim)-length(nreps)))
+	}
+	stopifnot(length(nreps) >= length(olddim),
+						all(nreps >= 1),
+						all(abs(nreps %% 1) < 1e-12))
+	nreps <- as.integer(nreps)
+	xval <- x@val
+	if (length(nreps) > length(olddim)) { 
+		# so. stupid.
+		dim(xval) <- c(dim(xval),rep(1,length(nreps) - length(olddim)))
+	}
+	outdm <- length(nreps)
+
+	# now replicate!
+	# erk? http://stackoverflow.com/a/13034947/164611
+	totd <- seq_len(outdm)
+	xidx <- array(seq_len(length(xval)),dim=dim(xval))
+	for (iii in seq_len(outdm)) {
+		if (nreps[iii] > 1) {
+			marg <- setdiff(totd,iii)
+			prmd <- rep(1,outdm)
+			prmd[c(iii,marg)] <- seq_len(outdm)
+
+			xval <- apply(xval,MARGIN=marg,FUN=rep,nreps[iii])
+			xval <- aperm(xval,prmd)
+			xidx <- apply(xidx,MARGIN=marg,FUN=rep,nreps[iii])
+			xidx <- aperm(xidx,prmd)
+		}
+	}
+	dvdx <- x@dvdx[as.numeric(xidx),]
+	ytag <- paste0('blockrep(',x@ytag,', ', as.character(enquote(nreps))[2],')')
+	xtag <- x@xtag
+	varx <- x@varx
+
+	new("madness", val=xval, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+}
+#' @rdname blockrep
+#' @export
+repto <- function(x, newdim) {
+	olddim <- dim(x@val)
+	stopifnot(length(newdim) >= length(olddim),
+						all(newdim >= 1))
+	olddim <- c(olddim,rep(1,length(newdim)-length(olddim)))
+	nreps <- newdim / olddim
+	retv <- blockrep(x,nreps)
+	retv@ytag <- paste0('repto(',x@ytag,', ', as.character(enquote(newdim))[2],')')
+	retv
+}
 
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
