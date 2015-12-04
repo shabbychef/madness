@@ -3,39 +3,38 @@ Maintainer: Steven E. Pav <shabbychef@gmail.com>
 Authors@R: c(person(c("Steven", "E."), "Pav", role=c("aut","cre"),
     email="shabbychef@gmail.com"))
 Version: 0.0.0.5300
-Date: 2015-12-02
+Date: 2015-12-03
 License: LGPL-3
 Title: Automatic Differentiation of Multivariate Operations
 BugReports: https://github.com/shabbychef/madness/issues
 Description: An object that supports automatic differentiation
-    of matrix- and multidimensional-valued functions with
-    respect to multidimensional independent variables.
+    of matrix- and multidimensional-valued functions with 
+    respect to multidimensional independent variables. 
     Automatic differentiation is via 'forward accumulation'.
-Depends:
+Depends: 
     R (>= 3.0.2)
 Imports:
     matrixcalc,
     expm,
     gtools,
     methods
-Suggests:
-    testthat,
+Suggests: 
+    testthat, 
     knitr
 URL: https://github.com/shabbychef/madness
 VignetteBuilder: knitr
 Collate:
     'AllClass.r'
-    'utils.r'
-    'Ops.r'
     'bind.r'
     'coerce.r'
     'det.r'
     'elwise.r'
     'madness_pkg.r'
     'matwise.r'
+    'Ops.r'
     'reshape.r'
     'solve.r'
     'sums.r'
     'trace.r'
+    'utils.r'
     'vcov.r'
-RoxygenNote: 5.0.1
