@@ -4,6 +4,8 @@
 \name{outer}
 \alias{outer}
 \alias{outer,ANY,ANY-method}
+\alias{outer,array,madness-method}
+\alias{outer,madness,array-method}
 \alias{outer,madness,madness-method}
 \title{Outer product.}
 \usage{
@@ -12,6 +14,10 @@ outer(X, Y, FUN = "*", ...)
 \S4method{outer}{ANY,ANY}(X, Y, FUN = "*", ...)
 
 \S4method{outer}{madness,madness}(X, Y, FUN = "*", ...)
+
+\S4method{outer}{madness,array}(X, Y, FUN = "*", ...)
+
+\S4method{outer}{array,madness}(X, Y, FUN = "*", ...)
 }
 \arguments{
 \item{X, Y}{\code{madness} or numeric matrix values.}
@@ -43,9 +49,7 @@ obj1 <- madness(val=y1,ytag='y1',xtag='x',dvdx=dy1,varx=dx1)
 anobj <- outer(obj0,obj0,'*')
 anobj <- outer(obj0,obj0,'+')
 anobj <- outer(obj0,obj1,'-')
-\dontrun{
 anobj <- outer(obj0,obj1,'/')
-}
 
 }
 \author{

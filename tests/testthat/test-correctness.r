@@ -211,6 +211,29 @@ test_that("sums functions",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("outer functions",{#FOLDUP
+	set.char.seed("354455b9-2b3f-40fb-b8e7-21a1302b48de")
+	xval <- array(1+runif(2*3*4),dim=c(2,3,4))
+	yval <- array(1+runif(3*2),dim=c(3,2))
+
+	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='*') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='+') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='-') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='/') }),1e-6)
+
+	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='*') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='+') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='-') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='/') }),1e-6)
+
+	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='*') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='+') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='-') }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='/') }),1e-6)
+	
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("determinants",{#FOLDUP
 	set.char.seed("081849a0-ab28-42ac-8d18-1963cb8a9a0a")
 	xval <- matrix(1 + runif(4*4),nrow=4)

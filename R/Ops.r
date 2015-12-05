@@ -496,9 +496,7 @@ setMethod("tcrossprod", signature(x="ANY",y="madness"),
 #' anobj <- outer(obj0,obj0,'*')
 #' anobj <- outer(obj0,obj0,'+')
 #' anobj <- outer(obj0,obj1,'-')
-#' \dontrun{
 #' anobj <- outer(obj0,obj1,'/')
-#' }
 #'
 #' @include AllClass.r
 #' @param X,Y \code{madness} or numeric matrix values.
@@ -528,6 +526,8 @@ setMethod("outer", signature(X="madness",Y="madness"),
 						val <- base::outer(X@val,Y@val,FUN=FUN,...)
 						nc <- ncol(X@dvdx)
 
+						# honestly, this is so ugly at the moment, rep'ing the matrices
+						# out and applying might be a better call..
 						dvdx <- switch(FUN,
 													 "*"={
 														 xdy <- outer(X@val,Y@dvdx,FUN='*')
@@ -553,13 +553,101 @@ setMethod("outer", signature(X="madness",Y="madness"),
 														 dim(dxy) <- c(length(dxy)/nc,nc)
 														 dvdx <- - xdy + dxy
 													 },
+													 '/'={
+														 xdy <- outer(X@val,- ((as.numeric(Y@val))^(-2)) * Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dxy <- outer(X@dvdx,Y@val,FUN='/')
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y@val)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- xdy + dxy
+													 },
 													 stop('NYI'))
 						
 						ytag <- paste0('outer(',X@ytag,', ',Y@ytag,', ',FUN,')')
 						varx <- .get_a_varx(X,Y)
 						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
 })
+#' @rdname outer
+#' @aliases outer,madness,array-method
+setMethod("outer", signature(X="madness",Y="array"),
+					function(X,Y,FUN="*",...) { 
+						outdim <- c(dim(X@val),dim(Y))
+						xtag <- X@xtag
+						val <- base::outer(X@val,Y,FUN=FUN,...)
+						nc <- ncol(X@dvdx)
 
+						# honestly, this is so ugly at the moment, rep'ing the matrices
+						# out and applying might be a better call..
+						dvdx <- switch(FUN,
+													 "*"={
+														 dxy <- outer(X@dvdx,Y,FUN='*')
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- dxy
+													 },
+													 "+"={
+														 dxy <- outer(X@dvdx,array(1,dim=dim(Y)),FUN='*')
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- dxy
+													 },
+													 '-'={
+														 dxy <- outer(X@dvdx,array(1,dim=dim(Y)),FUN='*')
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- dxy
+													 },
+													 '/'={
+														 dxy <- outer(X@dvdx,Y,FUN='/')
+														 dxy <- aperm(dxy,c(1,2+seq_along(dim(Y)),2))
+														 dim(dxy) <- c(length(dxy)/nc,nc)
+														 dvdx <- dxy
+													 },
+													 stop('NYI'))
+						
+						ytag <- paste0('outer(',X@ytag,', numeric, ',FUN,')')
+						varx <- X@varx
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+})
+
+#' @rdname outer
+#' @aliases outer,array,madness-method
+setMethod("outer", signature(X="array",Y="madness"),
+					function(X,Y,FUN="*",...) { 
+						outdim <- c(dim(X),dim(Y@val))
+						xtag <- Y@xtag
+						val <- base::outer(X,Y@val,FUN=FUN,...)
+						nc <- ncol(Y@dvdx)
+
+						# honestly, this is so ugly at the moment, rep'ing the matrices
+						# out and applying might be a better call..
+						dvdx <- switch(FUN,
+													 "*"={
+														 xdy <- outer(X,Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dvdx <- xdy 
+													 },
+													 "+"={
+														 xdy <- outer(array(1,dim=dim(X)),Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dvdx <- xdy 
+													 },
+													 '-'={
+														 xdy <- outer(array(1,dim=dim(X)),Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dvdx <- - xdy 
+													 },
+													 '/'={
+														 xdy <- outer(X,- ((as.numeric(Y@val))^(-2)) * Y@dvdx,FUN='*')
+														 dim(xdy) <- c(length(xdy)/nc,nc)
+														 dvdx <- xdy 
+													 },
+													 stop('NYI'))
+						
+						ytag <- paste0('outer(numeric, ',Y@ytag,', ',FUN,')')
+						varx <- Y@varx
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+})
 #UNFOLD
 # 2FIX: 
 # add kron?
