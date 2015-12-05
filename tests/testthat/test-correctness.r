@@ -286,6 +286,23 @@ test_that("reshape functions",{#FOLDUP
 	expect_less_than(test_harness(xval,function(x) { aperm(x,c(2,1,3,4)) }),1e-6)
 	expect_less_than(test_harness(xval,function(x) { aperm(x,c(4,3,2,1)) }),1e-6)
 
+	# need better tests of these!
+	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))
+	xdim <- dim(xval)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(1)) },function(x) { x }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { repto(x,xdim) },function(x) { x }),1e-6)
+
+	xval <- array(1 + runif(3*7),dim=c(3,7))
+	xdim <- dim(xval)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(2,1)) },function(x) { rbind(x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(3,1)) },function(x) { rbind(x,x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(5,1)) },function(x) { rbind(x,x,x,x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(1,2)) },function(x) { cbind(x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(1,4)) },function(x) { cbind(x,x,x,x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(2,3)) },function(x) { x2 <- rbind(x,x) ; cbind(x2,x2,x2) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(5,2)) },function(x) { x5 <- rbind(x,x,x,x,x) ; cbind(x5,x5) }),1e-6)
+	# now alternate dimensions?
+
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
