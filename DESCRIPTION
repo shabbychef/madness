@@ -28,6 +28,7 @@ Collate:
     'utils.r'
     'Ops.r'
     'bind.r'
+    'blockrep.r'
     'coerce.r'
     'det.r'
     'elwise.r'
@@ -38,4 +39,5 @@ Collate:
     'sums.r'
     'trace.r'
     'vcov.r'
+    'vec.r'
 RoxygenNote: 5.0.1

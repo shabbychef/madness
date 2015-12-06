@@ -16,23 +16,11 @@
 \alias{tril,madness-method}
 \alias{triu}
 \alias{triu,madness-method}
-\alias{vec}
-\alias{vec,madness-method}
-\alias{vech}
-\alias{vech,madness-method}
 \title{Basic Reshape Operations}
 \usage{
 t(x)
 
 \S4method{t}{madness}(x)
-
-vec(x)
-
-\S4method{vec}{madness}(x)
-
-vech(x)
-
-\S4method{vech}{madness}(x)
 
 \S4method{diag}{madness}(x)
 
@@ -78,5 +66,8 @@ Basic Reshape Operations
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
+}
+\seealso{
+\code{\link{vec}}
 }
 

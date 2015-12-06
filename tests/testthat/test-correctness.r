@@ -258,12 +258,10 @@ test_that("reshape functions",{#FOLDUP
 
 	expect_less_than(test_harness(xval,function(x) { t(x) }),1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { vec(x) },
-																function(x) { dim(x) <- c(length(x),1); x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { vech(x) },
-																function(x) { x <- x[row(x) >= col(x)]; 
-																dim(x) <- c(length(x),1); 
-																x }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { vec(x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { vech(x) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { vech(x,1) }),1e-6)
+	expect_less_than(test_harness(xval,function(x) { vech(x,-1) }),1e-6)
 
 	expect_less_than(test_harness(xval,function(x) { diag(x) }),1e-6)
 	

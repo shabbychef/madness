@@ -39,6 +39,9 @@ test_that("initialize",{#FOLDUP
 	xy <- data.frame(x=rnorm(100),y=runif(100),z=runif(100))
 	amod <- lm(z ~ x + y,xy)
 	amad <- as.madness(amod,xtag=xt,ytag=yt)
+	amad <- as.madness(amod,xtag=xt)
+	amad <- as.madness(amod,ytag=yt)
+	amad <- as.madness(amod)
 
 	# sentinel:
 	expect_true(TRUE)
@@ -93,6 +96,7 @@ test_that("basic getters and setters",{#FOLDUP
 
 	expect_equal(xval,val(xmad))
 	expect_equal(dim(xval),dim(xmad))
+	expect_equal(length(xval),length(xmad))
 
 	# do not error out
 	show(xmad)

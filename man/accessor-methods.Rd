@@ -6,6 +6,7 @@
 \alias{dim,madness-method}
 \alias{dvdx}
 \alias{dvdx,madness-method}
+\alias{length,madness-method}
 \alias{val}
 \alias{val,madness-method}
 \alias{varx}
@@ -21,6 +22,8 @@ val(x)
 \S4method{val}{madness}(x)
 
 \S4method{dim}{madness}(x)
+
+\S4method{length}{madness}(x)
 
 dvdx(x)
 

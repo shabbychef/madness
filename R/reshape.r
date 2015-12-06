@@ -34,6 +34,7 @@ NULL
 #' @param value an array of the new dimensions of the object value.
 #' @inheritParams Matrix::tril
 #' @param k the index of the diagonal number from which to extract.\code{madness} object.
+#' @seealso \code{\link{vec}}
 #' @name reshapes
 #' @template etc
 NULL
@@ -58,44 +59,6 @@ setMethod("t", signature(x="madness"),
 					})
 
 #' @rdname reshapes
-#' @aliases vec
-#' @exportMethod vec
-setGeneric('vec', function(x) standardGeneric('vec'))
-#' @rdname reshapes
-#' @aliases vec,madness-method
-setMethod("vec", signature(x="madness"),
-					function(x) {
-						xtag <- x@xtag
-						val <- x@val
-						dim(val) <- c(prod(dim(val)),1)
-						dvdx <- x@dvdx
-						ytag <- paste0('vec(',x@ytag,')')
-						varx <- x@varx
-
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
-					})
-
-#' @rdname reshapes
-#' @aliases vech
-#' @exportMethod vech
-setGeneric('vech', function(x) standardGeneric('vech'))
-#' @rdname reshapes
-#' @aliases vech,madness-method
-setMethod("vech", signature(x="madness"),
-					function(x) {
-						xtag <- x@xtag
-						val <- x@val
-						takeus <- row(val) >= col(val)
-						val <- val[takeus]
-						dim(val) <- c(length(val),1)
-						dvdx <- x@dvdx[which(takeus),]
-						ytag <- paste0('vech(',x@ytag,')')
-						varx <- x@varx
-
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
-					})
-
-#' @rdname reshapes
 #' @aliases diag,madness-method
 setMethod("diag", signature(x="madness"),
 					function(x) {
@@ -110,7 +73,6 @@ setMethod("diag", signature(x="madness"),
 
 						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
 					})
-
 
 #' @rdname reshapes
 #' @aliases tril
@@ -235,100 +197,6 @@ aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {
 	varx <- a@varx
 
 	new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
-}
-
-#' @title Replicate blocks of multidimensional value.
-#'
-#' @description 
-#'
-#' Replicates a multidimensional object a number of times along
-#' given dimensions.
-#'
-#' @details
-#'
-#' Given a k-dimensional object, and an l-vector of positive
-#' integers, for l >= k, copy the input object l_i times in
-#' the ith dimension. Useful for replication and (slow, fake)
-#' outer products.
-#'
-#' \code{repto} replicates to the given dimension, assuming the
-#' given dimension are integer multiples of the input dimensions.
-#'
-#' @usage
-#'
-#' blockrep(x, nreps)
-#'
-#' repto(x, newdim)
-#'
-#' @param x a \code{madness} object, representing a k-dimensional object.
-#' @param nreps an l-vector of positive integers, representing how
-#' many times to copy the object.
-#' @param newdim an l-vector of positive integers of the new dimension
-#' of the output object. These must be integer multiples of the 
-#' input dimensions.
-#' @return A \code{madness} object replicated out.
-#' @note
-#' An error will be thrown if \code{nreps} or \code{newdim} are improper.
-#' @template etc
-#' @examples 
-#' set.seed(123)
-#' y <- array(rnorm(3*3),dim=c(3,3))
-#' dy <- matrix(rnorm(length(y)*2),ncol=2)
-#' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
-#' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
-#'
-#' anobj <- blockrep(obj0,c(1,2,1))
-#' anobj <- blockrep(obj0,c(1,1,2))
-#' anobj <- repto(obj0,c(9,12,4))
-#' @export
-#' @rdname blockrep
-blockrep <- function(x, nreps) {
-	olddim <- dim(x@val)
-	if (length(nreps) < length(olddim)) {
-		nreps <- c(nreps,rep(1,length(olddim)-length(nreps)))
-	}
-	stopifnot(length(nreps) >= length(olddim),
-						all(nreps >= 1),
-						all(abs(nreps %% 1) < 1e-12))
-	nreps <- as.integer(nreps)
-	xval <- x@val
-	if (length(nreps) > length(olddim)) { 
-		# so. stupid.
-		dim(xval) <- c(dim(xval),rep(1,length(nreps) - length(olddim)))
-	}
-	rm(olddim)
-	outdm <- length(nreps)
-
-	# now replicate!
-	# erk? http://stackoverflow.com/a/13034947/164611
-	totd <- seq_len(outdm)
-	xidx <- array(seq_len(length(xval)),dim=dim(xval))
-	for (iii in which(nreps > 1)) {
-		marg <- setdiff(totd,iii)
-		prmd <- rep(1,outdm)
-		prmd[c(iii,marg)] <- seq_len(outdm)
-
-		xval <- aperm(apply(xval,MARGIN=marg,FUN=rep,nreps[iii]),prmd)
-		xidx <- aperm(apply(xidx,MARGIN=marg,FUN=rep,nreps[iii]),prmd)
-	}
-	dvdx <- x@dvdx[as.numeric(xidx),,drop=FALSE]
-	ytag <- paste0('blockrep(',x@ytag,', ', as.character(enquote(nreps))[2],')')
-	xtag <- x@xtag
-	varx <- x@varx
-
-	new("madness", val=xval, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
-}
-#' @rdname blockrep
-#' @export
-repto <- function(x, newdim) {
-	olddim <- dim(x@val)
-	stopifnot(length(newdim) >= length(olddim),
-						all(newdim >= 1))
-	olddim <- c(olddim,rep(1,length(newdim)-length(olddim)))
-	nreps <- newdim / olddim
-	retv <- blockrep(x,nreps)
-	retv@ytag <- paste0('repto(',x@ytag,', ', as.character(enquote(newdim))[2],')')
-	retv
 }
 
 #for vim modeline: (do not edit)

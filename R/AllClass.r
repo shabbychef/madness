@@ -262,6 +262,11 @@ setMethod('val', 'madness', function(x) x@val )
 #' @exportMethod dim
 setMethod('dim', 'madness', function(x) dim(val(x)) )
 
+#' @rdname accessor-methods
+#' @aliases length,madness-method
+#' @exportMethod length
+setMethod('length', 'madness', function(x) length(val(x)) )
+
 #' @name accessor
 #' @rdname accessor-methods
 #' @aliases dvdx
