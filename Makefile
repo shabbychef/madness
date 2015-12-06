@@ -181,14 +181,15 @@ WARN_DEPS = $(warning will build $@ ; newer deps are $(?))
 # these are phony targets
 .PHONY: help tags all \
 	gitpull gitpush staged \
-	news docs build install testthat tests \
+	news docs build install \
+	testthat tests loctest \
 	staging_d local_d \
 	clean realclean \
 	vignette_cache \
 	the_vignette \
 	static_vignette \
 	the_paper \
-	R coverage
+	R coverage 
 
 help:
 	@echo "\nTasks for $(PKG_NAME)\n"
@@ -201,6 +202,7 @@ help:
 	@echo "  docs       Invoke roxygen to generate Rd files in man/"
 	@echo "  testthat   Run unit tests."
 	@echo '  tests       "   "     "   '
+	@echo '  loctest    local unit tests.'
 	@echo "  staged     Create a staging version of this package."
 	@echo "  build      Make docs and then R CMD build the package.tgz"
 	@echo "  install    Make build and then install the result."
@@ -380,6 +382,15 @@ unit_test.log : $(LOCAL)/$(PKG_NAME)/INDEX $(LOCAL)/testthat/DESCRIPTION $(PKG_T
 testthat : unit_test.log
 
 tests    : unit_test.log
+
+loctest : deps $(LOCAL)/$(PKG_NAME)/INDEX
+	$(call WARN_DEPS)
+	R_LIBS=$(LOCAL) R_PROFILE=load.R \
+				 R_DEFAULT_PACKAGES=$(BASE_DEF_PACKAGES),testthat $(R) $(R_FLAGS) \
+				 --slave --silent \
+				 -e 'test_check("$(PKG_NAME)")'
+	
+	< $(PKG_TESTR) | tee $@
 
 coverage : deps $(LOCAL)/$(PKG_NAME)/INDEX
 	R_LIBS=$(LOCAL) R_PROFILE=load.R \

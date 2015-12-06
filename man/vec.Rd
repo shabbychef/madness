@@ -4,6 +4,7 @@
 \name{vec}
 \alias{ivech}
 \alias{ivech,ANY-method}
+\alias{ivech,madness-method}
 \alias{vec}
 \alias{vec,array-method}
 \alias{vec,madness-method}
@@ -27,6 +28,8 @@ vech(x, k = 0)
 ivech(x, k = 0, symmetric = FALSE)
 
 \S4method{ivech}{ANY}(x, k = 0, symmetric = FALSE)
+
+\S4method{ivech}{madness}(x, k = 0, symmetric = FALSE)
 }
 \arguments{
 \item{x}{a \code{madness} object or multidimensional array or matrix.}

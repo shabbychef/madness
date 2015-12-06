@@ -147,5 +147,40 @@ setMethod("ivech", signature(x="ANY"),
 						retv
 					})
 
+#' @rdname vec
+#' @aliases ivech,madness-method
+setMethod("ivech", signature(x="madness"),
+					function(x,k=0,symmetric=FALSE) {
+						len <- length(x@val)
+						stopifnot((k <= 0) || (!symmetric))
+						if (k <= 0) {
+							Ms <- .quadeq(1,2*k+1,k*(k+1) - 2 * len)
+						} else {
+							Ms <- .quadeq(1,2*k+1,-k*(k+1) - 2 * len)
+						}
+						isok <- ((abs(Ms %% 1) <= 1e-12) & (Ms > 0))
+						stopifnot(any(isok))
+						M <- Ms[isok][1]
+						val <- array(0,dim=c(M,M))
+						dvdx <- matrix(0,nrow=length(val),ncol=ncol(x@dvdx))
+						putus <- row(val) >= col(val) - k
+						val[putus] <- x@val
+						dvdx[putus,] <- x@dvdx
+						if (symmetric) {
+							# possibly double put on diagonal and not efficient, but no worries...
+							val <- t(val)
+							val[putus] <- x@val
+							dvdx <- .do_commutator(val,dvdx)
+							dvdx[putus,] <- x@dvdx
+							val <- t(val)
+							dvdx <- .do_commutator(val,dvdx)
+						}
+						xtag <- x@xtag
+						ytag <- paste0('ivech(',x@ytag,', ',k,', ',symmetric,')')
+						varx <- x@varx
+
+						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r

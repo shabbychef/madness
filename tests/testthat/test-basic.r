@@ -226,6 +226,18 @@ test_that("vech",{#FOLDUP
 	ivech(ev,1)
 	vech(ivech(ev,1),1)
 
+	#set.char.seed("b41fdb74-7fa4-4cbc-908d-4c7763403212")
+	#for (nr in c(3,6,10)) {
+		#xval <- matrix(1 + runif(nr),nrow=nr)
+		#ddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		#vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		#xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+
+		#blah <- ivech(xmad)
+		#blah <- ivech(xmad,-1)
+		#blah <- ivech(xmad,-1,symmetric=TRUE)
+	#}
+
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
