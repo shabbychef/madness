@@ -2,6 +2,8 @@
 % Please edit documentation in R/vec.r
 \docType{methods}
 \name{vec}
+\alias{ivech}
+\alias{ivech,ANY-method}
 \alias{vec}
 \alias{vec,array-method}
 \alias{vec,madness-method}
@@ -21,6 +23,10 @@ vech(x, k = 0)
 \S4method{vech}{array}(x, k = 0)
 
 \S4method{vech}{madness}(x, k = 0)
+
+ivech(x, k = 0, symmetric = FALSE)
+
+\S4method{ivech}{ANY}(x, k = 0, symmetric = FALSE)
 }
 \arguments{
 \item{x}{a \code{madness} object or multidimensional array or matrix.}
@@ -45,6 +51,11 @@ vy <- vec(sy)
 vmy <- vec(madness(sy))
 vhy <- vech(sy)
 vmhy <- vech(madness(sy))
+
+ivech(c(1,2,3))
+ivech(c(1,2,3),-1)
+ivech(c(1,2,3),-1,symmetric=TRUE)
+ivech(c(1,2,3,4,5,6,7,8),1)
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}

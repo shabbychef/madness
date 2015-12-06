@@ -51,6 +51,21 @@
 	Z[newidx,,drop=FALSE] 
 }
 
+# quadratic equation roots, but beware roundoff.
+.quadeq <- function(a,b,c) {
+	if (b < 0) {
+		r1 <- (-b + sqrt(b^2 - 4 * a * c)) / (2 * a)
+		r2 <- c / (a * r1)
+	} else if (b > 0) {
+		r1 <- (-b - sqrt(b^2 - 4 * a * c)) / (2 * a)
+		r2 <- c / (a * r1)
+	} else {
+		r1 <- sqrt(c/a)
+		r2 <- -r1
+	}
+	retv <- sort(c(r1,r2))
+}
+
 
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r

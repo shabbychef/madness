@@ -38,6 +38,8 @@ NULL
 #'
 #' @param x a \code{madness} object or multidimensional array or matrix.
 #' @param k the diagonal from which to subselect. 
+#' @param symmetric logical whether to put the array on the antidiagonal
+#' as well. Will throw an error if \code{k > 0}.
 #' @return a \code{madness} object or an array, of the vectorized array
 #' or the subselected part. For the inverse operations, promotes to a
 #' \code{madness} of a matrix, or a matrix.
@@ -52,6 +54,11 @@ NULL
 #' vmy <- vec(madness(sy))
 #' vhy <- vech(sy)
 #' vmhy <- vech(madness(sy))
+#'
+#' ivech(c(1,2,3))
+#' ivech(c(1,2,3),-1)
+#' ivech(c(1,2,3),-1,symmetric=TRUE)
+#' ivech(c(1,2,3,4,5,6,7,8),1)
 NULL
 
 #' @rdname vec
@@ -107,6 +114,37 @@ setMethod("vech", signature(x="madness"),
 						varx <- x@varx
 
 						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+					})
+
+#' @rdname vec
+#' @aliases ivech
+#' @exportMethod ivech
+setGeneric('ivech', function(x,k=0,symmetric=FALSE) standardGeneric('ivech'))
+
+#' @rdname vec
+#' @aliases ivech,ANY-method
+setMethod("ivech", signature(x="ANY"),
+					function(x,k=0,symmetric=FALSE) {
+						len <- length(x)
+						stopifnot((k <= 0) || (!symmetric))
+						if (k <= 0) {
+							Ms <- .quadeq(1,2*k+1,k*(k+1) - 2 * len)
+						} else {
+							Ms <- .quadeq(1,2*k+1,-k*(k+1) - 2 * len)
+						}
+						isok <- ((abs(Ms %% 1) <= 1e-12) & (Ms > 0))
+						stopifnot(any(isok))
+						M <- Ms[isok][1]
+						retv <- array(0,dim=c(M,M))
+						putus <- row(retv) >= col(retv) - k
+						retv[putus] <- x
+						if (symmetric) {
+							# possibly double put on diagonal and not efficient, but no worries...
+							retv <- t(retv)
+							retv[putus] <- x
+							retv <- t(retv)
+						}
+						retv
 					})
 
 #for vim modeline: (do not edit)

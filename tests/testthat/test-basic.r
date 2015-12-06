@@ -205,6 +205,25 @@ test_that("outer?",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("vech",{#FOLDUP
+	# first on arrays...
+
+	xv <- array(rnorm(3),dim=c(3,1))
+	MV <- array(rnorm(9),dim=c(3,3))
+
+	vec(MV)
+	vech(MV)
+	vech(MV,1)
+	vech(MV,-1)
+
+	ivech(xv)
+	ivech(xv,symmetric=TRUE)
+	ivech(xv,-1)
+	ivech(xv,-1,symmetric=TRUE)
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 
 #UNFOLD
 
