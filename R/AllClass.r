@@ -140,11 +140,12 @@ setMethod('initialize',
 							if (length(val) > 1) { warning('no dimension given, turning val into a column') }
 							dim(val) <- c(length(val),1)
 						}
-						if (is.null(dim(dvdx))) {
-							if (length(dvdx) > length(val)) { warning('no dimension given, turning independent variable into a column') }
-							taild <- length(dvdx) / length(val)
-							dim(dvdx) <- c(length(val),taild)
-						}
+						# this would be an error above. cut out or move up.
+						#if (is.null(dim(dvdx))) {
+							#if (length(dvdx) > length(val)) { warning('no dimension given, turning independent variable into a column') }
+							#taild <- length(dvdx) / length(val)
+							#dim(dvdx) <- c(length(val),taild)
+						#}
 					 	.Object@val <- val
 					 	.Object@dvdx <- dvdx
 					 	.Object@xtag <- xtag
