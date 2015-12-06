@@ -188,7 +188,7 @@ WARN_DEPS = $(warning will build $@ ; newer deps are $(?))
 	the_vignette \
 	static_vignette \
 	the_paper \
-	R
+	R coverage
 
 help:
 	@echo "\nTasks for $(PKG_NAME)\n"
@@ -380,6 +380,12 @@ unit_test.log : $(LOCAL)/$(PKG_NAME)/INDEX $(LOCAL)/testthat/DESCRIPTION $(PKG_T
 testthat : unit_test.log
 
 tests    : unit_test.log
+
+coverage : deps $(LOCAL)/$(PKG_NAME)/INDEX
+	R_LIBS=$(LOCAL) R_PROFILE=load.R \
+				 R_DEFAULT_PACKAGES=$(BASE_DEF_PACKAGES),covr $(R) -q --no-save --silent \
+				 -e 'percent_coverage(package_coverage("."))'
+
 
 # drop into R shell in the 'local context'
 R : deps $(LOCAL)/$(PKG_NAME)/INDEX

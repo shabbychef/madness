@@ -52,7 +52,7 @@
 }
 
 # quadratic equation roots, but beware roundoff.
-.quadeq <- function(a,b,c) {
+.quadeq <- function(a,b,c) { # nocov start
 	if (b < 0) {
 		r1 <- (-b + sqrt(b^2 - 4 * a * c)) / (2 * a)
 		r2 <- c / (a * r1)
@@ -64,7 +64,7 @@
 		r2 <- -r1
 	}
 	retv <- sort(c(r1,r2))
-}
+} # nocov end
 
 
 #for vim modeline: (do not edit)

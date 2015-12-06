@@ -211,6 +211,7 @@ test_that("vech",{#FOLDUP
 	xv <- array(rnorm(3),dim=c(3,1))
 	MV <- array(rnorm(9),dim=c(3,3))
 
+
 	vec(MV)
 	vech(MV)
 	vech(MV,1)
@@ -220,6 +221,10 @@ test_that("vech",{#FOLDUP
 	ivech(xv,symmetric=TRUE)
 	ivech(xv,-1)
 	ivech(xv,-1,symmetric=TRUE)
+
+	ev <- array(rnorm(8),dim=c(8,1))
+	ivech(ev,1)
+	vech(ivech(ev,1),1)
 
 	# sentinel:
 	expect_true(TRUE)

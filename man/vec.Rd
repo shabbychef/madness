@@ -32,6 +32,9 @@ ivech(x, k = 0, symmetric = FALSE)
 \item{x}{a \code{madness} object or multidimensional array or matrix.}
 
 \item{k}{the diagonal from which to subselect.}
+
+\item{symmetric}{logical whether to put the array on the antidiagonal
+as well. Will throw an error if \code{k > 0}.}
 }
 \value{
 a \code{madness} object or an array, of the vectorized array
