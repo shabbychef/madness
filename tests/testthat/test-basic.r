@@ -115,9 +115,20 @@ test_that("basic getters and setters",{#FOLDUP
 	expect_equal(yt,ytag(xmad))
 
 	# as.foo
-	#expect_equal(as.numeric(xval),as.numeric(xmad))
+	expect_equal(as.numeric(xval),as.numeric(xmad))
 	expect_equal(as.matrix(xval),as.matrix(xmad))
 	expect_equal(as.array(xval),as.array(xmad))
+
+	expect_equal(as.array(xval),as(xmad,'array'))
+	expect_equal(as.matrix(xval),as(xmad,'matrix'))
+	expect_equal(as.numeric(xval),as(xmad,'numeric'))
+	expect_equal(as.integer(xval),as(xmad,'integer'))
+	expect_equal(as.logical(xval),as(xmad,'logical'))
+	expect_equal(as.complex(xval),as(xmad,'complex'))
+
+	#expect_equal(as.integer(xval),as.integer(xmad))
+	#expect_equal(as.logical(xval),as.logical(xmad))
+	#expect_equal(as.complex(xval),as.complex(xmad))
 
 	ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 	yt <- 'anewy'
@@ -207,7 +218,6 @@ test_that("outer?",{#FOLDUP
 })#UNFOLD
 test_that("vech",{#FOLDUP
 	# first on arrays...
-
 	xv <- array(rnorm(3),dim=c(3,1))
 	MV <- array(rnorm(9),dim=c(3,3))
 
@@ -238,6 +248,33 @@ test_that("vech",{#FOLDUP
 		blah <- ivech(xmad)
 		blah <- ivech(xmad,-1)
 		blah <- ivech(xmad,-1,symmetric=TRUE)
+	}
+
+	for (nr in c(8,13)) {
+		yt <- 'any'
+		xt <- 'anx'
+		xval <- matrix(1 + runif(nr),nrow=nr)
+		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+
+		blah <- ivech(xmad,1)
+		blah <- ivech(xmad,1,symmetric=FALSE)
+		# cannot symmetric when k > 0
+		expect_error(blah <- ivech(xmad,1,symmetric=TRUE))
+	}
+
+	# these should error out! wrong size!
+	for (nr in c(16,27)) {
+		yt <- 'any'
+		xt <- 'anx'
+		xval <- matrix(1 + runif(nr),nrow=nr)
+		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+
+		expect_error(dumb <- ivech(xmad,0))
+		expect_error(dumb <- ivech(xmad,-1))
 	}
 
 	# sentinel:

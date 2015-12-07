@@ -3,10 +3,14 @@
 \docType{methods}
 \name{matrix.trace}
 \alias{matrix.trace}
+\alias{matrix.trace,ANY-method}
 \alias{matrix.trace,madness-method}
+\alias{matrix.trace,matrix-method}
 \title{Matrix Trace}
 \usage{
 matrix.trace(x)
+
+\S4method{matrix.trace}{ANY}(x)
 
 \S4method{matrix.trace}{madness}(x)
 }

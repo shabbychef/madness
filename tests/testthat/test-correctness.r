@@ -52,7 +52,7 @@ apx_deriv <- function(xval,thefun,eps=1e-8,type=c('forward','central')) {
 
 # evaluate the error between a numerical approximation and a computed
 # value, both of which may be erroneous?
-errit <- function(apx,cmp,eps) {
+errit <- function(apx,cmp,eps=1e-12) {
 	merror <- abs(apx - cmp)
 	rerror <- merror / pmax(eps^0.333,0.5 * (abs(apx) + abs(cmp)))
 	rerror[(abs(apx) < eps^2) & (abs(cmp) < eps^2)] <- 0
@@ -60,7 +60,7 @@ errit <- function(apx,cmp,eps) {
 }
 
 # now the harness
-test_harness <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
+comp_err <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 	xobj <- madness(val=xval,ytag='x',xtag='x')
 	yobj <- thefun(xobj)
 	# compute the error between the function applied to madness
@@ -80,48 +80,52 @@ test_harness <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 	retv <- max(max(abs(d_err)),max(abs(f_err)))
 }
 
+expect_small_err <- function(xval,thefun,scalfun=thefun,eps=1e-8,errtol=1e-6) {
+	expect_less_than(comp_err(xval,thefun=thefun,scalfun=scalfun,eps=eps),errtol)
+}
+
 context("Basic Operations")#FOLDUP
 
 test_that("arith functions",{#FOLDUP
 	set.char.seed("dee9af9b-cb59-474f-ac3b-acd60faa8ba2")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
-	expect_less_than(test_harness(xval,function(x) { + x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { - x }),1e-6)
+	expect_small_err(xval,function(x) { + x })
+	expect_small_err(xval,function(x) { - x })
 
-	expect_less_than(test_harness(xval,function(x) { x + x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { x + yval }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { yval + x }),1e-6)
+	expect_small_err(xval,function(x) { x + x })
+	expect_small_err(xval,function(x) { x + yval })
+	expect_small_err(xval,function(x) { yval + x })
 
-	expect_less_than(test_harness(xval,function(x) { x - x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { x - yval }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { yval - x }),1e-6)
+	expect_small_err(xval,function(x) { x - x })
+	expect_small_err(xval,function(x) { x - yval })
+	expect_small_err(xval,function(x) { yval - x })
 
-	expect_less_than(test_harness(xval,function(x) { x * x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { x * yval }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { yval * x }),1e-6)
+	expect_small_err(xval,function(x) { x * x })
+	expect_small_err(xval,function(x) { x * yval })
+	expect_small_err(xval,function(x) { yval * x })
 
-	expect_less_than(test_harness(xval,function(x) { x / x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { x / yval }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { yval / x }),1e-6)
+	expect_small_err(xval,function(x) { x / x })
+	expect_small_err(xval,function(x) { x / yval })
+	expect_small_err(xval,function(x) { yval / x })
 
-	expect_less_than(test_harness(xval,function(x) { x ^ x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { x ^ yval }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { yval ^ x }),1e-6)
+	expect_small_err(xval,function(x) { x ^ x })
+	expect_small_err(xval,function(x) { x ^ yval })
+	expect_small_err(xval,function(x) { yval ^ x })
 
-	expect_less_than(test_harness(xval,function(x) { x %*% x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { x %*% yval }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { yval %*% x }),1e-6)
+	expect_small_err(xval,function(x) { x %*% x })
+	expect_small_err(xval,function(x) { x %*% yval })
+	expect_small_err(xval,function(x) { yval %*% x })
 
-	expect_less_than(test_harness(xval,function(x) { crossprod(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { crossprod(x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { crossprod(x,yval) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { crossprod(yval,x) }),1e-6)
+	expect_small_err(xval,function(x) { crossprod(x) })
+	expect_small_err(xval,function(x) { crossprod(x,x) })
+	expect_small_err(xval,function(x) { crossprod(x,yval) })
+	expect_small_err(xval,function(x) { crossprod(yval,x) })
 
-	expect_less_than(test_harness(xval,function(x) { tcrossprod(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { tcrossprod(x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { tcrossprod(x,yval) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { tcrossprod(yval,x) }),1e-6)
+	expect_small_err(xval,function(x) { tcrossprod(x) })
+	expect_small_err(xval,function(x) { tcrossprod(x,x) })
+	expect_small_err(xval,function(x) { tcrossprod(x,yval) })
+	expect_small_err(xval,function(x) { tcrossprod(yval,x) })
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -134,27 +138,27 @@ test_that("bind functions",{#FOLDUP
 	acol <- matrix(1 + runif(nrow(xval)),ncol=1)
 	arow <- matrix(1 + runif(ncol(xval)),nrow=1)
 
-	expect_less_than(test_harness(xval,function(x) { cbind(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(x,x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(x,x,x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(x,yval) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(x,acol) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(x,acol,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(yval,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(x,yval,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cbind(yval,x,yval) }),1e-6)
+	expect_small_err(xval,function(x) { cbind(x) })
+	expect_small_err(xval,function(x) { cbind(x,x) })
+	expect_small_err(xval,function(x) { cbind(x,x,x) })
+	expect_small_err(xval,function(x) { cbind(x,x,x,x) })
+	expect_small_err(xval,function(x) { cbind(x,yval) })
+	expect_small_err(xval,function(x) { cbind(x,acol) })
+	expect_small_err(xval,function(x) { cbind(x,acol,x) })
+	expect_small_err(xval,function(x) { cbind(yval,x) })
+	expect_small_err(xval,function(x) { cbind(x,yval,x) })
+	expect_small_err(xval,function(x) { cbind(yval,x,yval) })
 
-	expect_less_than(test_harness(xval,function(x) { rbind(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(x,x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(x,x,x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(x,yval) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(x,arow) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(x,arow,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(yval,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(x,yval,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { rbind(yval,x,yval) }),1e-6)
+	expect_small_err(xval,function(x) { rbind(x) })
+	expect_small_err(xval,function(x) { rbind(x,x) })
+	expect_small_err(xval,function(x) { rbind(x,x,x) })
+	expect_small_err(xval,function(x) { rbind(x,x,x,x) })
+	expect_small_err(xval,function(x) { rbind(x,yval) })
+	expect_small_err(xval,function(x) { rbind(x,arow) })
+	expect_small_err(xval,function(x) { rbind(x,arow,x) })
+	expect_small_err(xval,function(x) { rbind(yval,x) })
+	expect_small_err(xval,function(x) { rbind(x,yval,x) })
+	expect_small_err(xval,function(x) { rbind(yval,x,yval) })
 
 	# sentinel:
 	expect_true(TRUE)
@@ -163,15 +167,15 @@ test_that("elwise functions",{#FOLDUP
 	set.char.seed("05ffaa40-902d-430a-a47f-63938b921306")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 
-	expect_less_than(test_harness(xval,function(x) { abs(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { exp(x) }),1e-6)
-	expect_less_than(test_harness(abs(xval),function(x) { log(x) }),1e-6)
-	expect_less_than(test_harness(abs(xval),function(x) { log10(x) }),1e-6)
+	expect_small_err(xval,function(x) { abs(x) })
+	expect_small_err(xval,function(x) { exp(x) })
+	expect_small_err(abs(xval),function(x) { log(x) })
+	expect_small_err(abs(xval),function(x) { log10(x) })
 
-	expect_less_than(test_harness(xval,function(x) { sqrt(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { sin(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { cos(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { tan(x) },eps=1e-10),1e-6)
+	expect_small_err(xval,function(x) { sqrt(x) })
+	expect_small_err(xval,function(x) { sin(x) })
+	expect_small_err(xval,function(x) { cos(x) })
+	expect_small_err(xval,function(x) { tan(x) },eps=1e-10)
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -181,16 +185,16 @@ test_that("matwise functions",{#FOLDUP
 	zval <- matrix(0.01 + runif(4*100,min=0,max=0.05),nrow=4)
 	xval <- tcrossprod(zval)
 
-	expect_less_than(test_harness(xval,function(x) { sqrtm(x) }),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { logm(x) }),1e-6)
-	#expect_less_than(test_harness(xval,function(x) { expm(x) }),1e-6)
+	expect_small_err(xval,function(x) { sqrtm(x) })
+	#expect_small_err(xval,function(x) { logm(x) })
+	#expect_small_err(xval,function(x) { expm(x) })
 
 	# the 'wrong way to test'
-	expect_gt(test_harness(xval,function(x) { chol(x) }),1e-6)
+	expect_gt(comp_err(xval,function(x) { chol(x) }),1e-6)
 
 	# chol has hidden symmetry:
 	fsym <- function(x) { 0.5 * (x + t(x)) }
-	expect_less_than(test_harness(xval,function(x) { chol(fsym(x)) }),1e-6)
+	expect_small_err(xval,function(x) { chol(fsym(x)) })
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -199,13 +203,13 @@ test_that("sums functions",{#FOLDUP
 	set.char.seed("25e43832-3030-40cf-acf8-fa43bd56dc09")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 
-	expect_less_than(test_harness(xval,function(x) { matrix.trace(x) },function(matx) { sum(diag(matx)) }),1e-6)
+	expect_small_err(xval,function(x) { matrix.trace(x) },errtol=1e-6)
 
 	for (na.rm in c(FALSE,TRUE)) {
-		expect_less_than(test_harness(xval,function(x) { colSums(x,na.rm=na.rm) }),1e-6)
-		expect_less_than(test_harness(xval,function(x) { colMeans(x,na.rm=na.rm) }),1e-6)
-		expect_less_than(test_harness(xval,function(x) { rowSums(x,na.rm=na.rm) }),1e-6)
-		expect_less_than(test_harness(xval,function(x) { rowMeans(x,na.rm=na.rm) }),1e-6)
+		expect_small_err(xval,function(x) { colSums(x,na.rm=na.rm) })
+		expect_small_err(xval,function(x) { colMeans(x,na.rm=na.rm) })
+		expect_small_err(xval,function(x) { rowSums(x,na.rm=na.rm) })
+		expect_small_err(xval,function(x) { rowMeans(x,na.rm=na.rm) })
 	}
 	
 	# sentinel:
@@ -216,20 +220,20 @@ test_that("outer functions",{#FOLDUP
 	xval <- array(1+runif(2*3*4),dim=c(2,3,4))
 	yval <- array(1+runif(3*2),dim=c(3,2))
 
-	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='*') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='+') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='-') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(x,x,FUN='/') }),1e-6)
+	expect_small_err(xval,function(x) { outer(x,x,FUN='*') })
+	expect_small_err(xval,function(x) { outer(x,x,FUN='+') })
+	expect_small_err(xval,function(x) { outer(x,x,FUN='-') })
+	expect_small_err(xval,function(x) { outer(x,x,FUN='/') })
 
-	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='*') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='+') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='-') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(x,yval,FUN='/') }),1e-6)
+	expect_small_err(xval,function(x) { outer(x,yval,FUN='*') })
+	expect_small_err(xval,function(x) { outer(x,yval,FUN='+') })
+	expect_small_err(xval,function(x) { outer(x,yval,FUN='-') })
+	expect_small_err(xval,function(x) { outer(x,yval,FUN='/') })
 
-	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='*') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='+') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='-') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { outer(yval,x,FUN='/') }),1e-6)
+	expect_small_err(xval,function(x) { outer(yval,x,FUN='*') })
+	expect_small_err(xval,function(x) { outer(yval,x,FUN='+') })
+	expect_small_err(xval,function(x) { outer(yval,x,FUN='-') })
+	expect_small_err(xval,function(x) { outer(yval,x,FUN='/') })
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -239,14 +243,9 @@ test_that("determinants",{#FOLDUP
 	xval <- matrix(1 + runif(4*4),nrow=4)
 
 	# fuck det.
-	#expect_less_than(test_harness(xval,function(x) { det(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { 
-																dt <- determinant(x,logarithm=FALSE) 
-																dt$modulus }),1e-6)
-
-	expect_less_than(test_harness(xval,function(x) { 
-																dt <- determinant(x,logarithm=TRUE) 
-																dt$modulus }),1e-6)
+	#expect_small_err(xval,function(x) { det(x) })
+	expect_small_err(xval,function(x) { dt <- determinant(x,logarithm=FALSE) ; dt$modulus },errtol=1e-6)
+	expect_small_err(xval,function(x) { dt <- determinant(x,logarithm=TRUE)  ; dt$modulus },errtol=1e-6)
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -256,51 +255,82 @@ test_that("reshape functions",{#FOLDUP
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	xvec <- array(1 + runif(4*4),dim=c(16,1))
 
-	expect_less_than(test_harness(xval,function(x) { t(x) }),1e-6)
+	expect_small_err(xval,function(x) { t(x) },errtol=1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { vec(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { vech(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { vech(x,1) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { vech(x,-1) }),1e-6)
+	expect_small_err(xval,function(x) { vec(x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { vech(x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { vech(x,1) },errtol=1e-6)
+	expect_small_err(xval,function(x) { vech(x,-1) },errtol=1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { diag(x) }),1e-6)
+	expect_small_err(xval,function(x) { diag(x) },errtol=1e-6)
 	
-	expect_less_than(test_harness(xval,function(x) { dim(x) <- c(prod(dim(x)),1); x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { x[1,1,drop=FALSE] }),1e-6)
-	expect_less_than(test_harness(xvec,function(x) { dim(x) <- c(prod(dim(x)),1); x }),1e-6)
-	expect_less_than(test_harness(xvec,function(x) { x[1,1,drop=FALSE] }),1e-6)
+	expect_small_err(xval,function(x) { dim(x) <- c(prod(dim(x)),1); x },errtol=1e-6)
+	expect_small_err(xval,function(x) { x[1,1,drop=FALSE] },errtol=1e-6)
+	expect_small_err(xvec,function(x) { dim(x) <- c(prod(dim(x)),1); x },errtol=1e-6)
+	expect_small_err(xvec,function(x) { x[1,1,drop=FALSE] },errtol=1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { todiag(x) },
-																function(x) { diag(as.numeric(x)) }),1e-6)
+	expect_small_err(xval,function(x) { todiag(x) }, function(x) { diag(as.numeric(x)) },errtol=1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { tril(x) },
-																function(x) { x[row(x) < col(x)] <- 0; x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { triu(x) },
-																function(x) { x[row(x) > col(x)] <- 0; x }),1e-6)
+	expect_small_err(xval,function(x) { tril(x) }, function(x) { x[row(x) < col(x)] <- 0; x },errtol=1e-6)
+	expect_small_err(xval,function(x) { triu(x) }, function(x) { x[row(x) > col(x)] <- 0; x },errtol=1e-6)
 	
 
 	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))
-	expect_less_than(test_harness(xval,function(x) { aperm(x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { aperm(x,c(2,1,3,4)) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { aperm(x,c(4,3,2,1)) }),1e-6)
+	expect_small_err(xval,function(x) { aperm(x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { aperm(x,c(2,1,3,4)) },errtol=1e-6)
+	expect_small_err(xval,function(x) { aperm(x,c(4,3,2,1)) },errtol=1e-6)
 
 	# need better tests of these!
 	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))
 	xdim <- dim(xval)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(1)) },function(x) { x }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { repto(x,xdim) },function(x) { x }),1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(1)) },function(x) { x },errtol=1e-6)
+	expect_small_err(xval,function(x) { repto(x,xdim) },function(x) { x },errtol=1e-6)
 
 	xval <- array(1 + runif(3*7),dim=c(3,7))
 	xdim <- dim(xval)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(2,1)) },function(x) { rbind(x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(3,1)) },function(x) { rbind(x,x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(5,1)) },function(x) { rbind(x,x,x,x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(1,2)) },function(x) { cbind(x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(1,4)) },function(x) { cbind(x,x,x,x) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(2,3)) },function(x) { x2 <- rbind(x,x) ; cbind(x2,x2,x2) }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { blockrep(x,c(5,2)) },function(x) { x5 <- rbind(x,x,x,x,x) ; cbind(x5,x5) }),1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(2,1)) },function(x) { rbind(x,x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(3,1)) },function(x) { rbind(x,x,x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(5,1)) },function(x) { rbind(x,x,x,x,x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(1,2)) },function(x) { cbind(x,x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(1,4)) },function(x) { cbind(x,x,x,x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(2,3)) },function(x) { x2 <- rbind(x,x) ; cbind(x2,x2,x2) },errtol=1e-6)
+	expect_small_err(xval,function(x) { blockrep(x,c(5,2)) },function(x) { x5 <- rbind(x,x,x,x,x) ; cbind(x5,x5) },errtol=1e-6)
 	# now alternate dimensions?
 
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
+test_that("vech/ivech functions",{#FOLDUP
+	set.char.seed("a61a011f-d13c-4a70-8ab7-7003edbf65a0")
+	xval <- matrix(1 + runif(4*4),nrow=4)
+	xvec <- array(1 + runif(4*4),dim=c(16,1))
+
+	expect_small_err(xval,function(x) { vec(x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { vech(x) },errtol=1e-6)
+	expect_small_err(xval,function(x) { vech(x,1) },errtol=1e-6)
+	expect_small_err(xval,function(x) { vech(x,-1) },errtol=1e-6)
+
+	set.char.seed("815ac0d5-3e63-45cb-bf65-cb2bb26bb8d6")
+
+	# ivech
+	for (nr in c(3,6,10)) {
+		xval <- matrix(1 + runif(nr),nrow=nr)
+		for (symmetric in c(FALSE,TRUE)) {
+			expect_small_err(xval,function(x) { ivech(x,0,symmetric=symmetric) },errtol=1e-6)
+			expect_small_err(xval,function(x) { ivech(x,-1,symmetric=symmetric) },errtol=1e-6)
+			expect_small_err(xval,function(x) { ivech(x,-2,symmetric=symmetric) },errtol=1e-6)
+		}
+	}
+	for (nr in c(8,13)) {
+		xval <- matrix(1 + runif(nr),nrow=nr)
+		expect_small_err(xval,function(x) { ivech(x,1,symmetric=FALSE) },errtol=1e-6)
+		expect_small_err(xval,function(x) { ivech(x,1,symmetric=FALSE) },errtol=1e-6)
+	}
+	for (nr in c(15,22)) {
+		xval <- matrix(1 + runif(nr),nrow=nr)
+		expect_small_err(xval,function(x) { ivech(x,2,symmetric=FALSE) },errtol=1e-6)
+		expect_small_err(xval,function(x) { ivech(x,2,symmetric=FALSE) },errtol=1e-6)
+	}
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
@@ -310,16 +340,16 @@ test_that("solve functions",{#FOLDUP
 	xval <- crossprod(prex)
 	yval <- array(1 + runif(nrow(xval)),dim=c(nrow(xval),1))
 
-	expect_less_than(test_harness(xval,function(x) { solve(x) },eps=1e-6),1e-6)
-	expect_less_than(test_harness(xval,function(x) { solve(x,yval) },eps=1e-6),1e-6)
-	expect_less_than(test_harness(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
-	expect_less_than(test_harness(xval,function(x) { solve(xval,x[,1,drop=FALSE]) },eps=1e-6),1e-5)
-	expect_less_than(test_harness(xval,function(x) { solve(x,as.numeric(yval)) },eps=1e-6),1e-6)
+	expect_small_err(xval,function(x) { solve(x) },eps=1e-6,errtol=1e-6)
+	expect_small_err(xval,function(x) { solve(x,yval) },eps=1e-6,errtol=1e-6)
+	expect_small_err(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-6,errtol=1e-5)
+	expect_small_err(xval,function(x) { solve(xval,x[,1,drop=FALSE]) },eps=1e-6,errtol=1e-5)
+	expect_small_err(xval,function(x) { solve(x,as.numeric(yval)) },eps=1e-6,errtol=1e-6)
 
 	# numeric left only works in 1d case. so be degenerate
 	xval <- array(rnorm(1),dim=c(1,1))
 	yval <- runif(1)
-	expect_less_than(test_harness(xval,function(x) { solve(yval,x) },eps=1e-6),1e-6)
+	expect_small_err(xval,function(x) { solve(yval,x) },eps=1e-6,errtol=1e-6)
 
 	# sentinel:
 	expect_true(TRUE)
@@ -328,26 +358,25 @@ test_that("norm functions",{#FOLDUP
 	set.char.seed("e74da7ce-92f1-41ee-96cd-fe8201da753f")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 
-	expect_less_than(test_harness(xval,function(x) { norm(x) }),1e-6)
+	expect_small_err(xval,function(x) { norm(x) },errtol=1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { norm(x,'O') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'o') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'1') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'I') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'i') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'M') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'m') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'F') }),1e-6)
-	expect_less_than(test_harness(xval,function(x) { norm(x,'f') }),1e-6)
+	expect_small_err(xval,function(x) { norm(x,'O') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'o') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'1') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'I') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'i') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'M') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'m') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'F') },errtol=1e-6)
+	expect_small_err(xval,function(x) { norm(x,'f') },errtol=1e-6)
 # Matrix::norm does not support type '2'
-	expect_less_than(test_harness(xval,function(x) { norm(x,'2') },
-		function(x) { base::norm(x,'2') }),1e-6)
+	expect_small_err(xval,function(x) { norm(x,'2') },function(x) { base::norm(x,'2') },errtol=1e-6)
 
-	expect_less_than(test_harness(xval,function(x) { maxeig(x) },
+	expect_small_err(xval,function(x) { maxeig(x) },
 																function(x) { 
 																	usv <- svd(x,1,1)
 																	as.numeric(usv$d[1])
-																}),1e-6)
+																},errtol=1e-6)
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -361,12 +390,34 @@ test_that("round one",{#FOLDUP
 	set.char.seed("dee9af9b-cb59-474f-ac3b-acd60faa8ba2")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
-	expect_less_than(test_harness(xval,function(x) { norm(crossprod(x),'O') },eps=1e-7),1e-5)
-	expect_less_than(test_harness(xval,function(x) { norm(crossprod(x^x),'M') },eps=1e-7),1e-5)
-	expect_less_than(test_harness(xval,function(x) { norm(abs(x) %*% t(x),'I') },eps=1e-7),1e-5)
+	expect_small_err(xval,function(x) { norm(crossprod(x),'O') },eps=1e-7,errtol=1e-5)
+	expect_small_err(xval,function(x) { norm(crossprod(x^x),'M') },eps=1e-7,errtol=1e-5)
+	expect_small_err(xval,function(x) { norm(abs(x) %*% t(x),'I') },eps=1e-7,errtol=1e-5)
 
-	expect_less_than(test_harness(xval,function(x) { tcrossprod(sin(x)) },eps=1e-07),1e-5)
-	expect_less_than(test_harness(xval,function(x) { cos(crossprod(sin(x))) },eps=1e-07),1e-5)
+	expect_small_err(xval,function(x) { tcrossprod(sin(x)) },eps=1e-07,errtol=1e-5)
+	expect_small_err(xval,function(x) { cos(crossprod(sin(x))) },eps=1e-07,errtol=1e-5)
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
+
+#UNFOLD
+
+context("Inverses")#FOLDUP
+
+test_that("vech",{#FOLDUP
+	set.char.seed("dee9af9b-cb59-474f-ac3b-acd60faa8ba2")
+	xval <- matrix(1 + runif(4*4),nrow=4)
+	yval <- vech(xval,0)
+	xival <- ivech(yval,0)
+	yival <- vech(xival,0)
+
+	expect_less_than(max(errit(yval,yival)),1e-12)
+
+	xsym <- xval + t(xval)
+	yval <- vech(xsym,0)
+	xsval <- ivech(yval,0,symmetric=TRUE)
+	expect_less_than(max(errit(xsym,xsval)),1e-12)
 
 	# sentinel:
 	expect_true(TRUE)

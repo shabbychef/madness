@@ -81,7 +81,7 @@ setGeneric('tril', function(x,k=0,...) standardGeneric('tril'))
 # 2FIX: must I check if this has already been defined as a generic?
 #' @rdname reshapes
 #' @aliases tril,madness-method
-setMethod("tril", signature(x="madness",k='ANY'),
+setMethod("tril", signature(x="madness"),
 					function(x,k=0) {
 						xtag <- x@xtag
 						val <- x@val
@@ -101,7 +101,7 @@ setMethod("tril", signature(x="madness",k='ANY'),
 setGeneric('triu', function(x,k=0,...) standardGeneric('triu'))
 #' @rdname reshapes
 #' @aliases triu,madness-method
-setMethod("triu", signature(x="madness",k='ANY'),
+setMethod("triu", signature(x="madness"),
 					function(x,k=0) {
 						xtag <- x@xtag
 						val <- x@val

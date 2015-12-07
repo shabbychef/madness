@@ -33,7 +33,7 @@ M4_FILES					?= $(wildcard m4/*.m4)
 VMAJOR 						 = 0
 VMINOR 						 = 0
 VPATCH  					 = 0
-VDEV 							 = .5300
+VDEV 							 = .5400
 #VERSION 					 = 0.1402
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
@@ -388,7 +388,7 @@ loctest : deps $(LOCAL)/$(PKG_NAME)/INDEX
 	R_LIBS=$(LOCAL) R_PROFILE=load.R \
 				 R_DEFAULT_PACKAGES=$(BASE_DEF_PACKAGES),testthat $(R) $(R_FLAGS) \
 				 --slave --silent \
-				 -e 'test_check("$(PKG_NAME)")'
+				 -e 'testthat::test_dir("tests/testthat")'
 	
 	< $(PKG_TESTR) | tee $@
 
