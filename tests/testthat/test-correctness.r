@@ -117,6 +117,10 @@ test_that("arith functions",{#FOLDUP
 	expect_small_err(xval,function(x) { x %*% yval })
 	expect_small_err(xval,function(x) { yval %*% x })
 
+	expect_small_err(xval,function(x) { x %x% x })
+	expect_small_err(xval,function(x) { x %x% yval })
+	expect_small_err(xval,function(x) { yval %x% x })
+
 	expect_small_err(xval,function(x) { crossprod(x) })
 	expect_small_err(xval,function(x) { crossprod(x,x) })
 	expect_small_err(xval,function(x) { crossprod(x,yval) })

@@ -2,6 +2,12 @@
 % Please edit documentation in R/Ops.r
 \docType{methods}
 \name{outer}
+\alias{kronecker,array,madness-class}
+\alias{kronecker,array,madness-method}
+\alias{kronecker,madness,array-class}
+\alias{kronecker,madness,array-method}
+\alias{kronecker,madness,madness-class}
+\alias{kronecker,madness,madness-method}
 \alias{outer}
 \alias{outer,ANY,ANY-method}
 \alias{outer,array,madness-method}
@@ -18,6 +24,12 @@ outer(X, Y, FUN = "*", ...)
 \S4method{outer}{madness,array}(X, Y, FUN = "*", ...)
 
 \S4method{outer}{array,madness}(X, Y, FUN = "*", ...)
+
+\S4method{kronecker}{madness,madness}(X, Y)
+
+\S4method{kronecker}{madness,array}(X, Y)
+
+\S4method{kronecker}{array,madness}(X, Y)
 }
 \arguments{
 \item{X, Y}{\code{madness} or numeric matrix values.}

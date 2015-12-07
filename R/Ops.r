@@ -648,10 +648,56 @@ setMethod("outer", signature(X="array",Y="madness"),
 						varx <- Y@varx
 						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
 })
+
+
+#UNFOLD
+
+# kronecker multiplication!#FOLDUP
+# base it on outer product and permutation!
+#' @rdname outer
+#' @aliases kronecker,madness,madness-class
+setMethod("kronecker", signature(X="madness",Y="madness"),
+					function(X,Y) {
+						xdim <- dim(X@val)
+						ydim <- dim(Y@val)
+
+						preval <- outer(Y,X,FUN='*')
+						preval <- aperm(preval,c(1,3,2,4))
+						dim(preval) <- c(xdim[1]*ydim[1],xdim[2]*ydim[2])
+						preval@ytag <- paste0('kronecker(',X@ytag,', ',Y@ytag,')')
+						preval
+					})
+
+#' @rdname outer
+#' @aliases kronecker,madness,array-class
+setMethod("kronecker", signature(X="madness",Y="array"),
+					function(X,Y) {
+						xdim <- dim(X@val)
+						ydim <- dim(Y)
+
+						preval <- outer(Y,X,FUN='*')
+						preval <- aperm(preval,c(1,3,2,4))
+						dim(preval) <- c(xdim[1]*ydim[1],xdim[2]*ydim[2])
+						preval@ytag <- paste0('kronecker(',X@ytag,', numeric)')
+						preval
+					})
+
+#' @rdname outer
+#' @aliases kronecker,array,madness-class
+setMethod("kronecker", signature(X="array",Y="madness"),
+					function(X,Y) {
+						xdim <- dim(X)
+						ydim <- dim(Y@val)
+
+						preval <- outer(Y,X,FUN='*')
+						preval <- aperm(preval,c(1,3,2,4))
+						dim(preval) <- c(xdim[1]*ydim[1],xdim[2]*ydim[2])
+						preval@ytag <- paste0('kronecker(numeric, ',Y@ytag,')')
+						preval
+					})
 #UNFOLD
 # 2FIX: 
 # add kron?
-# outer product?
 # kronecker sum?
 # svd!
 #
