@@ -165,13 +165,13 @@ setMethod("ivech", signature(x="madness"),
 						dvdx <- matrix(0,nrow=length(val),ncol=ncol(x@dvdx))
 						putus <- row(val) >= col(val) - k
 						val[putus] <- x@val
-						dvdx[putus,] <- x@dvdx
+						dvdx[as.numeric(which(putus)),] <- x@dvdx
 						if (symmetric) {
 							# possibly double put on diagonal and not efficient, but no worries...
 							val <- t(val)
 							val[putus] <- x@val
 							dvdx <- .do_commutator(val,dvdx)
-							dvdx[putus,] <- x@dvdx
+							dvdx[as.numeric(which(putus)),] <- x@dvdx
 							val <- t(val)
 							dvdx <- .do_commutator(val,dvdx)
 						}
