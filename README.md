@@ -173,15 +173,15 @@ G2 <- t(CT) %*% solve(theta, CT)
 
 HLT <- matrix.trace(G1 %*% G2) - nfeat
 Hwald <- val(HLT)/sqrt(diag(vcov(HLT)))
-PBT <- matrix.trace(solve(G1 %*% G2)) + ntgt - nfeat
+PBT <- matrix.trace(solve(G1 %*% G2)) - nfeat
 Pwald <- val(PBT)/sqrt(diag(vcov(PBT)))
-WLRT <- det(solve(G1 %*% G2))
-Uwald <- val(WLRT)/sqrt(diag(vcov(WLRT)))
+LRT <- 1/det(G1 %*% G2)
+Uwald <- val(LRT)/sqrt(diag(vcov(LRT)))
 RLR <- maxeig(G1 %*% G2) - 1
 Rwald <- val(RLR)/sqrt(diag(vcov(RLR)))
 
 preso <- data.frame(type = c("HLT", "PBT", "LRT", "RLR"), 
-    stat = as.numeric(c(HLT, PBT, WLRT, RLR)), Wald.stat = as.numeric(c(Hwald, 
+    stat = as.numeric(c(HLT, PBT, LRT, RLR)), Wald.stat = as.numeric(c(Hwald, 
         Pwald, Uwald, Rwald)))
 # rut-roh!
 kable(preso)
@@ -192,7 +192,7 @@ kable(preso)
 |type |   stat| Wald.stat|
 |:----|------:|---------:|
 |HLT  |  66.59|      0.54|
-|PBT  |  10.31|     10.22|
+|PBT  |  -1.69|     -1.68|
 |LRT  |   0.01|      0.35|
 |RLR  | 419.77|      0.44|
 
