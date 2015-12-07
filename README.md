@@ -112,7 +112,95 @@ print(madx4)
 ##  varx:  ...
 ```
 
-## Correctness
+# Enough already, bring me some Scotch!
+
+An example is in order. Consider the tasting data compiled by Nessie on 86 Scotch whiskies. The data
+are availble online and look like so:
+
+
+```r
+wsky <- read.csv("https://www.mathstat.strath.ac.uk/outreach/nessie/datasets/whiskies.txt", 
+    stringsAsFactors = FALSE)
+kable(head(wsky))
+```
+
+
+
+| RowID|Distillery  | Body| Sweetness| Smoky| Medicinal| Tobacco| Honey| Spicy| Winey| Nutty| Malty| Fruity| Floral|Postcode | Latitude| Longitude|
+|-----:|:-----------|----:|---------:|-----:|---------:|-------:|-----:|-----:|-----:|-----:|-----:|------:|------:|:--------|--------:|---------:|
+|     1|Aberfeldy   |    2|         2|     2|         0|       0|     2|     1|     2|     2|     2|      2|      2|PH15 2EB |   286580|    749680|
+|     2|Aberlour    |    3|         3|     1|         0|       0|     4|     3|     2|     2|     3|      3|      2|AB38 9PJ |   326340|    842570|
+|     3|AnCnoc      |    1|         3|     2|         0|       0|     2|     0|     0|     2|     2|      3|      2|AB5 5LI  |   352960|    839320|
+|     4|Ardbeg      |    4|         1|     4|         4|       0|     0|     2|     0|     1|     2|      1|      0|PA42 7EB |   141560|    646220|
+|     5|Ardmore     |    2|         2|     2|         0|       0|     1|     1|     1|     2|     3|      1|      1|AB54 4NH |   355350|    829140|
+|     6|ArranIsleOf |    2|         3|     1|         1|       0|     1|     1|     1|     0|     1|      1|      2|KA27 8HJ |   194050|    649950|
+
+A bizarre question one could ask of this data are whether the taste characteristics are related
+to the geographic coordinates of the distilleries? One way to pose this is to perform a linear
+regression of the taste values on the geographic coordinates. This is a many-to-many regression.
+The Multivariate General Linear Hypothesis is a general hypothesis about the regression coefficients
+in this case. The 'usual' application is the omnibus test of whether all regression coefficients
+are zero. The MGLH is classically approached by four different tests, which typically give the same
+answer. 
+
+First, we grab the geographic and taste data, prepend a one to the vector, take an outer product
+and compute the mean and covariance:
+
+
+```r
+x <- cbind(1, 1e-05 * wsky[, c("Latitude", "Longitude")])
+y <- wsky[, c("Body", "Sweetness", "Smoky", "Medicinal", 
+    "Tobacco", "Honey", "Spicy", "Winey", "Nutty", 
+    "Malty", "Fruity", "Floral")]
+xy <- cbind(x, y)
+xydup <- matrix(0, nrow = nrow(xy), ncol = (ncol(xy)^2))
+for (cnum in seq_len(ncol(xy))) {
+    xydup[, (cnum - 1) * ncol(xy) + (1:ncol(xy))] <- (as.numeric(xy[, 
+        cnum, drop = TRUE]) * as.matrix(xy))
+}
+xymean <- colMeans(xydup)
+xycov <- cov(xydup)
+# put it in a madness object
+theta <- madness(xymean, ytag = "xandy", xtag = "xandy", 
+    varx = xycov)
+# turn it back to a square matrix
+dim(theta) <- c(ncol(xy), ncol(xy))
+nfeat <- ncol(x)
+ntgt <- ncol(y)
+G1 <- theta[1:nfeat, 1:nfeat]
+CT <- rbind(diag(nfeat), matrix(0, nrow = ntgt, ncol = nfeat))
+G2 <- t(CT) %*% solve(theta, CT)
+
+HLT <- matrix.trace(G1 %*% G2) - nfeat
+Hwald <- val(HLT)/sqrt(diag(vcov(HLT)))
+PBT <- matrix.trace(solve(G1 %*% G2)) + ntgt - nfeat
+Pwald <- val(PBT)/sqrt(diag(vcov(PBT)))
+WLRT <- det(solve(G1 %*% G2))
+Uwald <- val(WLRT)/sqrt(diag(vcov(WLRT)))
+RLR <- maxeig(G1 %*% G2) - 1
+Rwald <- val(RLR)/sqrt(diag(vcov(RLR)))
+
+preso <- data.frame(type = c("HLT", "PBT", "LRT", "RLR"), 
+    stat = as.numeric(c(HLT, PBT, WLRT, RLR)), Wald.stat = as.numeric(c(Hwald, 
+        Pwald, Uwald, Rwald)))
+# rut-roh!
+kable(preso)
+```
+
+
+
+|type |   stat| Wald.stat|
+|:----|------:|---------:|
+|HLT  |  66.59|      0.54|
+|PBT  |  10.31|     10.22|
+|LRT  |   0.01|      0.35|
+|RLR  | 419.77|      0.44|
+
+That's not good.
+
+
+
+# Correctness
 
 The following are cribbed from the unit tests (of which there are never enough). First
 we define the function which computes approximate derivatives numerically, then test

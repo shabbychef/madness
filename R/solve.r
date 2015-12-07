@@ -33,11 +33,18 @@ NULL
 #' @param a,b \code{madness} object or matrix value.
 #' @name solve
 #' @template etc
-NULL
+#' @exportMethod solve
+setGeneric('solve', function(a,b) standardGeneric('solve'))
 
 # solve#FOLDUP
 
 #' @rdname solve
+#' @aliases solve,ANY,missing-method
+setMethod("solve", signature(a="ANY",b="missing"),
+					function(a,b) { base::solve(a) })
+
+#' @rdname solve
+#' @aliases solve,madness,missing-method
 setMethod("solve", signature(a="madness",b="missing"),
 					function(a,b) {
 						xtag <- a@xtag
@@ -51,6 +58,7 @@ setMethod("solve", signature(a="madness",b="missing"),
 					})
 
 #' @rdname solve
+#' @aliases solve,madness,madness-method
 setMethod("solve", signature(a="madness",b="madness"),
 					function(a,b) {
 						xtag <- .check_common_xtag(a,b)
@@ -67,6 +75,7 @@ setMethod("solve", signature(a="madness",b="madness"),
 					})
 
 #' @rdname solve
+#' @aliases solve,madness,array-method
 setMethod("solve", signature(a="madness",b="array"),
 					function(a,b) {
 						xtag <- a@xtag
@@ -81,6 +90,7 @@ setMethod("solve", signature(a="madness",b="array"),
 					})
 
 #' @rdname solve
+#' @aliases solve,madness,ANY-method
 setMethod("solve", signature(a="madness",b="ANY"),
 					function(a,b) {
 						xtag <- a@xtag
@@ -95,6 +105,7 @@ setMethod("solve", signature(a="madness",b="ANY"),
 					})
 
 #' @rdname solve
+#' @aliases solve,array,madness-method
 setMethod("solve", signature(a="array",b="madness"),
 					function(a,b) {
 						xtag <- b@xtag
@@ -109,6 +120,7 @@ setMethod("solve", signature(a="array",b="madness"),
 					})
 
 #' @rdname solve
+#' @aliases solve,ANY,madness-method
 setMethod("solve", signature(a="ANY",b="madness"),
 					function(a,b) {
 						xtag <- b@xtag

@@ -4,6 +4,7 @@
 \name{solve}
 \alias{solve}
 \alias{solve,ANY,madness-method}
+\alias{solve,ANY,missing-method}
 \alias{solve,array,madness-method}
 \alias{solve,madness,ANY-method}
 \alias{solve,madness,array-method}
@@ -11,6 +12,10 @@
 \alias{solve,madness,missing-method}
 \title{Basic Matrix Inversion}
 \usage{
+solve(a, b, ...)
+
+\S4method{solve}{ANY,missing}(a, b)
+
 \S4method{solve}{madness,missing}(a, b)
 
 \S4method{solve}{madness,madness}(a, b)
