@@ -4,7 +4,7 @@
 \name{show}
 \alias{show}
 \alias{show,madness-method}
-\title{show a madness object.}
+\title{Show a madness object.}
 \usage{
 show(object)
 

@@ -280,6 +280,19 @@ test_that("vech",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("theta",{#FOLDUP
+	# first on arrays...
+	set.char.seed('d8ccbb36-1002-4c9e-81d9-0ee6b173047a')
+	MV <- array(rnorm(100*3),dim=c(100,3))
+	th <- theta(MV)
+	MV <- array(rnorm(100*3*3),dim=c(100,3,3))
+	th <- theta(MV)
+	MV <- array(rnorm(100*3*3*3),dim=c(100,3,3,3))
+	th <- theta(MV)
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 
 #UNFOLD
 

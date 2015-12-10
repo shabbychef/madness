@@ -30,6 +30,8 @@ solve(a, b, ...)
 }
 \arguments{
 \item{a, b}{\code{madness} object or matrix value.}
+
+\item{...}{further arguments passed to or from other methods}
 }
 \description{
 Basic Matrix Inversion

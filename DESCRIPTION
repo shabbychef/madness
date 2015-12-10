@@ -37,6 +37,7 @@ Collate:
     'reshape.r'
     'solve.r'
     'sums.r'
+    'theta.r'
     'trace.r'
     'vcov.r'
     'vec.r'

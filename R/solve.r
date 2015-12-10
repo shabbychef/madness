@@ -31,6 +31,7 @@ NULL
 #'
 #' @include AllClass.r
 #' @param a,b \code{madness} object or matrix value.
+#' @inheritParams base::solve
 #' @name solve
 #' @template etc
 #' @exportMethod solve

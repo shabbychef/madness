@@ -6,7 +6,7 @@
 \alias{initialize,madness-method}
 \alias{madness}
 \alias{madness-class}
-\title{madness class}
+\title{Madness Class.}
 \usage{
 \S4method{initialize}{madness}(.Object, val, dvdx, xtag = NA_character_,
   ytag = NA_character_, varx = matrix(nrow = 0, ncol = 0))

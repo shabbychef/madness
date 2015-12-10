@@ -26,7 +26,7 @@
 # documenting S4 object:
 # http://r-pkgs.had.co.nz/man.html#man-classes
 
-#' @title madness class
+#' @title Madness Class.
 #'
 #' @description 
 #'
@@ -347,7 +347,7 @@ setReplaceMethod('varx', 'madness', function(x,value) initialize(x, val=x@val, d
 
 # show#FOLDUP
 # 2FIX: add documentation and export
-#' @title show a madness object.
+#' @title Show a madness object.
 #'
 #' @description 
 #'

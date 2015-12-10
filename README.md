@@ -153,23 +153,13 @@ y <- wsky[, c("Body", "Sweetness", "Smoky", "Medicinal",
     "Tobacco", "Honey", "Spicy", "Winey", "Nutty", 
     "Malty", "Fruity", "Floral")]
 xy <- cbind(x, y)
-xydup <- matrix(0, nrow = nrow(xy), ncol = (ncol(xy)^2))
-for (cnum in seq_len(ncol(xy))) {
-    xydup[, (cnum - 1) * ncol(xy) + (1:ncol(xy))] <- (as.numeric(xy[, 
-        cnum, drop = TRUE]) * as.matrix(xy))
-}
-xymean <- colMeans(xydup)
-xycov <- cov(xydup)
-# put it in a madness object
-theta <- madness(xymean, ytag = "xandy", xtag = "xandy", 
-    varx = xycov)
-# turn it back to a square matrix
-dim(theta) <- c(ncol(xy), ncol(xy))
+# estimate second moment matrix:
+xytheta <- theta(xy)
 nfeat <- ncol(x)
 ntgt <- ncol(y)
-G1 <- theta[1:nfeat, 1:nfeat]
+G1 <- xytheta[1:nfeat, 1:nfeat]
 CT <- rbind(diag(nfeat), matrix(0, nrow = ntgt, ncol = nfeat))
-G2 <- t(CT) %*% solve(theta, CT)
+G2 <- t(CT) %*% solve(xytheta, CT)
 
 HLT <- matrix.trace(G1 %*% G2) - nfeat
 Hwald <- val(HLT)/sqrt(diag(vcov(HLT)))
@@ -191,10 +181,10 @@ kable(preso)
 
 |type |   stat| Wald.stat|
 |:----|------:|---------:|
-|HLT  |  66.59|      0.54|
-|PBT  |  -1.69|     -1.68|
-|LRT  |   0.01|      0.35|
-|RLR  | 419.77|      0.44|
+|HLT  |  66.59|       5.0|
+|PBT  |  -1.69|     -15.6|
+|LRT  |   0.01|       3.2|
+|RLR  | 419.77|       4.1|
 
 That's not good.
 
