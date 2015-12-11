@@ -158,98 +158,33 @@ xytheta <- theta(xy)
 nfeat <- ncol(x)
 ntgt <- ncol(y)
 G1 <- xytheta[1:nfeat, 1:nfeat]
-```
-
-```
-## Error in .local(.Object, ...): unused argument (y = "theta[...]")
-```
-
-```r
 CT <- rbind(diag(nfeat), matrix(0, nrow = ntgt, ncol = nfeat))
 G2 <- t(CT) %*% solve(xytheta, CT)
 
 HLT <- matrix.trace(G1 %*% G2) - nfeat
-```
-
-```
-## Error in matrix.trace(G1 %*% G2): error in evaluating the argument 'x' in selecting a method for function 'matrix.trace': Error: object 'G1' not found
-```
-
-```r
 Hwald <- val(HLT)/sqrt(diag(vcov(HLT)))
-```
-
-```
-## Error in val(HLT): error in evaluating the argument 'x' in selecting a method for function 'val': Error: object 'HLT' not found
-```
-
-```r
 PBT <- matrix.trace(solve(G1 %*% G2)) - nfeat
-```
-
-```
-## Error in matrix.trace(solve(G1 %*% G2)): error in evaluating the argument 'x' in selecting a method for function 'matrix.trace': Error in solve(G1 %*% G2) : 
-##   error in evaluating the argument 'a' in selecting a method for function 'solve': Error: object 'G1' not found
-```
-
-```r
 Pwald <- val(PBT)/sqrt(diag(vcov(PBT)))
-```
-
-```
-## Error in val(PBT): error in evaluating the argument 'x' in selecting a method for function 'val': Error: object 'PBT' not found
-```
-
-```r
 LRT <- 1/det(G1 %*% G2)
-```
-
-```
-## Error in determinant(x, logarithm = TRUE, ...): error in evaluating the argument 'x' in selecting a method for function 'determinant': Error: object 'G1' not found
-```
-
-```r
 Uwald <- val(LRT)/sqrt(diag(vcov(LRT)))
-```
-
-```
-## Error in val(LRT): error in evaluating the argument 'x' in selecting a method for function 'val': Error: object 'LRT' not found
-```
-
-```r
 RLR <- maxeig(G1 %*% G2) - 1
-```
-
-```
-## Error in maxeig(G1 %*% G2): error in evaluating the argument 'x' in selecting a method for function 'maxeig': Error: object 'G1' not found
-```
-
-```r
 Rwald <- val(RLR)/sqrt(diag(vcov(RLR)))
-```
 
-```
-## Error in val(RLR): error in evaluating the argument 'x' in selecting a method for function 'val': Error: object 'RLR' not found
-```
-
-```r
 preso <- data.frame(type = c("HLT", "PBT", "LRT", "RLR"), 
     stat = as.numeric(c(HLT, PBT, LRT, RLR)), Wald.stat = as.numeric(c(Hwald, 
         Pwald, Uwald, Rwald)))
-```
-
-```
-## Error in data.frame(type = c("HLT", "PBT", "LRT", "RLR"), stat = as.numeric(c(HLT, : object 'HLT' not found
-```
-
-```r
 # rut-roh!
 kable(preso)
 ```
 
-```
-## Error in is.data.frame(x): object 'preso' not found
-```
+
+
+|type |   stat| Wald.stat|
+|:----|------:|---------:|
+|HLT  |  66.59|       5.0|
+|PBT  |  -1.69|     -15.6|
+|LRT  |   0.01|       3.2|
+|RLR  | 419.77|       4.1|
 
 That's not good.
 
