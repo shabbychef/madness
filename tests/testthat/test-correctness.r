@@ -61,7 +61,7 @@ errit <- function(apx,cmp,eps=1e-12) {
 
 # now the harness
 comp_err <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
-	xobj <- madness(val=xval,ytag='x',xtag='x')
+	xobj <- madness(val=xval,vtag='x',xtag='x')
 	yobj <- thefun(xobj)
 	# compute the error between the function applied to madness
 	# and the function on the scalar value.

@@ -65,7 +65,7 @@ NULL
 #' y <- array(rnorm(3*3),dim=c(3,3))
 #' dy <- matrix(rnorm(length(y)*2),ncol=2)
 #' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
-#' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#' obj0 <- madness(val=y,vtag='y',xtag='x',dvdx=dy,varx=dx)
 #'
 #' anobj <- blockrep(obj0,c(1,2,1))
 #' anobj <- blockrep(obj0,c(1,1,2))
@@ -102,11 +102,11 @@ blockrep <- function(x, nreps) {
 		xidx <- aperm(apply(xidx,MARGIN=marg,FUN=rep,nreps[iii]),prmd)
 	}
 	dvdx <- x@dvdx[as.numeric(xidx),,drop=FALSE]
-	ytag <- paste0('blockrep(',x@ytag,', ', as.character(enquote(nreps))[2],')')
+	vtag <- paste0('blockrep(',x@vtag,', ', as.character(enquote(nreps))[2],')')
 	xtag <- x@xtag
 	varx <- x@varx
 
-	new("madness", val=xval, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+	new("madness", val=xval, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 }
 #' @rdname blockrep
 #' @export
@@ -117,7 +117,7 @@ repto <- function(x, newdim) {
 	olddim <- c(olddim,rep(1,length(newdim)-length(olddim)))
 	nreps <- newdim / olddim
 	retv <- blockrep(x,nreps)
-	retv@ytag <- paste0('repto(',x@ytag,', ', as.character(enquote(newdim))[2],')')
+	retv@vtag <- paste0('repto(',x@vtag,', ', as.character(enquote(newdim))[2],')')
 	retv
 }
 

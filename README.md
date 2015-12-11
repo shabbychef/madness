@@ -48,7 +48,7 @@ matrix, and so on):
 require(madness)
 set.seed(1234)
 x <- matrix(rnorm(16), ncol = 2)
-madx <- madness(x, ytag = "y", xtag = "x")
+madx <- madness(x, vtag = "y", xtag = "x")
 # the show method could use some work
 print(madx)
 ```
@@ -225,7 +225,7 @@ apx_deriv <- function(xval, thefun, eps = 1e-09, type = c("forward",
 
 test_harness <- function(xval, thefun, scalfun = thefun, 
     eps = 1e-07) {
-    xobj <- madness(val = xval, ytag = "x", xtag = "x")
+    xobj <- madness(val = xval, vtag = "x", xtag = "x")
     yobj <- thefun(xobj)
     xval <- val(xobj)
     dapx <- apx_deriv(xval, scalfun, eps = eps, type = "central")

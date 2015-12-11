@@ -39,7 +39,7 @@ NULL
 #' y <- array(rnorm(3*3),dim=c(3,3))
 #' dy <- matrix(rnorm(length(y)*2),ncol=2)
 #' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
-#' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#' obj0 <- madness(val=y,vtag='y',xtag='x',dvdx=dy,varx=dx)
 #' z <- array(rnorm(3*3),dim=c(3,3))
 #'
 #' anobj <- + obj0
@@ -74,10 +74,10 @@ setMethod("+", signature(e1="madness",e2="missing"),
 						xtag <- e1@xtag
 						val <- e1@val
 						dvdx <- e1@dvdx 
-						ytag <- paste0('+',e1@ytag)
+						vtag <- paste0('+',e1@vtag)
 						varx <- e1@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #UNFOLD
 
@@ -89,10 +89,10 @@ setMethod("-", signature(e1="madness",e2="missing"),
 						xtag <- e1@xtag
 						val <- - e1@val
 						dvdx <- - e1@dvdx 
-						ytag <- paste0('-',e1@ytag)
+						vtag <- paste0('-',e1@vtag)
 						varx <- e1@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #UNFOLD
 
@@ -104,20 +104,20 @@ setMethod("+", signature(e1="madness",e2="madness"),
 						xtag <- .check_common_xtag(e1,e2)
 						val <- e1@val + e2@val
 						dvdx <- e1@dvdx + e2@dvdx
-						ytag <- paste0('(',e1@ytag,' + ',e2@ytag,')')
+						vtag <- paste0('(',e1@vtag,' + ',e2@vtag,')')
 						varx <- .get_a_varx(e1,e2)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 mplusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val + e2
 						dvdx <- e1@dvdx 
-						ytag <- paste0('(',e1@ytag,' + numeric)')
+						vtag <- paste0('(',e1@vtag,' + numeric)')
 						varx <- e1@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 #' @rdname arithops
 #' @aliases +,madness,numeric-class
@@ -130,10 +130,10 @@ nplusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 + e2@val
 						dvdx <- e2@dvdx 
-						ytag <- paste0('(numeric + ',e2@ytag,')')
+						vtag <- paste0('(numeric + ',e2@vtag,')')
 						varx <- e2@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -152,20 +152,20 @@ setMethod("-", signature(e1="madness",e2="madness"),
 						xtag <- .check_common_xtag(e1,e2)
 						val <- e1@val - e2@val
 						dvdx <- e1@dvdx - e2@dvdx
-						ytag <- paste0('(',e1@ytag,' - ',e2@ytag,')')
+						vtag <- paste0('(',e1@vtag,' - ',e2@vtag,')')
 						varx <- .get_a_varx(e1,e2)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 mminusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val - e2
 						dvdx <- e1@dvdx 
-						ytag <- paste0('(',e1@ytag,' - numeric)')
+						vtag <- paste0('(',e1@vtag,' - numeric)')
 						varx <- e1@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -179,10 +179,10 @@ nminusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 - e2@val
 						dvdx <- - e2@dvdx 
-						ytag <- paste0('(numeric - ',e2@ytag,')')
+						vtag <- paste0('(numeric - ',e2@vtag,')')
 						varx <- e2@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -201,20 +201,20 @@ setMethod("*", signature(e1="madness",e2="madness"),
 						xtag <- .check_common_xtag(e1,e2)
 						val <- e1@val * e2@val
 						dvdx <- e1@dvdx * as.numeric(e2@val) + as.numeric(e1@val) * e2@dvdx
-						ytag <- paste0('(',e1@ytag,' * ',e2@ytag,')')
+						vtag <- paste0('(',e1@vtag,' * ',e2@vtag,')')
 						varx <- .get_a_varx(e1,e2)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 mtimesn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val * e2
 						dvdx <- e1@dvdx * as.numeric(e2)
-						ytag <- paste0('(',e1@ytag,' * numeric)')
+						vtag <- paste0('(',e1@vtag,' * numeric)')
 						varx <- e1@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -228,10 +228,10 @@ ntimesm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 * e2@val
 						dvdx <- as.numeric(e1) * e2@dvdx 
-						ytag <- paste0('(numeric * ',e2@ytag,')')
+						vtag <- paste0('(numeric * ',e2@vtag,')')
 						varx <- e2@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -252,20 +252,20 @@ setMethod("/", signature(e1="madness",e2="madness"),
 						# lo d hi minus hi d lo over the square of whats below
 						# or (d hi / lo) - (hi/lo^2) dlo
 						dvdx <- (e1@dvdx / as.numeric(e2@val)) - as.numeric((val / e2@val)) * e2@dvdx
-						ytag <- paste0('(',e1@ytag,' / ',e2@ytag,')')
+						vtag <- paste0('(',e1@vtag,' / ',e2@vtag,')')
 						varx <- .get_a_varx(e1,e2)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 mbyn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val / e2
 						dvdx <- e1@dvdx / as.numeric(e2)
-						ytag <- paste0('(',e1@ytag,' / numeric)')
+						vtag <- paste0('(',e1@vtag,' / numeric)')
 						varx <- e1@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -279,10 +279,10 @@ nbym <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 / e2@val
 						dvdx <- - as.numeric((val / e2@val)) * e2@dvdx 
-						ytag <- paste0('(numeric / ',e2@ytag,')')
+						vtag <- paste0('(numeric / ',e2@vtag,')')
 						varx <- e2@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 	
 #' @rdname arithops
@@ -302,20 +302,20 @@ setMethod("^", signature(e1="madness",e2="madness"),
 						val <- e1@val ^ e2@val
 						dvdx <- as.numeric((e1@val ^ (e2@val - 1)) * e2@val) * e1@dvdx +
 							as.numeric(val * log(e1@val)) * e2@dvdx
-						ytag <- paste0('(',e1@ytag,' ^ ',e2@ytag,')')
+						vtag <- paste0('(',e1@vtag,' ^ ',e2@vtag,')')
 						varx <- .get_a_varx(e1,e2)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 mtothen <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val ^ e2
 						dvdx <- as.numeric(as.numeric(e2) * (e1@val ^ (e2-1))) * e1@dvdx 
-						ytag <- paste0('(',e1@ytag,' ^ numeric)')
+						vtag <- paste0('(',e1@vtag,' ^ numeric)')
 						varx <- e1@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -329,10 +329,10 @@ ntothem <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 ^ e2@val
 						dvdx <- as.numeric(val * log(e1)) * e2@dvdx
-						ytag <- paste0('(numeric ^ ',e2@ytag,')')
+						vtag <- paste0('(numeric ^ ',e2@vtag,')')
 						varx <- e2@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
 
 #' @rdname arithops
@@ -370,7 +370,7 @@ setMethod("^", signature(e1="array",e2="madness"),ntothem)
 #' y <- array(rnorm(3*3),dim=c(3,3))
 #' dy <- matrix(rnorm(length(y)*2),ncol=2)
 #' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
-#' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#' obj0 <- madness(val=y,vtag='y',xtag='x',dvdx=dy,varx=dx)
 #' z <- array(rnorm(3*3),dim=c(3,3))
 #'
 #' anobj <- obj0 %*% obj0
@@ -395,10 +395,10 @@ setMethod("%*%", signature(x="madness",y="madness"),
 						dvdx <- (diag(dim(val)[2]) %x% x@val) %*% y@dvdx +
 							(t(y@val) %x% diag(dim(val)[1])) %*% x@dvdx
 
-						ytag <- paste0('(',x@ytag,' %*% ',y@ytag,')')
+						vtag <- paste0('(',x@vtag,' %*% ',y@vtag,')')
 						varx <- .get_a_varx(x,y)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname marithops
@@ -409,10 +409,10 @@ setMethod("%*%", signature(x="madness",y="array"),
 						val <- x@val %*% y
 						dvdx <- (t(y) %x% diag(dim(val)[1])) %*% x@dvdx
 
-						ytag <- paste0('(',x@ytag,' %*% numeric)')
+						vtag <- paste0('(',x@vtag,' %*% numeric)')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname marithops
@@ -423,10 +423,10 @@ setMethod("%*%", signature(x="array",y="madness"),
 						val <- x %*% y@val
 						dvdx <- (diag(dim(val)[2]) %x% x) %*% y@dvdx 
 
-						ytag <- paste0('(numeric  %*% ',y@ytag,')')
+						vtag <- paste0('(numeric  %*% ',y@vtag,')')
 						varx <- y@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #UNFOLD
 
@@ -496,12 +496,12 @@ setMethod("tcrossprod", signature(x="ANY",y="madness"),
 #' y <- array(rnorm(3*3),dim=c(3,3))
 #' dy <- matrix(rnorm(length(y)*2),ncol=2)
 #' dx <- crossprod(matrix(rnorm(ncol(dy)*100),nrow=100))
-#' obj0 <- madness(val=y,ytag='y',xtag='x',dvdx=dy,varx=dx)
+#' obj0 <- madness(val=y,vtag='y',xtag='x',dvdx=dy,varx=dx)
 #'
 #' y1 <- array(rnorm(3*3),dim=c(3,3))
 #' dy1 <- matrix(rnorm(length(y1)*2),ncol=2)
 #' dx1 <- crossprod(matrix(rnorm(ncol(dy1)*100),nrow=100))
-#' obj1 <- madness(val=y1,ytag='y1',xtag='x',dvdx=dy1,varx=dx1)
+#' obj1 <- madness(val=y1,vtag='y1',xtag='x',dvdx=dy1,varx=dx1)
 #'
 #' anobj <- outer(obj0,obj0,'*')
 #' anobj <- outer(obj0,obj0,'+')
@@ -572,9 +572,9 @@ setMethod("outer", signature(X="madness",Y="madness"),
 													 },
 													 stop('NYI'))
 						
-						ytag <- paste0('outer(',X@ytag,', ',Y@ytag,', ',FUN,')')
+						vtag <- paste0('outer(',X@vtag,', ',Y@vtag,', ',FUN,')')
 						varx <- .get_a_varx(X,Y)
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 })
 #' @rdname outer
 #' @aliases outer,madness,array-method
@@ -614,9 +614,9 @@ setMethod("outer", signature(X="madness",Y="array"),
 													 },
 													 stop('NYI'))
 						
-						ytag <- paste0('outer(',X@ytag,', numeric, ',FUN,')')
+						vtag <- paste0('outer(',X@vtag,', numeric, ',FUN,')')
 						varx <- X@varx
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 })
 
 #' @rdname outer
@@ -653,9 +653,9 @@ setMethod("outer", signature(X="array",Y="madness"),
 													 },
 													 stop('NYI'))
 						
-						ytag <- paste0('outer(numeric, ',Y@ytag,', ',FUN,')')
+						vtag <- paste0('outer(numeric, ',Y@vtag,', ',FUN,')')
 						varx <- Y@varx
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 })
 
 
@@ -673,7 +673,7 @@ setMethod("kronecker", signature(X="madness",Y="madness"),
 						preval <- outer(Y,X,FUN='*')
 						preval <- aperm(preval,c(1,3,2,4))
 						dim(preval) <- c(xdim[1]*ydim[1],xdim[2]*ydim[2])
-						preval@ytag <- paste0('kronecker(',X@ytag,', ',Y@ytag,')')
+						preval@vtag <- paste0('kronecker(',X@vtag,', ',Y@vtag,')')
 						preval
 					})
 
@@ -687,7 +687,7 @@ setMethod("kronecker", signature(X="madness",Y="array"),
 						preval <- outer(Y,X,FUN='*')
 						preval <- aperm(preval,c(1,3,2,4))
 						dim(preval) <- c(xdim[1]*ydim[1],xdim[2]*ydim[2])
-						preval@ytag <- paste0('kronecker(',X@ytag,', numeric)')
+						preval@vtag <- paste0('kronecker(',X@vtag,', numeric)')
 						preval
 					})
 
@@ -701,7 +701,7 @@ setMethod("kronecker", signature(X="array",Y="madness"),
 						preval <- outer(Y,X,FUN='*')
 						preval <- aperm(preval,c(1,3,2,4))
 						dim(preval) <- c(xdim[1]*ydim[1],xdim[2]*ydim[2])
-						preval@ytag <- paste0('kronecker(numeric, ',Y@ytag,')')
+						preval@vtag <- paste0('kronecker(numeric, ',Y@vtag,')')
 						preval
 					})
 

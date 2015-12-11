@@ -56,10 +56,10 @@ setMethod("cbind2", signature(x="madness",y="missing"),
 						val <- x@val
 						dvdx <- x@dvdx
 
-						ytag <- paste0('cbind(',x@ytag,')')
+						vtag <- paste0('cbind(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #' @rdname bind
 #' @aliases cbind2,madness,madness-method
@@ -69,10 +69,10 @@ setMethod("cbind2", signature(x="madness",y="madness"),
 						val <- cbind(x@val,y@val)
 						dvdx <- rbind(x@dvdx,y@dvdx)
 
-						ytag <- paste0('cbind(',x@ytag,',',y@ytag,')')
+						vtag <- paste0('cbind(',x@vtag,',',y@vtag,')')
 						varx <- .get_a_varx(x,y)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname bind
@@ -84,10 +84,10 @@ setMethod("cbind2", signature(x="madness",y="ANY"),
 						dvdx <- rbind(x@dvdx,
 													array(0,dim=c(length(y),ncol(x@dvdx))))
 
-						ytag <- paste0('cbind(',x@ytag,', numeric)')
+						vtag <- paste0('cbind(',x@vtag,', numeric)')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #' @rdname bind
 #' @aliases cbind2,ANY,madness-method
@@ -98,10 +98,10 @@ setMethod("cbind2", signature(x="ANY",y="madness"),
 						dvdx <- rbind(array(0,dim=c(length(x),ncol(y@dvdx))),
 													y@dvdx)
 
-						ytag <- paste0('cbind(numeric,',y@ytag,')')
+						vtag <- paste0('cbind(numeric,',y@vtag,')')
 						varx <- y@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 # this is way trickier, unfortunately, because of numerator layout.
@@ -117,10 +117,10 @@ setMethod("rbind2", signature(x="madness",y="missing"),
 						val <- x@val
 						dvdx <- x@dvdx
 
-						ytag <- paste0('rbind(',x@ytag,')')
+						vtag <- paste0('rbind(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #' @rdname bind
 #' @aliases rbind2,madness,madness-method
@@ -133,10 +133,10 @@ setMethod("rbind2", signature(x="madness",y="madness"),
 													.do_commutator(t(y@val),y@dvdx))
 						dvdx <- .do_commutator(val,dvdx)
 
-						ytag <- paste0('rbind(',x@ytag,',',y@ytag,')')
+						vtag <- paste0('rbind(',x@vtag,',',y@vtag,')')
 						varx <- .get_a_varx(x,y)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname bind
@@ -150,10 +150,10 @@ setMethod("rbind2", signature(x="madness",y="ANY"),
 													array(0,dim=c(length(y),ncol(x@dvdx))))
 						dvdx <- .do_commutator(val,dvdx)
 
-						ytag <- paste0('rbind(',x@ytag,',numeric)')
+						vtag <- paste0('rbind(',x@vtag,',numeric)')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname bind
@@ -167,10 +167,10 @@ setMethod("rbind2", signature(x="ANY",y="madness"),
 													.do_commutator(t(y@val),y@dvdx))
 						dvdx <- .do_commutator(val,dvdx)
 
-						ytag <- paste0('rbind(numeric,',y@ytag,')')
+						vtag <- paste0('rbind(numeric,',y@vtag,')')
 						varx <- y@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #UNFOLD

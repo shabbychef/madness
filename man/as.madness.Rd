@@ -5,14 +5,14 @@
 \alias{as.madness.default}
 \title{Coerce to a madness object.}
 \usage{
-as.madness(x, ytag=NULL, xtag=NULL)
+as.madness(x, vtag=NULL, xtag=NULL)
 
-\method{as.madness}{default}(x, ytag = NULL, xtag = NULL)
+\method{as.madness}{default}(x, vtag = NULL, xtag = NULL)
 }
 \arguments{
 \item{x}{an object which can be fed to \code{coef}, and possibly \code{vcov}}
 
-\item{ytag}{an optional name for the \eqn{val} variable.}
+\item{vtag}{an optional name for the \eqn{val} variable.}
 
 \item{xtag}{an optional name for the \eqn{X} variable.}
 }

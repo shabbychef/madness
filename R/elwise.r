@@ -60,10 +60,10 @@ setMethod("abs", signature(x="madness"),
 						scald <- sign(x@val)
 						scald[scald==0] <- NaN
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('abs(',x@ytag,')')
+						vtag <- paste0('abs(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname elwise
@@ -74,10 +74,10 @@ setMethod("exp", signature(x="madness"),
 						val <- exp(x@val)
 						scald <- val
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('exp(',x@ytag,')')
+						vtag <- paste0('exp(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname elwise
@@ -88,10 +88,10 @@ setMethod("log", signature(x="madness"),
 						val <- log(x@val)
 						scald <- 1 / x@val
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('log(',x@ytag,')')
+						vtag <- paste0('log(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname elwise
@@ -102,10 +102,10 @@ setMethod("log10", signature(x="madness"),
 						val <- log10(x@val)
 						scald <- 1 / (log(10) * x@val)
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('log10(',x@ytag,')')
+						vtag <- paste0('log10(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname elwise
@@ -116,10 +116,10 @@ setMethod("sqrt", signature(x="madness"),
 						val <- sqrt(x@val)
 						scald <- 1 / (2*val)
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('sqrt(',x@ytag,')')
+						vtag <- paste0('sqrt(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname elwise
@@ -130,10 +130,10 @@ setMethod("sin", signature(x="madness"),
 						val <- sin(x@val)
 						scald <- cos(x@val)
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('sin(',x@ytag,')')
+						vtag <- paste0('sin(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname elwise
@@ -144,10 +144,10 @@ setMethod("cos", signature(x="madness"),
 						val <- cos(x@val)
 						scald <- -sin(x@val)
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('cos(',x@ytag,')')
+						vtag <- paste0('cos(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname elwise
@@ -158,10 +158,10 @@ setMethod("tan", signature(x="madness"),
 						val <- tan(x@val)
 						scald <- 1 + (val^2)
 						dvdx <- as.numeric(scald) * x@dvdx
-						ytag <- paste0('tan(',x@ytag,')')
+						vtag <- paste0('tan(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 

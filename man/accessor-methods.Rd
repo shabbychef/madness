@@ -11,10 +11,10 @@
 \alias{val,madness-method}
 \alias{varx}
 \alias{varx,madness-method}
+\alias{vtag}
+\alias{vtag,madness-method}
 \alias{xtag}
 \alias{xtag,madness-method}
-\alias{ytag}
-\alias{ytag,madness-method}
 \title{Accessor methods.}
 \usage{
 val(x)
@@ -33,9 +33,9 @@ xtag(x)
 
 \S4method{xtag}{madness}(x)
 
-ytag(x)
+vtag(x)
 
-\S4method{ytag}{madness}(x)
+\S4method{vtag}{madness}(x)
 
 varx(x)
 

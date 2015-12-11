@@ -73,10 +73,10 @@ setMethod("vec", signature(x="madness"),
 						val <- x@val
 						dim(val) <- c(prod(dim(val)),1)
 						dvdx <- x@dvdx
-						ytag <- paste0('vec(',x@ytag,')')
+						vtag <- paste0('vec(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #' @rdname vec
 #' @aliases vec,array-method
@@ -110,10 +110,10 @@ setMethod("vech", signature(x="madness"),
 						val <- val[takeus]
 						dim(val) <- c(length(val),1)
 						dvdx <- x@dvdx[which(takeus),]
-						ytag <- paste0('vech(',x@ytag,')')
+						vtag <- paste0('vech(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname vec
@@ -176,10 +176,10 @@ setMethod("ivech", signature(x="madness"),
 							dvdx <- .do_commutator(val,dvdx)
 						}
 						xtag <- x@xtag
-						ytag <- paste0('ivech(',x@ytag,', ',k,', ',symmetric,')')
+						vtag <- paste0('ivech(',x@vtag,', ',k,', ',symmetric,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #for vim modeline: (do not edit)

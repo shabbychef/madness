@@ -52,10 +52,10 @@ setMethod("solve", signature(a="madness",b="missing"),
 						val <- solve(a@val)
 
 						dvdx <- - (t(val) %x% val) %*% a@dvdx
-						ytag <- paste0('solve(',a@ytag,')')
+						vtag <- paste0('solve(',a@vtag,')')
 						varx <- a@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname solve
@@ -69,10 +69,10 @@ setMethod("solve", signature(a="madness",b="madness"),
 						ainv <- solve(a@val)
 						dvdx <- (diag(dim(val)[2]) %x% ainv) %*% b@dvdx -
 							(t(val) %x% ainv) %*% a@dvdx
-						ytag <- paste0('solve(',a@ytag,', ',b@ytag,')')
+						vtag <- paste0('solve(',a@vtag,', ',b@vtag,')')
 						varx <- .get_a_varx(a,b)
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname solve
@@ -84,10 +84,10 @@ setMethod("solve", signature(a="madness",b="array"),
 
 						# wasteful in that we invert twice, but whatever.
 						dvdx <- - (t(val) %x% solve(a@val)) %*% a@dvdx
-						ytag <- paste0('solve(',a@ytag,', numeric)')
+						vtag <- paste0('solve(',a@vtag,', numeric)')
 						varx <- a@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname solve
@@ -99,10 +99,10 @@ setMethod("solve", signature(a="madness",b="ANY"),
 
 						# wasteful in that we invert twice, but whatever.
 						dvdx <- - (t(val) %x% solve(a@val)) %*% a@dvdx
-						ytag <- paste0('solve(',a@ytag,', numeric)')
+						vtag <- paste0('solve(',a@vtag,', numeric)')
 						varx <- a@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname solve
@@ -114,10 +114,10 @@ setMethod("solve", signature(a="array",b="madness"),
 
 						# wasteful in that we invert twice, but whatever.
 						dvdx <- (diag(dim(val)[2]) %x% solve(a)) %*% b@dvdx 
-						ytag <- paste0('solve(numeric, ',b@ytag,')')
+						vtag <- paste0('solve(numeric, ',b@vtag,')')
 						varx <- b@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname solve
@@ -129,10 +129,10 @@ setMethod("solve", signature(a="ANY",b="madness"),
 
 						# wasteful in that we invert twice, but whatever.
 						dvdx <- (diag(dim(val)[2]) %x% solve(a)) %*% b@dvdx 
-						ytag <- paste0('solve(numeric, ',b@ytag,')')
+						vtag <- paste0('solve(numeric, ',b@vtag,')')
 						varx <- b@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #UNFOLD

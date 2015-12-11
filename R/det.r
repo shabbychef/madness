@@ -60,7 +60,7 @@ NULL
 #' @export
 determinant.madness <- function(x,logarithm=TRUE,...) {
  	xtag <- x@xtag
-	ytag <- paste0('determinant(',x@ytag,', logarithm=',as.character(logarithm),')')
+	vtag <- paste0('determinant(',x@vtag,', logarithm=',as.character(logarithm),')')
 	vdet <- determinant(x@val,logarithm=logarithm)
 
 	varx <- x@varx
@@ -73,14 +73,14 @@ determinant.madness <- function(x,logarithm=TRUE,...) {
 	}
 
 	retv <- list()
-	retv$modulus <- new("madness", val=val, dvdx=dvdx, ytag=paste0(ytag,'$modulus'), xtag=xtag, varx=varx)
+	retv$modulus <- new("madness", val=val, dvdx=dvdx, vtag=paste0(vtag,'$modulus'), xtag=xtag, varx=varx)
 
 	# now the sign
 	val <- matrix(vdet$sign)
 	dvdx <- ifelse(val[1,1,drop=TRUE] == 0,NaN,0.0)
 	dvdx <- matrix(dvdx,nrow=1,ncol=ncol(x@dvdx))
 
-	retv$sign <- new("madness", val=val, dvdx=dvdx, ytag=paste0(ytag,'$sign'), xtag=xtag, varx=varx)
+	retv$sign <- new("madness", val=val, dvdx=dvdx, vtag=paste0(vtag,'$sign'), xtag=xtag, varx=varx)
 
 	invisible(retv)
 }

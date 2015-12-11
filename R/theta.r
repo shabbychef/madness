@@ -99,7 +99,7 @@ theta <- function(X,vcov.func=vcov) {
 	dim(mu) <- c(length(mu),1)
 	Ohat = vcov.func(mod2)
 
-	retv <- madness(val=mu, ytag='theta', xtag='theta', varx=Ohat)
+	retv <- madness(val=mu, vtag='theta', xtag='theta', varx=Ohat)
 	# this has been vech'ed, so unvech it:
 	retv <- ivech(retv,0,symmetric=TRUE)
 	if (length(dimX) <= 2) {
@@ -107,7 +107,7 @@ theta <- function(X,vcov.func=vcov) {
 	} else {
 		dim(retv) <- c(dimX[2:length(dimX)],dimX[2:length(dimX)])
 	}
-	retv@ytag <- retv@xtag
+	retv@vtag <- retv@xtag
 	retv
 }
 

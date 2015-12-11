@@ -62,10 +62,10 @@ setMethod("sqrtm", signature(x="madness"),
 						val <- expm::sqrtm(x@val)
 						scalby <- (t(val) %x% diag(dim(val)[2])) + (diag(dim(val)[2]) %x% val)
 						dvdx <- solve(scalby,x@dvdx)
-						ytag <- paste0('sqrtm(',x@ytag,')')
+						vtag <- paste0('sqrtm(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @name matwise
@@ -81,10 +81,10 @@ setMethod("maxeig", signature(x="madness"),
 						vvals <- svd(x@val,nu=1,nv=1)
 						val <- matrix(vvals$d[1])
 						dvdx <- (t(vvals$v) %x% t(vvals$u)) %*% x@dvdx
-						ytag <- paste0('maxeig(',x@ytag,')')
+						vtag <- paste0('maxeig(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 .normit <- function(x,type='One') {
@@ -121,12 +121,12 @@ setMethod("maxeig", signature(x="madness"),
 		dvdx <- (t(vvals$v) %x% t(vvals$u)) %*% x@dvdx
 	}
 
-	ytag <- paste0('norm(',x@ytag,", '",type,"')")
+	vtag <- paste0('norm(',x@vtag,", '",type,"')")
 	varx <- x@varx
 	val <- array(val,dim=c(1,1))
 	dvdx <- array(dvdx,dim=c(1,length(dvdx)))
 
-	new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+	new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 }
 
 #' @name matwise
@@ -154,10 +154,10 @@ chol.madness <- function(x,...) {
 	Lm <- matrixcalc::L.matrix(dim(val)[2])
 	scalby <- Lm %*% (scalby %*% t(Lm))
 	dvdx <- .do_commutator(val,t(Lm) %*% solve(scalby,Lm %*% x@dvdx))
-	ytag <- paste0('chol(',x@ytag,')')
+	vtag <- paste0('chol(',x@vtag,')')
 	varx <- x@varx
 
-	new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+	new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 }
 
 #for vim modeline: (do not edit)

@@ -38,9 +38,9 @@ test_that("initialize",{#FOLDUP
 
 	xy <- data.frame(x=rnorm(100),y=runif(100),z=runif(100))
 	amod <- lm(z ~ x + y,xy)
-	amad <- as.madness(amod,xtag=xt,ytag=yt)
+	amad <- as.madness(amod,xtag=xt,vtag=yt)
 	amad <- as.madness(amod,xtag=xt)
-	amad <- as.madness(amod,ytag=yt)
+	amad <- as.madness(amod,vtag=yt)
 	amad <- as.madness(amod)
 
 	# sentinel:
@@ -58,29 +58,29 @@ test_that("initialize errors",{#FOLDUP
 	# make this the wrong size
 	vvv <- crossprod(matrix(rnorm(100*(1+ncol(ddd))),ncol=(1+ncol(ddd))))
 
-	expect_error(dumb <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv))
-	expect_error(dumb <- madness(xval,ddd,ytag=yt,xtag=xt))
-	expect_error(dumb <- madness(xval,diag(length(xval)),ytag=yt,xtag=xt,varx=vvv))
-	expect_error(dumb <- madness(xval,'bogus',ytag=yt,xtag=xt))
-	expect_error(dumb <- madness(xval,diag(length(xval)),ytag=23))
-	expect_error(dumb <- madness(xval,diag(length(xval)),ytag=yt,xtag=17))
-	expect_error(dumb <- madness(xval,diag(length(xval)),ytag=yt,xtag=xt,varx='dumby'))
+	expect_error(dumb <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv))
+	expect_error(dumb <- madness(xval,ddd,vtag=yt,xtag=xt))
+	expect_error(dumb <- madness(xval,diag(length(xval)),vtag=yt,xtag=xt,varx=vvv))
+	expect_error(dumb <- madness(xval,'bogus',vtag=yt,xtag=xt))
+	expect_error(dumb <- madness(xval,diag(length(xval)),vtag=23))
+	expect_error(dumb <- madness(xval,diag(length(xval)),vtag=yt,xtag=17))
+	expect_error(dumb <- madness(xval,diag(length(xval)),vtag=yt,xtag=xt,varx='dumby'))
 # make this error out:
 	#expect_error(dumb <- madness('not a numeric'))
 
 	vvv <- matrix(rnorm(5*4),ncol=5)
-	expect_error(dumb <- madness(xval,diag(length(xval)),ytag=yt,xtag=xt,varx=vvv))
+	expect_error(dumb <- madness(xval,diag(length(xval)),vtag=yt,xtag=xt,varx=vvv))
 
 # these are warnings
 	xval <- rnorm(5)
-	expect_warning(dumb <- madness(xval,ytag=yt,xtag=xt))
+	expect_warning(dumb <- madness(xval,vtag=yt,xtag=xt))
 # fix this: should be a warning...
 	xval <- matrix(1 + runif(4*4),nrow=4)
 	nover <- 2
 	ddd <- rnorm(nover*length(xval))
-	expect_warning(dumb <- madness(xval,ddd,ytag=yt,xtag=xt))
+	expect_warning(dumb <- madness(xval,ddd,vtag=yt,xtag=xt))
 	expect_warning(dumb <- madness(xval,ddd))
-	expect_warning(dumb <- madness(xval,ddd,ytag=yt))
+	expect_warning(dumb <- madness(xval,ddd,vtag=yt))
 	expect_warning(dumb <- madness(xval,ddd,varx=diag(nover)))
 	expect_error(dumb <- madness(xval,ddd,varx=diag(nover+1)))
 
@@ -106,13 +106,13 @@ test_that("basic getters and setters",{#FOLDUP
 	yt <- 'any'
 	xt <- 'anx'
 	vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-	xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+	xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
 	expect_equal(xval,val(xmad))
 	expect_equal(ddd,dvdx(xmad))
 	expect_equal(vvv,varx(xmad))
 	expect_equal(xt,xtag(xmad))
-	expect_equal(yt,ytag(xmad))
+	expect_equal(yt,vtag(xmad))
 
 	# as.foo
 	expect_equal(as.numeric(xval),as.numeric(xmad))
@@ -135,7 +135,7 @@ test_that("basic getters and setters",{#FOLDUP
 	xt <- 'anewx'
 	vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
 	xtag(xmad) <- xt
-	ytag(xmad) <- yt
+	vtag(xmad) <- yt
 	varx(xmad) <- vvv
 	
 	# sentinel:
@@ -150,7 +150,7 @@ test_that("just vcov",{#FOLDUP
 		xval <- matrix(1 + runif(nr*nr),nrow=nr)
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 		blah <- vcov(xmad)
 	}
 
@@ -166,7 +166,7 @@ test_that("just blockrep",{#FOLDUP
 		xval <- matrix(1 + runif(nr*nr),nrow=nr)
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 		blah <- blockrep(xmad,c(1))
 		blah <- blockrep(xmad,c(1,1,1))
 		blah <- blockrep(xmad,c(1,2,1))
@@ -201,12 +201,12 @@ test_that("outer?",{#FOLDUP
 		xval <- matrix(1 + runif(nr*nr),nrow=nr)
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
 		yval <- matrix(1 + runif(nr*3),nrow=nr)
 		ddd <- matrix(rnorm(length(yval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-		ymad <- madness(yval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		ymad <- madness(yval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
 		blah <- outer(xmad,ymad,'*')
 		blah <- outer(xmad,ymad,'+')
@@ -243,7 +243,7 @@ test_that("vech",{#FOLDUP
 		xval <- matrix(1 + runif(nr),nrow=nr)
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
 		blah <- ivech(xmad)
 		blah <- ivech(xmad,-1)
@@ -256,7 +256,7 @@ test_that("vech",{#FOLDUP
 		xval <- matrix(1 + runif(nr),nrow=nr)
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
 		blah <- ivech(xmad,1)
 		blah <- ivech(xmad,1,symmetric=FALSE)
@@ -271,7 +271,7 @@ test_that("vech",{#FOLDUP
 		xval <- matrix(1 + runif(nr),nrow=nr)
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
-		xmad <- madness(xval,ddd,ytag=yt,xtag=xt,varx=vvv)
+		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
 		expect_error(dumb <- ivech(xmad,0))
 		expect_error(dumb <- ivech(xmad,-1))
@@ -288,6 +288,10 @@ test_that("theta",{#FOLDUP
 	MV <- array(rnorm(100*3*3),dim=c(100,3,3))
 	th <- theta(MV)
 	MV <- array(rnorm(100*3*3*3),dim=c(100,3,3,3))
+	th <- theta(MV)
+
+	# and as data frame.
+	MV <- data.frame(a=runif(100),b=rnorm(100),c=exp(runif(100)))
 	th <- theta(MV)
 
 	# sentinel:

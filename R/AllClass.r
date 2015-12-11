@@ -77,7 +77,7 @@
 #' Operations between two objects of the class with distinct
 #' \code{xtag} data will result in an error, since they are 
 #' considered to have different independent variables.
-#' @slot ytag an optional name for the \eqn{val} variable. 
+#' @slot vtag an optional name for the \eqn{val} variable. 
 #' This will be propagated forward.
 #' @slot varx an optional variance-covariance matrix of
 #' the independent variable, \eqn{X}{X}.
@@ -96,8 +96,8 @@
 #' \url{http://www.janmagnus.nl/misc/mdc2007-3rdedition}
 #'
 #' @examples 
-#' obj <- new("madness", val=matrix(rnorm(10*10),nrow=10), dvdx=diag(100), xtag="foo", ytag="foo")
-#' obj2 <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", ytag="foo^2")
+#' obj <- new("madness", val=matrix(rnorm(10*10),nrow=10), dvdx=diag(100), xtag="foo", vtag="foo")
+#' obj2 <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", vtag="foo^2")
 #'
 #' @template etc
 #' @name madness-class
@@ -105,11 +105,11 @@
 #' @exportClass madness
 #' @export
 setClass("madness", 
-				 representation(val="array", dvdx="matrix", xtag="character", ytag="character", varx="matrix"),
+				 representation(val="array", dvdx="matrix", xtag="character", vtag="character", varx="matrix"),
 				 prototype(val=matrix(nrow=0,ncol=0),
 									 dvdx=matrix(nrow=0,ncol=0),
 									 xtag=NA_character_,
-									 ytag=NA_character_,
+									 vtag=NA_character_,
 									 varx=matrix(nrow=0,ncol=0)),
 				 validity=function(object) {
 					 # ... 
@@ -130,7 +130,7 @@ setClass("madness",
 #' @aliases initialize,madness-class
 setMethod('initialize',
 					signature('madness'),
-					function(.Object,val,dvdx,xtag=NA_character_,ytag=NA_character_,varx=matrix(nrow=0,ncol=0)) {
+					function(.Object,val,dvdx,xtag=NA_character_,vtag=NA_character_,varx=matrix(nrow=0,ncol=0)) {
 					 	if (length(val) != dim(dvdx)[1]) { stop("bad dimensionality or derivative not in numerator layout.") }
 					 	if (dim(varx)[1] != dim(varx)[2]) { stop("must give empty or square varx variance covariance.") }
 					 	if ((dim(varx)[1] != 0) && (dim(varx)[1] != dim(dvdx)[2])) {
@@ -149,7 +149,7 @@ setMethod('initialize',
 					 	.Object@val <- val
 					 	.Object@dvdx <- dvdx
 					 	.Object@xtag <- xtag
-					 	.Object@ytag <- ytag
+					 	.Object@vtag <- vtag
 					 	.Object@varx <- varx
 
 						.Object
@@ -162,20 +162,20 @@ setMethod('initialize',
 #' (the vector of) \code{val} with respect to some independent 
 #' variable, \eqn{X}{X}. 
 #' @param xtag an optional name for the \eqn{X} variable. 
-#' @param ytag an optional name for the \eqn{val} variable. 
+#' @param vtag an optional name for the \eqn{val} variable. 
 #' @param varx an optional variance-covariance matrix of
 #' the independent variable, \eqn{X}{X}.
 #' @name madness
 #' @rdname madness-class
 #' @export
-madness <- function(val,dvdx=NULL,ytag=NULL,xtag=NULL,varx=NULL) {
-	if (missing(ytag)) { 
-		ytag <- deparse(substitute(val))
+madness <- function(val,dvdx=NULL,vtag=NULL,xtag=NULL,varx=NULL) {
+	if (missing(vtag)) { 
+		vtag <- deparse(substitute(val))
 	}
 	if (missing(dvdx) || is.null(dvdx)) { 
 		dvdx <- diag(1,nrow=length(val))
 		if (missing(xtag)) {
-			xtag <- ytag
+			xtag <- vtag
 		}
 	} else if (missing(xtag)) {
 		xtag <- 'x'
@@ -190,7 +190,7 @@ madness <- function(val,dvdx=NULL,ytag=NULL,xtag=NULL,varx=NULL) {
 		dim(dvdx) <- c(length(val),taild)
 	}
 	if (is.null(varx)) { varx <- matrix(nrow=0,ncol=0) }
-	retv <- new("madness", val=val, dvdx=dvdx, xtag=xtag, ytag=ytag, varx=varx)
+	retv <- new("madness", val=val, dvdx=dvdx, xtag=xtag, vtag=vtag, varx=varx)
 	invisible(retv)
 }
 
@@ -208,7 +208,7 @@ madness <- function(val,dvdx=NULL,ytag=NULL,xtag=NULL,varx=NULL) {
 #'
 #' @usage
 #'
-#' as.madness(x, ytag=NULL, xtag=NULL)
+#' as.madness(x, vtag=NULL, xtag=NULL)
 #'
 #' @param x an object which can be fed to \code{coef}, and possibly \code{vcov}
 #' @inheritParams madness
@@ -220,23 +220,23 @@ madness <- function(val,dvdx=NULL,ytag=NULL,xtag=NULL,varx=NULL) {
 #' amad <- as.madness(amod)
 #' @rdname as.madness
 #' @export as.madness
-as.madness <- function(x, ytag=NULL, xtag=NULL) {
+as.madness <- function(x, vtag=NULL, xtag=NULL) {
 	UseMethod("as.madness", x)
 }
 #' @rdname as.madness
 #' @export
 #' @method as.madness default
 #' @aliases as.madness
-as.madness.default <- function(x, ytag=NULL, xtag=NULL) {
-	if (missing(ytag)) { 
-		ytag <- deparse(substitute(val))
+as.madness.default <- function(x, vtag=NULL, xtag=NULL) {
+	if (missing(vtag)) { 
+		vtag <- deparse(substitute(val))
 	}
 	if (missing(xtag)) {
-		xtag <- ytag
+		xtag <- vtag
 	}
 	val <- coef(x)
 	varx <- tryCatch({ vcov(x) },error = function(e) { NULL })
-	invisible(madness(val,xtag=xtag,ytag=ytag,varx=varx))
+	invisible(madness(val,xtag=xtag,vtag=vtag,varx=varx))
 }
 
 # http://www.bioconductor.org/help/course-materials/2010/AdvancedR/S4InBioconductor.pdf
@@ -285,12 +285,12 @@ setGeneric('xtag', signature="x", function(x) standardGeneric('xtag'))
 setMethod('xtag', 'madness', function(x) x@xtag )
 
 #' @rdname accessor-methods
-#' @aliases ytag
-#' @exportMethod ytag
-setGeneric('ytag', signature="x", function(x) standardGeneric('ytag'))
+#' @aliases vtag
+#' @exportMethod vtag
+setGeneric('vtag', signature="x", function(x) standardGeneric('vtag'))
 #' @rdname accessor-methods
-#' @aliases ytag,madness-method
-setMethod('ytag', 'madness', function(x) x@ytag )
+#' @aliases vtag,madness-method
+setMethod('vtag', 'madness', function(x) x@vtag )
 
 #' @rdname accessor-methods
 #' @aliases varx
@@ -320,15 +320,15 @@ setMethod('varx', 'madness', function(x) x@varx )
 setGeneric('xtag<-', signature="x", function(x,value) standardGeneric('xtag<-'))
 #' @rdname setter-methods
 #' @aliases xtag<-,madness-method
-setReplaceMethod('xtag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=value, ytag=x@ytag, varx=x@varx))
+setReplaceMethod('xtag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=value, vtag=x@vtag, varx=x@varx))
 
 #' @rdname setter-methods
-#' @aliases ytag<-
-#' @exportMethod ytag<-
-setGeneric('ytag<-', signature="x", function(x,value) standardGeneric('ytag<-'))
+#' @aliases vtag<-
+#' @exportMethod vtag<-
+setGeneric('vtag<-', signature="x", function(x,value) standardGeneric('vtag<-'))
 #' @rdname setter-methods
-#' @aliases ytag<-,madness-method
-setReplaceMethod('ytag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=x@xtag, ytag=value, varx=x@varx))
+#' @aliases vtag<-,madness-method
+setReplaceMethod('vtag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=x@xtag, vtag=value, varx=x@varx))
 
 #' @rdname setter-methods
 #' @aliases varx<-
@@ -336,7 +336,7 @@ setReplaceMethod('ytag', 'madness', function(x,value) initialize(x, val=x@val, d
 setGeneric('varx<-', signature="x", function(x,value) standardGeneric('varx<-'))
 #' @rdname setter-methods
 #' @aliases varx<-,madness-method
-setReplaceMethod('varx', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=x@xtag, ytag=x@xtag, varx=value))
+setReplaceMethod('varx', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=x@xtag, vtag=x@xtag, varx=value))
 #UNFOLD
 
 # show#FOLDUP
@@ -353,7 +353,7 @@ setReplaceMethod('varx', 'madness', function(x,value) initialize(x, val=x@val, d
 #'
 #' @param object a \code{madness} object.
 #' @examples 
-#' obj <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", ytag="foo^2")
+#' obj <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", vtag="foo^2")
 #' obj
 #' @template etc
 #' @name show
@@ -368,12 +368,12 @@ setMethod('show', signature('madness'),
 						rchar <- function(achr,alen) { paste0(rep(achr,ceiling(alen)),collapse='') }
 						cat('class:', class(object), '\n')
 						xlen <- nchar(object@xtag) + 4
-						ylen <- nchar(object@ytag) + 4
+						ylen <- nchar(object@vtag) + 4
 						mlen <- max(xlen,ylen)
 						repr <- sprintf(paste0('      %',ceiling((mlen + ylen)/2),'s\n',
 																	 ' calc: ',rchar('-',mlen), ' \n',
 																	 '      %',ceiling((mlen + xlen)/2),'s\n'),
-														paste0(rchar(' ',(mlen-ylen)/2),'d ',object@ytag),
+														paste0(rchar(' ',(mlen-ylen)/2),'d ',object@vtag),
 														paste0(rchar(' ',(mlen-xlen)/2),'d ',object@xtag))
 						cat(repr)
 						cat('  val:', head(object@val,1L),  '...\n')
