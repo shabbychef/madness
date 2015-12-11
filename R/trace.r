@@ -57,10 +57,10 @@ setMethod("matrix.trace", signature(x="madness"),
 						val <- array(sum(val[takeus]),dim=c(1,1))
 
 						dvdx <- matrix(colSums(x@dvdx[which(takeus),,drop=FALSE]),nrow=1)
-						ytag <- paste0('matrix.trace(',x@ytag,')')
+						vtag <- paste0('matrix.trace(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #UNFOLD

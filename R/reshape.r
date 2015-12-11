@@ -52,10 +52,10 @@ setMethod("t", signature(x="madness"),
 						xtag <- x@xtag
 						val <- t(x@val)
 						dvdx <- .do_commutator(val,x@dvdx)
-						ytag <- paste0('t(',x@ytag,')')
+						vtag <- paste0('t(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname reshapes
@@ -68,10 +68,10 @@ setMethod("diag", signature(x="madness"),
 						val <- val[takeus]
 						dim(val) <- c(length(val),1)
 						dvdx <- x@dvdx[which(takeus),]
-						ytag <- paste0('diag(',x@ytag,')')
+						vtag <- paste0('diag(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname reshapes
@@ -89,10 +89,10 @@ setMethod("tril", signature(x="madness"),
 						val[!takeus] <- 0
 						dvdx <- x@dvdx
 						dvdx[which(!takeus),] <- 0
-						ytag <- paste0('tril(',x@ytag,', ',k,')')
+						vtag <- paste0('tril(',x@vtag,', ',k,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname reshapes
@@ -109,10 +109,10 @@ setMethod("triu", signature(x="madness"),
 						val[!takeus] <- 0
 						dvdx <- x@dvdx
 						dvdx[which(!takeus),] <- 0
-						ytag <- paste0('triu(',x@ytag,', ',k,')')
+						vtag <- paste0('triu(',x@vtag,', ',k,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname reshapes
@@ -128,10 +128,10 @@ setMethod("todiag", signature(x="madness"),
 						takeus <- row(val) == col(val)
 						dvdx <- matrix(0,nrow=length(takeus),ncol=ncol(x@dvdx))
 						dvdx[which(takeus),] <- x@dvdx
-						ytag <- paste0('todiag(',x@ytag,')')
+						vtag <- paste0('todiag(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #' @rdname reshapes
@@ -142,12 +142,12 @@ setMethod("dim<-", signature(x="madness",value="ANY"),
 						val <- x@val
 						dim(val) <- value
 						dvdx <- x@dvdx
-						ytag <- paste0('reshape(',x@ytag,', ',
+						vtag <- paste0('reshape(',x@vtag,', ',
 													 as.character(enquote(value))[2],
 													 ')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 # see http://stackoverflow.com/a/8057007/164611
@@ -172,7 +172,7 @@ setMethod("[", signature(x="madness",i="ANY",j="ANY"),
 
 						retv <- new("madness", val=val, dvdx=dvdx,
 												xtag=x@xtag,
-												y=paste0(x@ytag,'[...]'),
+												vtag=paste0(x@vtag,'[...]'),
 												varx=x@varx)
 					})
 
@@ -193,10 +193,10 @@ aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {
 	oldids <- array(1:length(a@val),dim=dim(a@val))
 	prmids <- aperm(oldids,perm=perm,resize=resize)
 	dvdx <- a@dvdx[as.numeric(prmids),,drop=FALSE]
-	ytag <- paste0('aperm(',a@ytag,', ',perm,')')
+	vtag <- paste0('aperm(',a@vtag,', ',perm,')')
 	varx <- a@varx
 
-	new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+	new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 }
 
 #for vim modeline: (do not edit)

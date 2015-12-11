@@ -9,9 +9,9 @@
 \title{Madness Class.}
 \usage{
 \S4method{initialize}{madness}(.Object, val, dvdx, xtag = NA_character_,
-  ytag = NA_character_, varx = matrix(nrow = 0, ncol = 0))
+  vtag = NA_character_, varx = matrix(nrow = 0, ncol = 0))
 
-madness(val, dvdx = NULL, ytag = NULL, xtag = NULL, varx = NULL)
+madness(val, dvdx = NULL, vtag = NULL, xtag = NULL, varx = NULL)
 }
 \arguments{
 \item{.Object}{a \code{madness} object, or proto-object.}
@@ -25,7 +25,7 @@ variable, \eqn{X}{X}.}
 
 \item{xtag}{an optional name for the \eqn{X} variable.}
 
-\item{ytag}{an optional name for the \eqn{val} variable.}
+\item{vtag}{an optional name for the \eqn{val} variable.}
 
 \item{varx}{an optional variance-covariance matrix of
 the independent variable, \eqn{X}{X}.}
@@ -86,15 +86,15 @@ Operations between two objects of the class with distinct
 \code{xtag} data will result in an error, since they are 
 considered to have different independent variables.}
 
-\item{\code{ytag}}{an optional name for the \eqn{val} variable. 
+\item{\code{vtag}}{an optional name for the \eqn{val} variable. 
 This will be propagated forward.}
 
 \item{\code{varx}}{an optional variance-covariance matrix of
 the independent variable, \eqn{X}{X}.}
 }}
 \examples{
-obj <- new("madness", val=matrix(rnorm(10*10),nrow=10), dvdx=diag(100), xtag="foo", ytag="foo")
-obj2 <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", ytag="foo^2")
+obj <- new("madness", val=matrix(rnorm(10*10),nrow=10), dvdx=diag(100), xtag="foo", vtag="foo")
+obj2 <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", vtag="foo^2")
 
 }
 \author{

@@ -5,19 +5,19 @@
 \alias{setter}
 \alias{varx<-}
 \alias{varx<-,madness-method}
+\alias{vtag<-}
+\alias{vtag<-,madness-method}
 \alias{xtag<-}
 \alias{xtag<-,madness-method}
-\alias{ytag<-}
-\alias{ytag<-,madness-method}
 \title{Setter methods.}
 \usage{
 xtag(x) <- value
 
 \S4method{xtag}{madness}(x) <- value
 
-ytag(x) <- value
+vtag(x) <- value
 
-\S4method{ytag}{madness}(x) <- value
+\S4method{vtag}{madness}(x) <- value
 
 varx(x) <- value
 

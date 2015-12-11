@@ -59,10 +59,10 @@ setMethod("colSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 						# 2FIX: what to do about na.rm in derivative?
 						dvdx <- array(x@dvdx,dim=c(dim(x@val),ncol(x@dvdx))) 
 						dvdx <- matrix(base::colSums(dvdx,dims=dims),ncol=ncol(x@dvdx))
-						ytag <- paste0('colSums(',x@ytag,')')
+						vtag <- paste0('colSums(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #' @rdname colsums
 #' @exportMethod colMeans
@@ -82,10 +82,10 @@ setMethod("colMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 						} else {
 							dvdx <- matrix(colMeans(dvdx,dims=dims),ncol=ncol(x@dvdx))
 						}
-						ytag <- paste0('colMeans(',x@ytag,')')
+						vtag <- paste0('colMeans(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 
@@ -103,10 +103,10 @@ setMethod("rowSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 						# 2FIX: what to do about na.rm in derivative?
 						dvdx <- array(t(x@dvdx),dim=c(ncol(x@dvdx),dim(x@val)))
 						dvdx <- t(matrix(base::rowSums(dvdx,dims=dims+1),nrow=ncol(x@dvdx)))
-						ytag <- paste0('rowSums(',x@ytag,')')
+						vtag <- paste0('rowSums(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 #' @rdname colsums
 #' @exportMethod rowMeans
@@ -126,10 +126,10 @@ setMethod("rowMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 						} else {
 							dvdx <- t(matrix(base::rowMeans(dvdx,dims=dims+1),nrow=ncol(x@dvdx)))
 						}
-						ytag <- paste0('rowMeans(',x@ytag,')')
+						vtag <- paste0('rowMeans(',x@vtag,')')
 						varx <- x@varx
 
-						new("madness", val=val, dvdx=dvdx, ytag=ytag, xtag=xtag, varx=varx)
+						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
 #for vim modeline: (do not edit)
