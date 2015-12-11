@@ -33,7 +33,7 @@ M4_FILES					?= $(wildcard m4/*.m4)
 VMAJOR 						 = 0
 VMINOR 						 = 0
 VPATCH  					 = 0
-VDEV 							 = .5400
+VDEV 							 = .5510
 #VERSION 					 = 0.1402
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
@@ -48,6 +48,11 @@ LOCAL 						:= .local
 RCHECK 						 = $(PKG_NAME).Rcheck
 RCHECK_SENTINEL 	 = $(RCHECK)/$(PKG_NAME)/DESCRIPTION
 DRAT_SENTINEL   	 = .drat_$(PKG_TGZ)
+
+# WTF! 5.0.1, 5.0.0, 4.1.1, 4.1.0 mangle marithops
+# 4.0.x series and 3.1.0 has some other error about
+# U_REGEX_MISSING_CLOSING_BRACKET. so fuck. that.
+ROXYGEN_TARGZ 		 = $(LOCAL)/roxygen2_5.0.0.tar.gz 
 
 # Specify the directory holding R binaries. To use an alternate R build (say a
 # pre-prelease version) use `make RBIN=/path/to/other/R/` or `export RBIN=...`
@@ -284,7 +289,15 @@ $(LOCAL)/%/DESCRIPTION :
 	$(call MKDIR,$(LOCAL))
 	$(R_LOCALLY) -e "install.packages('$*', repos = 'http://cran.cnr.Berkeley.edu')" 
 
-deps: $(INSTALLED_DEPS)
+$(ROXYGEN_TARGZ) :
+	wget -O $@ https://cran.r-project.org/src/contrib/Archive/roxygen2/$(@F)
+
+.roxygen2 : $(ROXYGEN_TARGZ)
+	echo roxygen2 5.0.1 is borked!
+	$(R_LOCALLY) CMD INSTALL $<
+	touch $@
+
+deps: $(INSTALLED_DEPS) .roxygen2
 
 # roxygen it.
 $(RD_DUMMY) NAMESPACE: $(R_FILES)

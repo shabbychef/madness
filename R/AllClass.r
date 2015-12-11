@@ -268,7 +268,6 @@ setMethod('dim', 'madness', function(x) dim(val(x)) )
 #' @exportMethod length
 setMethod('length', 'madness', function(x) length(val(x)) )
 
-#' @name accessor
 #' @rdname accessor-methods
 #' @aliases dvdx
 #' @exportMethod dvdx
@@ -277,7 +276,6 @@ setGeneric('dvdx', signature="x", function(x) standardGeneric('dvdx'))
 #' @aliases dvdx,madness-method
 setMethod('dvdx', 'madness', function(x) x@dvdx )
 
-#' @name accessor
 #' @rdname accessor-methods
 #' @aliases xtag
 #' @exportMethod xtag
@@ -286,7 +284,6 @@ setGeneric('xtag', signature="x", function(x) standardGeneric('xtag'))
 #' @aliases xtag,madness-method
 setMethod('xtag', 'madness', function(x) x@xtag )
 
-#' @name accessor
 #' @rdname accessor-methods
 #' @aliases ytag
 #' @exportMethod ytag
@@ -295,7 +292,6 @@ setGeneric('ytag', signature="x", function(x) standardGeneric('ytag'))
 #' @aliases ytag,madness-method
 setMethod('ytag', 'madness', function(x) x@ytag )
 
-#' @name accessor
 #' @rdname accessor-methods
 #' @aliases varx
 #' @exportMethod varx
@@ -326,7 +322,6 @@ setGeneric('xtag<-', signature="x", function(x,value) standardGeneric('xtag<-'))
 #' @aliases xtag<-,madness-method
 setReplaceMethod('xtag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=value, ytag=x@ytag, varx=x@varx))
 
-#' @name setter
 #' @rdname setter-methods
 #' @aliases ytag<-
 #' @exportMethod ytag<-
@@ -335,7 +330,6 @@ setGeneric('ytag<-', signature="x", function(x,value) standardGeneric('ytag<-'))
 #' @aliases ytag<-,madness-method
 setReplaceMethod('ytag', 'madness', function(x,value) initialize(x, val=x@val, dvdx=x@dvdx, xtag=x@xtag, ytag=value, varx=x@varx))
 
-#' @name setter
 #' @rdname setter-methods
 #' @aliases varx<-
 #' @exportMethod varx<-

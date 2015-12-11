@@ -6,8 +6,8 @@
 \alias{\%*\%,array,madness-method}
 \alias{\%*\%,madness,array-class}
 \alias{\%*\%,madness,array-method}
-\alias{\%*\%,madness,madness-class}
 \alias{\%*\%,madness,madness-method}
+\alias{`\%*\%`,madness,madness-class}
 \alias{crossprod}
 \alias{crossprod,ANY,madness-method}
 \alias{crossprod,madness,ANY-method}

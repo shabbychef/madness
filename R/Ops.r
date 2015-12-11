@@ -344,9 +344,9 @@ setMethod("^", signature(e1="array",e2="madness"),ntothem)
 #UNFOLD
 
 # sum and prod#FOLDUP
-##' @rdname arithops
-##' @inheritParams base::sum
-##' @aliases sum,madness-class
+## rdname arithops
+## inheritParams base::sum
+## aliases sum,madness-class
 #setMethod("sum", 'madness',
 					#function(x,...,na.rm) {
 						## see Matrix::sum ...
@@ -354,6 +354,10 @@ setMethod("^", signature(e1="array",e2="madness"),ntothem)
 
 #UNFOLD
 
+
+
+# matrix multiplication!#FOLDUP
+#' @name marithops
 #' @title Basic Matrix Arithmetic Operations.
 #'
 #' @description
@@ -380,13 +384,10 @@ setMethod("^", signature(e1="array",e2="madness"),ntothem)
 #' @include AllClass.r
 #' @param x,y \code{madness} or numeric matrix values.
 #' @template etc
-#' @rdname marithops
-#' @name marithops
 NULL
 
-# matrix multiplication!#FOLDUP
 #' @rdname marithops
-#' @aliases %*%,madness,madness-class
+#' @aliases `%*%`,madness,madness-class
 setMethod("%*%", signature(x="madness",y="madness"),
 					function(x,y) {
 						xtag <- .check_common_xtag(x,y)
@@ -432,7 +433,6 @@ setMethod("%*%", signature(x="array",y="madness"),
 # cross product!#FOLDUP
 
 #' @param ... ignored here.
-#' @name marithops
 #' @rdname marithops
 #' @aliases crossprod
 #' @exportMethod crossprod
@@ -457,7 +457,6 @@ setMethod("crossprod", signature(x="madness",y="missing"),
 setMethod("crossprod", signature(x="ANY",y="madness"),
 					function(x,y) { t(x) %*% y })
 
-#' @name marithops
 #' @rdname marithops
 #' @aliases tcrossprod
 #' @exportMethod tcrossprod
@@ -518,7 +517,6 @@ setMethod("tcrossprod", signature(x="ANY",y="madness"),
 #' @name outer
 NULL
 
-#' @name outer
 #' @rdname outer
 #' @aliases outer
 #' @exportMethod outer
@@ -706,10 +704,10 @@ setMethod("kronecker", signature(X="array",Y="madness"),
 						preval@ytag <- paste0('kronecker(numeric, ',Y@ytag,')')
 						preval
 					})
+
+# 2FIX: do I have to overload `%x%` now? probably not, right?
 #UNFOLD
 # 2FIX: 
-# add kron?
-# kronecker sum?
 # svd!
 #
 						#proval <- switch(FUN,

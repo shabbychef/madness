@@ -13,6 +13,7 @@ cache
 m4
 Makefile
 man-roxygen
+.roxygen2
 nodist
 rebuildTags.sh
 madness_\d.\d+.tar.gz$
