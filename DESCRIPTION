@@ -39,6 +39,7 @@ Collate:
     'sums.r'
     'theta.r'
     'trace.r'
+    'twomoments.r'
     'vcov.r'
     'vec.r'
 RoxygenNote: 5.0.0

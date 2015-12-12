@@ -289,10 +289,33 @@ test_that("theta",{#FOLDUP
 	th <- theta(MV)
 	MV <- array(rnorm(100*3*3*3),dim=c(100,3,3,3))
 	th <- theta(MV)
+	th <- theta(MV,xtag='FOO')
 
 	# and as data frame.
 	MV <- data.frame(a=runif(100),b=rnorm(100),c=exp(runif(100)))
 	th <- theta(MV)
+	th <- theta(MV,xtag='FOO')
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
+test_that("twomoments",{#FOLDUP
+	# first on arrays...
+	set.char.seed('818fae1e-30b3-4bcb-bb54-691f4c8d05ae')
+	MV <- array(rnorm(100*3),dim=c(100,3))
+	th <- twomoments(MV)
+	MV <- array(rnorm(100*3*3),dim=c(100,3,3))
+	th <- twomoments(MV)
+	MV <- array(rnorm(100*3*3*3),dim=c(100,3,3,3))
+	th <- twomoments(MV)
+	th <- twomoments(MV,xtag='FOO')
+	th <- twomoments(MV,xtag='FOO',df=0)
+
+	# and as data frame.
+	MV <- data.frame(a=runif(100),b=rnorm(100),c=exp(runif(100)))
+	th <- twomoments(MV)
+	th <- twomoments(MV,xtag='FOO')
+	th <- twomoments(MV,xtag='FOO',df=0)
 
 	# sentinel:
 	expect_true(TRUE)

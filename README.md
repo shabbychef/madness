@@ -36,7 +36,7 @@ if (require(devtools)) {
 
 # Basic Usage
 
-You can store an initial value in a madness object, 
+You can store an initial value in a `madness` object, 
 its derivative with respect to the independent variable, along with the 
 'name' of the dependent and independent variables, and an optional 
 variance-covariance matrix of the independent variable. These are mostly
@@ -111,6 +111,165 @@ print(madx4)
 ##  dvdx: -0.87 -0.72 -0.11 -1.6 -0.58 0.21 0.7 -0.26 -1.4 -0.23 0.72 -2.7 -0.031 0.49 -0.0021 -0.56 ...
 ##  varx:  ...
 ```
+
+## Variance-Covariance
+
+You can optionally attach the variance-covariance matrix of the 'X' variable to a 
+`madness` object. Then the estimated variance-covariance of computed quantities
+can be retrieved via the `vcov` method:
+
+
+```r
+set.seed(456)
+# create some fake data:
+nobs <- 1000
+adf <- data.frame(x = rnorm(nobs), y = runif(nobs), 
+    eps = rnorm(nobs))
+adf$z <- 2 * adf$x - 3 * adf$y + 0.5 * adf$eps
+# perform linear regression on it
+lmod <- lm(z ~ x + y, data = adf)
+# guess what? you can stuff it into a madness
+# directly
+amad <- as.madness(lmod)
+print(vcov(amad))
+```
+
+```
+##          [,1]     [,2]     [,3]
+## [1,]  0.00096 -2.0e-05 -1.4e-03
+## [2,] -0.00002  2.5e-04  1.2e-05
+## [3,] -0.00145  1.2e-05  2.9e-03
+```
+
+```r
+# now, say, take the norm
+mynorm <- sqrt(crossprod(amad))
+print(mynorm)
+```
+
+```
+## class: madness 
+##         d sqrt((t(val) %*% val))
+##  calc: -------------------------- 
+##                   d val
+##   val: 3.6 ...
+##  dvdx: 0.0037 0.55 -0.83 ...
+##  varx: 0.00096 -2e-05 -0.0014 ...
+```
+
+```r
+print(vcov(mynorm))
+```
+
+```
+##        [,1]
+## [1,] 0.0021
+```
+
+# Markowitz portfolio
+
+There are two utilities for easily computing `madness` objects representing the first two moments of an object.
+Here we use these to compute the Markowitz portfolio of some assets, along with the estimated variance-covariance
+of the same. Here I first download the weekly simple returns of the Fama French three factors. (Note that you cannot
+directly invest in these, except arguably 'the market'. The point of the example is to use realistic returns, not provide
+investing advice.)
+
+
+```r
+# the Quandl package is better, but dealing with
+# the auth is a PITA:
+ffweekly <- read.csv("https://www.quandl.com/api/v3/datasets/KFRENCH/FACTORS_W.csv")
+ffrets <- 0.01 * ffweekly[, c("Mkt.RF", "SMB", "HML")]
+```
+
+Now compute the first two moments via `twomoments` and compute the Markowitz portfolio
+
+```r
+twom <- twomoments(ffrets)
+markowitz <- solve(twom$Sigma, twom$mu)
+print(val(markowitz))
+```
+
+```
+##      [,1]
+## [1,]  1.3
+## [2,]  1.3
+## [3,]  2.2
+```
+
+```r
+print(vcov(markowitz))
+```
+
+```
+##        [,1]    [,2]    [,3]
+## [1,]  0.303 -0.0478 -0.1436
+## [2,] -0.048  0.9924  0.0057
+## [3,] -0.144  0.0057  0.7508
+```
+
+```r
+wald <- val(markowitz)/sqrt(diag(vcov(markowitz)))
+print(wald)
+```
+
+```
+##      [,1]
+## [1,]  2.4
+## [2,]  1.3
+## [3,]  2.5
+```
+
+## Does that really work?
+
+I don't know. Let's perform a bunch of simulations to see if the Wald statistics are OK. We will
+create a population with 5 stocks where the true Markowitz portfolio is -2,-1,0,1,2.  We will
+perform 1000 simulations of 1250 days of returns from that population, computing the Markowitz
+portfolio each time. Then take the difference between the estimated and true Markowitz portfolios,
+divided by the standard errors. 
+
+
+```r
+genrows <- function(nsim, mu, haSg) {
+    p <- length(mu)
+    X <- matrix(rnorm(nsim * p), nrow = nsim, ncol = p) %*% 
+        haSg
+    X <- t(rep(mu, nsim) + t(X))
+}
+
+true.mp <- array(seq(-2, 2))
+dim(true.mp) <- c(length(true.mp), 1)
+p <- length(true.mp)
+set.seed(92385)
+true.Sigma <- 0.00017 * (3/(p + 5)) * crossprod(matrix(runif((p + 
+    5) * p, min = -1, max = 1), ncol = p))
+true.mu <- true.Sigma %*% true.mp
+haSigma <- chol(true.Sigma)
+
+nsim <- 1000
+ndays <- 1250
+set.seed(23891)
+retv <- replicate(nsim, {
+    X <- genrows(ndays, true.mu, haSigma)
+    twom <- twomoments(X)
+    markowitz <- solve(twom$Sigma, twom$mu)
+    marginal.wald <- (val(markowitz) - true.mp)/sqrt(diag(vcov(markowitz)))
+})
+retv <- aperm(retv, c(1, 3, 2))
+```
+
+This should be approximately normal, so we Q-Q plot against
+normality. LGTM.
+
+
+```r
+require(ggplot2)
+ph <- qplot(sample = retv[1, , 1], stat = "qq") + geom_abline(intercept = 0, 
+    slope = 1, colour = "red")
+print(ph)
+```
+
+![plot of chunk marksym_check](github_extra/figure/marksym_check-1.png) 
 
 # Enough already, bring me some Scotch!
 

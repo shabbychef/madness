@@ -2,9 +2,9 @@
 % Please edit documentation in R/theta.r
 \name{theta}
 \alias{theta}
-\title{Estimate the symmetric second moment matrix of values.}
+\title{Estimate the symmetric second moment array of values.}
 \usage{
-theta(X, vcov.func=vcov)
+theta(X, vcov.func=vcov, xtag=NULL)
 }
 \arguments{
 \item{X}{a multidimensional array (or a data frame) of observed values.}
@@ -12,6 +12,9 @@ theta(X, vcov.func=vcov)
 \item{vcov.func}{a function which takes an object of class \code{lm},
 and computes a variance-covariance matrix. If equal to the string
 "normal", we assume multivariate normal returns.}
+
+\item{xtag}{an optional string tag giving the name of the input data.
+defaults to figuring it out from the input expression.}
 }
 \value{
 A \code{madness} object representing the mean of the outer
@@ -25,9 +28,9 @@ returning a \code{madness} object.
 \details{
 Given a 
 \eqn{n\times k_1 \times k_2 \times ... \times k_l}{n x k_1 x k_2 ... x k_l}
-array, \eqn{X}{X}, computes the 
+array whose 'rows' are independent observations of \eqn{X}{X}, computes the 
 \eqn{k_1 \times k_2 \times ... \times k_l \times k_1 \times k_2 ... k_l}{k_1 x k_2 x ... x k_l x k_1 x k_2 ... k_l}
-matrix of the mean of \eqn{X}{X} based on \eqn{n}{n} observations,
+array of the mean of \eqn{\mathrm{outer}(X,X)}{outer(X,X)} based on \eqn{n}{n} observations,
 returned as a \code{\link{madness}} object. The variance-covariance
 is also estimated, and stored in the object.
 
@@ -52,5 +55,8 @@ th <- theta(X)
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
+}
+\seealso{
+\code{\link{twomoments}}
 }
 
