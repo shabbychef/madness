@@ -157,22 +157,20 @@ xy <- cbind(x, y)
 xytheta <- theta(xy)
 nfeat <- ncol(x)
 ntgt <- ncol(y)
-G1 <- xytheta[1:nfeat, 1:nfeat]
-CT <- rbind(diag(nfeat), matrix(0, nrow = ntgt, ncol = nfeat))
-G2 <- t(CT) %*% solve(xytheta, CT)
+GammaB <- xytheta[1:nfeat, nfeat + (1:ntgt)]
+SiB <- -solve(xytheta)[nfeat + (1:ntgt), 1:nfeat]
+EH <- GammaB %*% SiB
+oEH <- diag(nfeat) + EH
 
-HLT <- matrix.trace(G1 %*% G2) - nfeat
-Hwald <- val(HLT)/sqrt(diag(vcov(HLT)))
-PBT <- matrix.trace(solve(G1 %*% G2)) - nfeat
-Pwald <- val(PBT)/sqrt(diag(vcov(PBT)))
-LRT <- 1/det(G1 %*% G2)
-Uwald <- val(LRT)/sqrt(diag(vcov(LRT)))
-RLR <- maxeig(G1 %*% G2) - 1
-Rwald <- val(RLR)/sqrt(diag(vcov(RLR)))
+HLT <- matrix.trace(oEH) - nfeat
+PBT <- matrix.trace(solve(oEH)) - ntgt
+LRT <- (1/det(oEH)) - 1
+RLR <- maxeig(oEH) - 1
+MGLH <- c(HLT, PBT, LRT, RLR)
+walds <- val(MGLH)/sqrt(diag(vcov(MGLH)))
 
 preso <- data.frame(type = c("HLT", "PBT", "LRT", "RLR"), 
-    stat = as.numeric(c(HLT, PBT, LRT, RLR)), Wald.stat = as.numeric(c(Hwald, 
-        Pwald, Uwald, Rwald)))
+    stat = as.numeric(MGLH), Wald.stat = as.numeric(walds))
 # rut-roh!
 kable(preso)
 ```
@@ -182,8 +180,8 @@ kable(preso)
 |type |   stat| Wald.stat|
 |:----|------:|---------:|
 |HLT  |  66.59|       5.0|
-|PBT  |  -1.69|     -15.6|
-|LRT  |   0.01|       3.2|
+|PBT  | -10.69|     -98.3|
+|LRT  |  -0.99|    -591.8|
 |RLR  | 419.77|       4.1|
 
 That's not good.
