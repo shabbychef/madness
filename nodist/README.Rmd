@@ -127,10 +127,10 @@ nfeat <- ncol(x)
 ntgt <- ncol(y)
 GammaB <- xytheta[1:nfeat,nfeat+(1:ntgt)]
 SiB <- - solve(xytheta)[nfeat+(1:ntgt),1:nfeat]
-EH  <- GammaB %*% SiB
-oEH <- diag(nfeat) + EH
+EH  <- SiB %*% GammaB 
+oEH <- diag(ntgt) + EH
 
-HLT <- matrix.trace(oEH) - nfeat
+HLT <- matrix.trace(oEH) - ntgt
 PBT <- matrix.trace(solve(oEH)) - ntgt
 LRT <- (1 / det(oEH)) - 1
 RLR <- maxeig(oEH) - 1

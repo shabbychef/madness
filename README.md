@@ -159,10 +159,10 @@ nfeat <- ncol(x)
 ntgt <- ncol(y)
 GammaB <- xytheta[1:nfeat, nfeat + (1:ntgt)]
 SiB <- -solve(xytheta)[nfeat + (1:ntgt), 1:nfeat]
-EH <- GammaB %*% SiB
-oEH <- diag(nfeat) + EH
+EH <- SiB %*% GammaB
+oEH <- diag(ntgt) + EH
 
-HLT <- matrix.trace(oEH) - nfeat
+HLT <- matrix.trace(oEH) - ntgt
 PBT <- matrix.trace(solve(oEH)) - ntgt
 LRT <- (1/det(oEH)) - 1
 RLR <- maxeig(oEH) - 1
@@ -177,12 +177,12 @@ kable(preso)
 
 
 
-|type |   stat| Wald.stat|
-|:----|------:|---------:|
-|HLT  |  66.59|       5.0|
-|PBT  | -10.69|     -98.3|
-|LRT  |  -0.99|    -591.8|
-|RLR  | 419.77|       4.1|
+|type |  stat| Wald.stat|
+|:----|-----:|---------:|
+|HLT  | 66.59|       5.0|
+|PBT  | -1.69|     -15.6|
+|LRT  | -0.99|    -591.8|
+|RLR  | 76.05|       4.8|
 
 That's not good.
 
