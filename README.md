@@ -269,7 +269,7 @@ ph <- qplot(sample = retv[1, , 1], stat = "qq") + geom_abline(intercept = 0,
 print(ph)
 ```
 
-![plot of chunk marksym_check](github_extra/figure/marksym_check-1.png) 
+<img src="github_extra/figure/marksym_check-1.png" title="plot of chunk marksym_check" alt="plot of chunk marksym_check" width="600px" height="500px" />
 
 # Enough already, bring me some Scotch!
 
