@@ -128,7 +128,8 @@ investing advice.)
 
 ```{r quandl,cache=TRUE,eval=TRUE,echo=TRUE}
 # the Quandl package is better, but dealing with the auth is a PITA:
-ffweekly <- read.csv('https://www.quandl.com/api/v3/datasets/KFRENCH/FACTORS_W.csv')
+library(curl)
+ffweekly <- read.csv(curl('https://www.quandl.com/api/v3/datasets/KFRENCH/FACTORS_W.csv'))
 ffrets <- 1e-2 * ffweekly[,c('Mkt.RF','SMB','HML')]
 ```
 
@@ -186,13 +187,50 @@ ph <- qplot(sample=retv[1,,1],stat='qq') + geom_abline(intercept=0,slope=1,colou
 print(ph)
 ```
 
+# Maximum eigenvalue of the covariance matrix
+
+Consider the case of a 10-vector drawn from a population with covariance matrix whose largest eigenvalue 
+is, say, 17.  
+One observes some fixed number of independent observations of the 10-vector, and
+computes the sample covariance matrix, then computes the maximum eigenvalue. Using a
+`madness` object, one can automagically estimate the standard error via the delta method.
+The sample calculation looks as follows:
+
+```{r cosym_simple,cache=TRUE,eval=TRUE,echo=TRUE}
+genrows <- function(nsim,mu,haSg) {
+	p <- length(mu)
+  X <- matrix(rnorm(nsim*p),nrow=nsim,ncol=p) %*% haSg
+  X <- t(rep(mu,nsim) + t(X))
+}
+
+p <- 10
+set.seed(123950)
+true.mu <- array(rnorm(p),dim=c(p,1))
+true.Sigma <- diag(c(17,runif(p-1,min=1,max=16)))
+haSigma <- chol(true.Sigma)
+
+nsim <- 1000
+ndays <- 1250
+
+X <- genrows(ndays,true.mu,haSigma)
+twom <- twomoments(X)
+maxe <- maxeig(twom$Sigma)
+print(maxe)
+print(vcov(maxe))
+```
+
+Now perform some simulations to see if these are accurate:
+
+
+
 # Enough already, bring me some Scotch!
 
 An example is in order. Consider the tasting data compiled by Nessie on 86 Scotch whiskies. The data
 are availble online and look like so:
 
 ```{r loadscotch,cache=TRUE,eval=TRUE,echo=TRUE}
-wsky <- read.csv('https://www.mathstat.strath.ac.uk/outreach/nessie/datasets/whiskies.txt',
+library(curl)
+wsky <- read.csv(curl('https://www.mathstat.strath.ac.uk/outreach/nessie/datasets/whiskies.txt'),
 	stringsAsFactors=FALSE)
 kable(head(wsky))
 ```

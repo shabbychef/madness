@@ -42,4 +42,4 @@ Collate:
     'twomoments.r'
     'vcov.r'
     'vec.r'
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1

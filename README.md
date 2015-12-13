@@ -178,7 +178,8 @@ investing advice.)
 ```r
 # the Quandl package is better, but dealing with
 # the auth is a PITA:
-ffweekly <- read.csv("https://www.quandl.com/api/v3/datasets/KFRENCH/FACTORS_W.csv")
+library(curl)
+ffweekly <- read.csv(curl("https://www.quandl.com/api/v3/datasets/KFRENCH/FACTORS_W.csv"))
 ffrets <- 0.01 * ffweekly[, c("Mkt.RF", "SMB", "HML")]
 ```
 
@@ -271,6 +272,62 @@ print(ph)
 
 <img src="github_extra/figure/marksym_check-1.png" title="plot of chunk marksym_check" alt="plot of chunk marksym_check" width="600px" height="500px" />
 
+# Maximum eigenvalue of the covariance matrix
+
+Consider the case of a 10-vector drawn from a population with covariance matrix whose largest eigenvalue 
+is, say, 17.  
+One observes some fixed number of independent observations of the 10-vector, and
+computes the sample covariance matrix, then computes the maximum eigenvalue. Using a
+`madness` object, one can automagically estimate the standard error via the delta method.
+The sample calculation looks as follows:
+
+
+```r
+genrows <- function(nsim, mu, haSg) {
+    p <- length(mu)
+    X <- matrix(rnorm(nsim * p), nrow = nsim, ncol = p) %*% 
+        haSg
+    X <- t(rep(mu, nsim) + t(X))
+}
+
+p <- 10
+set.seed(123950)
+true.mu <- array(rnorm(p), dim = c(p, 1))
+true.Sigma <- diag(c(17, runif(p - 1, min = 1, max = 16)))
+haSigma <- chol(true.Sigma)
+
+nsim <- 1000
+ndays <- 1250
+
+X <- genrows(ndays, true.mu, haSigma)
+twom <- twomoments(X)
+maxe <- maxeig(twom$Sigma)
+print(maxe)
+```
+
+```
+## class: madness 
+##         d maxeig(Sigma)
+##  calc: ----------------- 
+##               d X
+##   val: 18 ...
+##  dvdx: 0 1.6 0.0069 -0.16 0.051 -0.0065 0.051 -0.0024 0.032 -0.035 -0.05 0.99 0.0087 -0.2 0.064 -0.0082 0.065 -0.003 0.041 -0.044 -0.062 1.9e-05 -0.00088 0.00028 -3.6e-05 0.00028 -1.3e-05 0.00018 -0.00019 -0.00027 0.01 -0.0064 0.00083 -0.0065 0.00031 -0.0041 0.0045 0.0063 0.001 -0.00026 0.0021 -9.7e-05 0.0013 -0.0014 -0.002 1.7e-05 -0.00027 1.3e-05 -0.00017 0.00018 0.00026 0.001 -9.9e-05 0.0013 -0.0014 -0.002 2.3e-06 -6.2e-05 6.8e-05 9.5e-05 0.00041 -0.00091 -0.0013 5e-04 0.0014 0.00097 ...
+##  varx: 2.3e-32 9.1e-20 4.1e-19 1.7e-19 1.5e-19 -1.1e-19 -1.1e-19 2.5e-19 -7.2e-20 -4.1e-19 -1.6e-19 1.9e-18 -5.8e-19 -2.9e-19 -1.9e-19 2.2e-19 2e-19 -3.8e-19 1.6e-19 6.2e-19 1.4e-19 5.6e-19 -2.5e-19 -4.2e-19 6.2e-19 5.2e-19 -8.5e-19 3.1e-19 1.4e-18 3.4e-19 1.3e-18 -7.9e-20 2.2e-19 6.3e-20 -1.7e-19 1.4e-19 3.6e-19 6.5e-20 1.5e-18 2.2e-19 1.8e-19 -2.7e-19 7.1e-20 5.7e-19 1e-19 5.8e-20 -2e-19 4.2e-19 -1.5e-19 -7.3e-19 -2.3e-19 1.4e-18 2.5e-19 -1e-19 -4.8e-19 -1.7e-19 4.1e-19 1.8e-19 9.9e-19 2.7e-19 8.6e-19 -3.8e-19 -1.1e-19 -4.3e-19 -4.2e-19 1.4e-19 ...
+```
+
+```r
+print(vcov(maxe))
+```
+
+```
+##      [,1]
+## [1,] 0.54
+```
+
+Now perform some simulations to see if these are accurate:
+
+
+
 # Enough already, bring me some Scotch!
 
 An example is in order. Consider the tasting data compiled by Nessie on 86 Scotch whiskies. The data
@@ -278,7 +335,8 @@ are availble online and look like so:
 
 
 ```r
-wsky <- read.csv("https://www.mathstat.strath.ac.uk/outreach/nessie/datasets/whiskies.txt", 
+library(curl)
+wsky <- read.csv(curl("https://www.mathstat.strath.ac.uk/outreach/nessie/datasets/whiskies.txt"), 
     stringsAsFactors = FALSE)
 kable(head(wsky))
 ```
