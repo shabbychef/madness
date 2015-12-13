@@ -293,10 +293,11 @@ genrows <- function(nsim, mu, haSg) {
 p <- 10
 set.seed(123950)
 true.mu <- array(rnorm(p), dim = c(p, 1))
-true.Sigma <- diag(c(17, runif(p - 1, min = 1, max = 16)))
+true.maxe <- 17
+true.Sigma <- diag(c(true.maxe, runif(p - 1, min = 1, 
+    max = 16)))
 haSigma <- chol(true.Sigma)
 
-nsim <- 1000
 ndays <- 1250
 
 X <- genrows(ndays, true.mu, haSigma)
@@ -326,6 +327,23 @@ print(vcov(maxe))
 
 Now perform some simulations to see if these are accurate:
 
+
+```r
+nsim <- 100
+set.seed(23401)
+retv <- replicate(nsim, {
+    X <- genrows(ndays, true.mu, haSigma)
+    twom <- twomoments(X)
+    maxe <- maxeig(twom$Sigma)
+    marginal.wald <- (val(maxe) - true.maxe)/sqrt(diag(vcov(maxe)))
+})
+require(ggplot2)
+ph <- qplot(sample = as.numeric(retv), stat = "qq") + 
+    geom_abline(intercept = 0, slope = 1, colour = "red")
+print(ph)
+```
+
+![plot of chunk cosym_mo](github_extra/figure/cosym_mo-1.png) 
 
 
 # Enough already, bring me some Scotch!
