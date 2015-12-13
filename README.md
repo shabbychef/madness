@@ -329,7 +329,7 @@ Now perform some simulations to see if these are accurate:
 
 
 ```r
-nsim <- 100
+nsim <- 500
 set.seed(23401)
 retv <- replicate(nsim, {
     X <- genrows(ndays, true.mu, haSigma)
@@ -345,6 +345,13 @@ print(ph)
 
 ![plot of chunk cosym_mo](github_extra/figure/cosym_mo-1.png) 
 
+Why the bias? There are a number of possibilities:
+
+  1. Broken example. Am I really checking what I intended?
+	2. Broken derivative code. Easy to check.
+  3. Failure to take symmetry into account.
+  4. Sample size not large enough. (ha ha.)
+  5. Derivative equal or near zero, requiring second term expansion in delta method.
 
 # Enough already, bring me some Scotch!
 
@@ -398,8 +405,8 @@ EH <- SiB %*% GammaB
 oEH <- diag(ntgt) + EH
 
 HLT <- matrix.trace(oEH) - ntgt
-PBT <- matrix.trace(solve(oEH)) - ntgt
-LRT <- (1/det(oEH)) - 1
+PBT <- ntgt - matrix.trace(solve(oEH))
+LRT <- log(det(oEH))
 RLR <- maxeig(oEH) - 1
 MGLH <- c(HLT, PBT, LRT, RLR)
 walds <- val(MGLH)/sqrt(diag(vcov(MGLH)))
@@ -412,16 +419,31 @@ kable(preso)
 
 
 
-|type |  stat| Wald.stat|
-|:----|-----:|---------:|
-|HLT  | 66.59|       5.0|
-|PBT  | -1.69|     -15.6|
-|LRT  | -0.99|    -591.8|
-|RLR  | 76.05|       4.8|
+|type | stat| Wald.stat|
+|:----|----:|---------:|
+|HLT  | 66.6|       5.0|
+|PBT  |  1.7|      15.6|
+|LRT  |  5.2|      16.8|
+|RLR  | 76.0|       4.8|
 
-That's not good.
+These all cast doubt on the hypothesis of 'no connection between geography and taste', although
+I am accustomed to seeing Wald statistics being nearly equivalent. This is still beta code.
+
+We also have the estimated standard error covariance of the vector of 
+MGLH statistics, turned into a correlation matrix here:
 
 
+```r
+print(cov2cor(vcov(MGLH)))
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,] 1.00 0.15 0.75 0.98
+## [2,] 0.15 1.00 0.75 0.11
+## [3,] 0.75 0.75 1.00 0.71
+## [4,] 0.98 0.11 0.71 1.00
+```
 
 # Correctness
 

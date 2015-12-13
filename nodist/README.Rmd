@@ -222,7 +222,7 @@ print(vcov(maxe))
 Now perform some simulations to see if these are accurate:
 
 ```{r cosym_mo,cache=TRUE,eval=TRUE,echo=TRUE}
-nsim <- 100
+nsim <- 500
 set.seed(23401)
 retv <- replicate(nsim,{
   X <- genrows(ndays,true.mu,haSigma)
@@ -235,6 +235,13 @@ ph <- qplot(sample=as.numeric(retv),stat='qq') + geom_abline(intercept=0,slope=1
 print(ph)
 ```
 
+Why the bias? There are a number of possibilities:
+
+  1. Broken example. Am I really checking what I intended?
+	2. Broken derivative code. Easy to check.
+  3. Failure to take symmetry into account.
+  4. Sample size not large enough. (ha ha.)
+  5. Derivative equal or near zero, requiring second term expansion in delta method.
 
 # Enough already, bring me some Scotch!
 
@@ -273,8 +280,8 @@ EH  <- SiB %*% GammaB
 oEH <- diag(ntgt) + EH
 
 HLT <- matrix.trace(oEH) - ntgt
-PBT <- matrix.trace(solve(oEH)) - ntgt
-LRT <- (1 / det(oEH)) - 1
+PBT <- ntgt - matrix.trace(solve(oEH)) 
+LRT <- log(det(oEH))
 RLR <- maxeig(oEH) - 1
 MGLH <- c(HLT,PBT,LRT,RLR)
 walds <- val(MGLH) / sqrt(diag(vcov(MGLH)))
@@ -286,9 +293,15 @@ Wald.stat=as.numeric(walds))
 kable(preso)
 ```
 
-That's not good.
+These all cast doubt on the hypothesis of 'no connection between geography and taste', although
+I am accustomed to seeing Wald statistics being nearly equivalent. This is still beta code.
 
+We also have the estimated standard error covariance of the vector of 
+MGLH statistics, turned into a correlation matrix here:
 
+```{r mglh_mo,eval=TRUE,echo=TRUE,cache=FALSE}
+print(cov2cor(vcov(MGLH)))
+```
 
 # Correctness
 
