@@ -347,11 +347,11 @@ print(ph)
 
 Why the bias? There are a number of possibilities:
 
-  1. Broken example. Am I really checking what I intended?
+	1. Broken example. Am I really checking what I intended?
 	2. Broken derivative code. Easy to check.
-  3. Failure to take symmetry into account.
-  4. Sample size not large enough. (ha ha.)
-  5. Derivative equal or near zero, requiring second term expansion in delta method.
+	3. Failure to take symmetry into account.
+	4. Sample size not large enough. (ha ha.)
+	5. Derivative equal or near zero, requiring second term expansion in delta method.
 
 # Enough already, bring me some Scotch!
 
