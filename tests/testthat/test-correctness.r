@@ -193,6 +193,7 @@ test_that("sums functions",{#FOLDUP
 		expect_small_err(xval,function(x) { colMeans(x,na.rm=na.rm) })
 		expect_small_err(xval,function(x) { rowSums(x,na.rm=na.rm) })
 		expect_small_err(xval,function(x) { rowMeans(x,na.rm=na.rm) })
+		expect_small_err(xval,function(x) { sum(x,na.rm=na.rm) })
 	}
 	
 	# sentinel:

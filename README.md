@@ -386,7 +386,10 @@ are zero. The MGLH is classically approached by four different tests, which typi
 answer. 
 
 First, we grab the geographic and taste data, prepend a one to the vector, take an outer product
-and compute the mean and covariance:
+and compute the mean and covariance. The MGLH statistics can be posed in terms of the eigenvalues
+of a certain matrix. Here these are statistics are computed so as to equal zero under the null
+hypothesis of all zero linear regression coefficient from geography to taste. We get the approximate
+standard errors from the delta method, and compute Wald statistics.
 
 
 ```r
@@ -406,14 +409,15 @@ oEH <- diag(ntgt) + EH
 
 HLT <- matrix.trace(oEH) - ntgt
 PBT <- ntgt - matrix.trace(solve(oEH))
+# this is not the LRT, but log of 1/LRT. sue me.
 LRT <- log(det(oEH))
 RLR <- maxeig(oEH) - 1
 MGLH <- c(HLT, PBT, LRT, RLR)
 walds <- val(MGLH)/sqrt(diag(vcov(MGLH)))
 
+# put them together to show them:
 preso <- data.frame(type = c("HLT", "PBT", "LRT", "RLR"), 
     stat = as.numeric(MGLH), Wald.stat = as.numeric(walds))
-# rut-roh!
 kable(preso)
 ```
 
@@ -428,9 +432,10 @@ kable(preso)
 
 These all cast doubt on the hypothesis of 'no connection between geography and taste', although
 I am accustomed to seeing Wald statistics being nearly equivalent. This is still beta code.
-
 We also have the estimated standard error covariance of the vector of 
-MGLH statistics, turned into a correlation matrix here:
+MGLH statistics, turned into a correlation matrix here. The four test methods have positively
+correlated standard errors, meaning we should not be more confident if all four suggest
+rejecting the null.
 
 
 ```r
@@ -660,6 +665,9 @@ expect_less_than(test_harness(xval, function(x) {
     chol(fsym(x))
 }), 1e-06)
 ```
+
+The functions `twomoments` and `theta` respect the symmetry of the quantities
+being estimated.
 
 # Warnings
 

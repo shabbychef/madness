@@ -132,5 +132,40 @@ setMethod("rowMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
+# sum and prod#FOLDUP
+# exportMethod sum
+# rdname colsums
+# setGeneric('sum', function(x, ..., na.rm = FALSE) standardGeneric('sum'), useAsDefault = function(x, ..., na.rm = FALSE) { base::sum(x, ..., na.rm=na.rm) })
+#' @param x a numeric or \code{madness} object.
+#' @param na.rm logical. Should missing values (including \sQuote{NaN}) be
+#' removed?
+#' @param ... ignored here.
+#' @inheritParams base::sum
+#' @rdname colsums
+#' @aliases sum
+#' @aliases sum,madness-class
+setMethod("sum", signature(x="madness"),
+					function(x, ..., na.rm = FALSE) {
+						xtag <- x@xtag
+						val <- sum(x@val,na.rm=na.rm)
+
+						if (na.rm) { 
+							isok <- !(is.na(x@val) | is.nan(x@val))
+							dvdx <- colSums(x@dvdx[which(isok),])
+						} else {
+							dvdx <- colSums(x@dvdx)
+						}
+						dvdx <- matrix(dvdx,nrow=1)
+
+						vtag <- paste0('sum(',x@vtag,', na.rm=',na.rm,')')
+						varx <- x@varx
+
+						retv <- new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
+						retv <- retv + sum(...,na.rm=na.rm)
+						retv
+					})
+#UNFOLD
+
+
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r

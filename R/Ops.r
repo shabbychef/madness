@@ -343,18 +343,6 @@ setMethod("^", signature(e1="numeric",e2="madness"),ntothem)
 setMethod("^", signature(e1="array",e2="madness"),ntothem)
 #UNFOLD
 
-# sum and prod#FOLDUP
-## rdname arithops
-## inheritParams base::sum
-## aliases sum,madness-class
-#setMethod("sum", 'madness',
-					#function(x,...,na.rm) {
-						## see Matrix::sum ...
-					#})
-
-#UNFOLD
-
-
 
 # matrix multiplication!#FOLDUP
 #' @name marithops
