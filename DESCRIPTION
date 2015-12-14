@@ -37,6 +37,7 @@ Collate:
     'numderiv.r'
     'reshape.r'
     'solve.r'
+    'sum.r'
     'sums.r'
     'theta.r'
     'trace.r'

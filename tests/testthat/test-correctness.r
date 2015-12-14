@@ -182,7 +182,7 @@ test_that("matwise functions",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
-test_that("sums functions",{#FOLDUP
+test_that("sum functions",{#FOLDUP
 	set.char.seed("25e43832-3030-40cf-acf8-fa43bd56dc09")
 	xval <- matrix(1 + runif(4*4),nrow=4)
 
@@ -193,8 +193,38 @@ test_that("sums functions",{#FOLDUP
 		expect_small_err(xval,function(x) { colMeans(x,na.rm=na.rm) })
 		expect_small_err(xval,function(x) { rowSums(x,na.rm=na.rm) })
 		expect_small_err(xval,function(x) { rowMeans(x,na.rm=na.rm) })
-		expect_small_err(xval,function(x) { sum(x,na.rm=na.rm) })
 	}
+
+	xval <- matrix(runif(6*6,min=1,max=2),nrow=6)
+	xval[xval < 1.2] <- NA
+	na.rm <- TRUE
+	expect_small_err(xval,function(x) { colSums(x,na.rm=na.rm) })
+	expect_small_err(xval,function(x) { colMeans(x,na.rm=na.rm) })
+	expect_small_err(xval,function(x) { rowSums(x,na.rm=na.rm) })
+	expect_small_err(xval,function(x) { rowMeans(x,na.rm=na.rm) })
+	
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
+test_that("sumprod functions",{#FOLDUP
+	set.char.seed("a5392bf9-9b9b-4411-87f5-9e40365c73d9")
+	xval <- matrix(runif(4*4,min=1,max=2),nrow=4)
+	for (na.rm in c(FALSE,TRUE)) {
+		expect_small_err(xval,function(x) { sum(x,na.rm=na.rm) })
+		expect_small_err(xval,function(x) { prod(x,na.rm=na.rm) })
+	}
+
+	xval <- matrix(runif(6*6,min=1,max=2),nrow=6)
+	xval[xval < 1.2] <- NA
+	na.rm <- TRUE
+	expect_small_err(xval,function(x) { sum(x,na.rm=na.rm) })
+	expect_small_err(xval,function(x) { prod(x,na.rm=na.rm) })
+
+	xval <- matrix(rnorm(6*6),nrow=6)
+	xval[xval < -1] <- NA
+	na.rm <- TRUE
+	expect_small_err(xval,function(x) { sum(x,na.rm=na.rm) })
+	expect_small_err(xval,function(x) { prod(x,na.rm=na.rm) })
 	
 	# sentinel:
 	expect_true(TRUE)

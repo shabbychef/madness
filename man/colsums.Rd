@@ -11,8 +11,6 @@
 \alias{rowMeans,madness-method}
 \alias{rowSums}
 \alias{rowSums,madness-method}
-\alias{sum}
-\alias{sum,madness-method}
 \title{Form Row and Column Sums and Means}
 \usage{
 colSums(x, na.rm = FALSE, dims = 1, ...)
@@ -30,14 +28,12 @@ rowSums(x, na.rm = FALSE, dims = 1, ...)
 rowMeans(x, na.rm = FALSE, dims = 1, ...)
 
 \S4method{rowMeans}{madness}(x, na.rm = FALSE, dims = 1)
-
-\S4method{sum}{madness}(x, ..., na.rm = FALSE)
 }
 \arguments{
 \item{x}{\code{madness} object.}
 
-\item{na.rm}{logical. Should missing values (including \sQuote{NaN}) be
-removed?}
+\item{na.rm}{logical.  Should missing values (including \code{NaN})
+    be omitted from the calculations?}
 
 \item{dims}{integer: Which dimensions are regarded as \sQuote{rows} or
     \sQuote{columns} to sum over.  For \code{row*}, the sum or mean is
@@ -45,10 +41,6 @@ removed?}
     dimensions \code{1:dims}.}
 
 \item{...}{potentially further arguments, for method \sQuote{<->} generic compatibility.}
-
-\item{x}{a numeric or \code{madness} object.}
-
-\item{...}{ignored here.}
 }
 \value{
 a \code{madness} object. Note that the sums are flattened to a

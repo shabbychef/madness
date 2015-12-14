@@ -56,8 +56,15 @@ setMethod("colSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 						xtag <- x@xtag
 						val <- base::colSums(x@val,na.rm=na.rm,dims=dims)
 						val <- array(val,dim=c(length(val),1))
-						# 2FIX: what to do about na.rm in derivative?
 						dvdx <- array(x@dvdx,dim=c(dim(x@val),ncol(x@dvdx))) 
+						if (na.rm) {
+							# so colSums do not puke later
+							badiii <- which(is.na(x@val) | is.nan(x@val))
+							odim <- dim(dvdx)
+							dim(dvdx) <- c(length(x@val),odim[length(odim)])
+							dvdx[badiii,] <- 0
+							dim(dvdx) <- odim
+						}
 						dvdx <- matrix(base::colSums(dvdx,dims=dims),ncol=ncol(x@dvdx))
 						vtag <- paste0('colSums(',x@vtag,')')
 						varx <- x@varx
@@ -77,7 +84,12 @@ setMethod("colMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 						val <- array(val,dim=c(length(val),1))
 						dvdx <- array(x@dvdx,dim=c(dim(x@val),ncol(x@dvdx))) 
 						if (na.rm) {
-							deno <- colSums(!is.na(x@val),dims=dims)
+							isok <- (!is.na(x@val) & !is.nan(x@val))
+							deno <- colSums(isok,dims=dims)
+							odim <- dim(dvdx)
+							dim(dvdx) <- c(length(x@val),odim[length(odim)])
+							dvdx[which(!isok),] <- 0
+							dim(dvdx) <- odim
 							dvdx <- as.numeric(1/deno) * matrix(colSums(dvdx,dims=dims),ncol=ncol(x@dvdx))
 						} else {
 							dvdx <- matrix(colMeans(dvdx,dims=dims),ncol=ncol(x@dvdx))
@@ -87,7 +99,6 @@ setMethod("colMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
-
 
 #' @rdname colsums
 #' @exportMethod rowSums
@@ -100,8 +111,16 @@ setMethod("rowSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 						xtag <- x@xtag
 						val <- base::rowSums(x@val,na.rm=na.rm,dims=dims)
 						val <- array(val,dim=c(length(val),1))
-						# 2FIX: what to do about na.rm in derivative?
+
 						dvdx <- array(t(x@dvdx),dim=c(ncol(x@dvdx),dim(x@val)))
+						if (na.rm) {
+							# so rowSums do not puke later
+							badiii <- which(is.na(x@val) | is.nan(x@val))
+							odim <- dim(dvdx)
+							dim(dvdx) <- c(odim[1],length(x@val))
+							dvdx[,badiii] <- 0
+							dim(dvdx) <- odim
+						}
 						dvdx <- t(matrix(base::rowSums(dvdx,dims=dims+1),nrow=ncol(x@dvdx)))
 						vtag <- paste0('rowSums(',x@vtag,')')
 						varx <- x@varx
@@ -121,7 +140,12 @@ setMethod("rowMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 						val <- array(val,dim=c(length(val),1))
 						dvdx <- array(t(x@dvdx),dim=c(ncol(x@dvdx),dim(x@val)))
 						if (na.rm) {
-							deno <- rowSums(!is.na(x@val),dims=dims)
+							isok <- (!is.na(x@val) & !is.nan(x@val))
+							deno <- rowSums(isok,dims=dims)
+							odim <- dim(dvdx)
+							dim(dvdx) <- c(odim[1],length(x@val))
+							dvdx[,which(!isok)] <- 0
+							dim(dvdx) <- odim
 							dvdx <- as.numeric(1/deno) * t(matrix(base::rowSums(dvdx,dims=dims+1),nrow=ncol(x@dvdx)))
 						} else {
 							dvdx <- t(matrix(base::rowMeans(dvdx,dims=dims+1),nrow=ncol(x@dvdx)))
@@ -131,40 +155,6 @@ setMethod("rowMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
-
-# sum and prod#FOLDUP
-# exportMethod sum
-# rdname colsums
-# setGeneric('sum', function(x, ..., na.rm = FALSE) standardGeneric('sum'), useAsDefault = function(x, ..., na.rm = FALSE) { base::sum(x, ..., na.rm=na.rm) })
-#' @param x a numeric or \code{madness} object.
-#' @param na.rm logical. Should missing values (including \sQuote{NaN}) be
-#' removed?
-#' @param ... ignored here.
-#' @inheritParams base::sum
-#' @rdname colsums
-#' @aliases sum
-#' @aliases sum,madness-class
-setMethod("sum", signature(x="madness"),
-					function(x, ..., na.rm = FALSE) {
-						xtag <- x@xtag
-						val <- sum(x@val,na.rm=na.rm)
-
-						if (na.rm) { 
-							isok <- !(is.na(x@val) | is.nan(x@val))
-							dvdx <- colSums(x@dvdx[which(isok),])
-						} else {
-							dvdx <- colSums(x@dvdx)
-						}
-						dvdx <- matrix(dvdx,nrow=1)
-
-						vtag <- paste0('sum(',x@vtag,', na.rm=',na.rm,')')
-						varx <- x@varx
-
-						retv <- new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
-						retv <- retv + sum(...,na.rm=na.rm)
-						retv
-					})
-#UNFOLD
 
 
 #for vim modeline: (do not edit)
