@@ -33,3 +33,5 @@ madness.log
 *.bbl
 *.blg
 cache/
+.RData
+.Rhistory

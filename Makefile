@@ -402,8 +402,6 @@ loctest : deps $(LOCAL)/$(PKG_NAME)/INDEX
 				 R_DEFAULT_PACKAGES=$(BASE_DEF_PACKAGES),testthat $(R) $(R_FLAGS) \
 				 --slave --silent \
 				 -e 'testthat::test_dir("tests/testthat")'
-	
-	< $(PKG_TESTR) | tee $@
 
 coverage : deps $(LOCAL)/$(PKG_NAME)/INDEX
 	R_LIBS=$(LOCAL) R_PROFILE=load.R \

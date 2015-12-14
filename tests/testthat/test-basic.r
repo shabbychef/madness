@@ -320,6 +320,25 @@ test_that("twomoments",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("numerical derivative",{#FOLDUP
+	# first on arrays...
+	set.char.seed('818fae1e-30b3-4bcb-bb54-691f4c8d05ae')
+	MV <- array(rnorm(100*3),dim=c(100,3))
+	madv <- madness(MV)
+	fn <- function(x) { cos(x) }
+	gn <- function(x,h) { exp(x + h) }
+	for (ty in c('forward','backward','central')) {
+		for (eps in c(1e-4,1e-9)) {
+			dMV1 <- numderiv(fn,MV,type=ty,eps=eps)
+			dMV2 <- numderiv(gn,MV,type=ty,eps=eps,h=-3)
+			dMV3 <- numderiv(fn,madv,type=ty,eps=eps)
+			dMV4 <- numderiv(gn,madv,type=ty,eps=eps,h=-3)
+		}
+	}
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 
 #UNFOLD
 

@@ -29,27 +29,6 @@ set.char.seed <- function(str) {
 	set.seed(as.integer(charToRaw(str)))
 }
 
-apx_deriv <- function(xval,thefun,eps=1e-8,type=c('forward','central')) {
-	type <- match.arg(type)
-	yval <- thefun(xval)
-	dapx <- matrix(0,length(yval),length(xval))
-	for (iii in seq_len(length(xval))) {
-		xalt <- xval
-		xalt[iii] <- xalt[iii] + eps
-		yplus <- thefun(xalt)
-		dydx <- switch(type,
-			forward={ (yplus - yval) / eps },
-			central={
-				xalt <- xval
-				xalt[iii] <- xalt[iii] - eps
-				yneg <- thefun(xalt)
-				(yplus - yneg) / (2*eps)
-		})
-		dapx[,iii] <- as.numeric(dydx)
-	}
-	dapx
-}
-
 # evaluate the error between a numerical approximation and a computed
 # value, both of which may be erroneous?
 errit <- function(apx,cmp,eps=1e-12) {
@@ -70,7 +49,7 @@ comp_err <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 
 	# now the derivatives
 	xval <- val(xobj)
-  dapx <- apx_deriv(xval,scalfun,eps=eps,type='central')
+  dapx <- numderiv(scalfun,xval,eps=eps,type='central')
 	# compute error:
 	dcmp <- dvdx(yobj)
 	dim(dcmp) <- dim(dapx)

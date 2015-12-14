@@ -3,7 +3,7 @@ Maintainer: Steven E. Pav <shabbychef@gmail.com>
 Authors@R: c(person(c("Steven", "E."), "Pav", role=c("aut","cre"),
     email="shabbychef@gmail.com"))
 Version: 0.0.0.5520
-Date: 2015-12-11
+Date: 2015-12-13
 License: LGPL-3
 Title: Automatic Differentiation of Multivariate Operations
 BugReports: https://github.com/shabbychef/madness/issues
@@ -34,6 +34,7 @@ Collate:
     'elwise.r'
     'madness_pkg.r'
     'matwise.r'
+    'numderiv.r'
     'reshape.r'
     'solve.r'
     'sums.r'
@@ -42,4 +43,4 @@ Collate:
     'twomoments.r'
     'vcov.r'
     'vec.r'
-RoxygenNote: 5.0.1
+RoxygenNote: 5.0.0
