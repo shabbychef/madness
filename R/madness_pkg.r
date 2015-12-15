@@ -62,6 +62,11 @@
 #' @importFrom methods coerce
 #' @importFrom methods show
 #' @importFrom methods kronecker
+#' @importFrom stats coef
+#' @importFrom stats lm
+#' @importFrom stats na.omit
+#' @importFrom stats vcov
+#' @importFrom utils head
 #'
 #' @name madness-pkg
 #' @rdname madness-pkg
@@ -82,7 +87,7 @@ NULL
 #' News for package \sQuote{madness}.
 #'
 #' \newcommand{\pkg}{#1}
-#' \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+#' \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
 #' @section \madness{} Version 0.1.0 (2015-12-15) :
