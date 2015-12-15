@@ -31,9 +31,9 @@ GS_QUALITY 				?= 'ebook'
 M4_FILES					?= $(wildcard m4/*.m4)
 
 VMAJOR 						 = 0
-VMINOR 						 = 0
+VMINOR 						 = 1
 VPATCH  					 = 0
-VDEV 							 = .5530
+VDEV 							 = 
 #VERSION 					 = 0.1402
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
@@ -68,8 +68,8 @@ R_FLAGS 					?= -q --no-save --no-restore --no-init-file
 
 # packages I need to test this one
 DEV_DEPS           = testthat roxygen2 knitr covr curl
-PACKAGE_DEPS       = matrixcalc expm gtools
-PACKAGE_SUGGESTS   = sandwich gtools
+PACKAGE_DEPS       = matrixcalc expm 
+PACKAGE_SUGGESTS   = sandwich 
 TEST_DEPS  				 = $(DEV_DEPS) $(PACKAGE_DEPS) $(PACKAGE_SUGGESTS)
 INSTALLED_DEPS 		 = $(patsubst %,$(LOCAL)/%/DESCRIPTION,$(TEST_DEPS)) 
 PKG_TESTR 				 = tests/run-all.R
@@ -92,6 +92,7 @@ NODIST_FILES			+= rebuildTags.sh .tags .R_tags
 NODIST_FILES			+= Makefile
 NODIST_DIRS				 = .git man-roxygen m4 $(NODIST_R_DIR)
 NODIST_DIRS				+= $(VIGNETTE_D)/figure 
+NODIST_DIRS				+= $(VIGNETTE_D)
 
 # extradata
 EXTDATA_D 				 = inst/extdata
@@ -109,7 +110,7 @@ VIGNETTE_HTML  		 = $(VIGNETTE_D)/index.html
 VIGNETTE_CACHE_SENTINEL = $(VIGNETTE_CACHE)/__$(PKG_NAME).etc
 
 
-SUPPORT_FILES 		 = ./DESCRIPTION ./NAMESPACE ./ChangeLog $(RD_DUMMY) ./inst/CITATION
+SUPPORT_FILES 		 = ./DESCRIPTION ./NAMESPACE ./ChangeLog $(RD_DUMMY) ./inst/CITATION ./.Rbuildignore
 
 # for building the package.tgz
 #BUILD_FLAGS 			?= --compact-vignettes

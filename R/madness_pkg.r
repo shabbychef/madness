@@ -56,7 +56,7 @@
 #' Fackler, Paul L. "Notes on Matrix Calculus." (2005).
 #' \url{http://www4.ncsu.edu/~pfackler/MatCalc.pdf}
 #'
-#' @import matrixcalc gtools expm methods
+#' @import matrixcalc expm methods
 #' @importFrom methods cbind2
 #' @importFrom methods rbind2
 #' @importFrom methods coerce
@@ -85,7 +85,12 @@ NULL
 #' \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
-#' @section \madness{} Initial Version 0.1.0 (2015-12-15) :
+#' @section \madness{} Version 0.1.0 (2015-12-15) :
+#' \itemize{
+#' \item first CRAN release.
+#' }
+#'
+#' @section \madness{} Initial Version 0.0.0.5000 (2015-12-01) :
 #' \itemize{
 #' \item first github release.
 #' }
@@ -97,19 +102,8 @@ NULL
 
 # 2FIX
 #
-# DONE det and logdet
-#
-# add dim method
-# add cbind and rbind
-# add vcov method?
-# add kron products?
-#
-# trace (matrix.trace?)
-# expm logm sqrtm  (these will require Matrix package ...)
-# chol
+# expm logm (these will require Matrix package ...)
 # eigs?
-# colSums rowSums colMeans rowMeans
-# gram?
 #
 # %o%   (note this is a *huge* outer product potentially)
 #

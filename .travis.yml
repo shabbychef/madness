@@ -9,7 +9,6 @@ r_packages :
 r_binary_packages :
   - matrixcalc
   - expm
-  - gtools
   - Matrix
   - testthat
 

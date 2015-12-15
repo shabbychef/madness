@@ -10,7 +10,14 @@ News for package \sQuote{madness}.
 \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\madness}{\CRANpkg{madness}}
 }
-\section{\madness{} Initial Version 0.1.0 (2015-12-15) }{
+\section{\madness{} Version 0.1.0 (2015-12-15) }{
+
+\itemize{
+\item first CRAN release.
+}
+}
+
+\section{\madness{} Initial Version 0.0.0.5000 (2015-12-01) }{
 
 \itemize{
 \item first github release.
