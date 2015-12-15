@@ -2,7 +2,7 @@
 #
 # Created: 2015.11.23
 # Copyright: Steven E. Pav, 2015
-# Author: Steven E. Pav <steven@corecast.io>
+# Author: Steven E. Pav <shabbychef@gmail.com>
 # Comments: Steven E. Pav
 
 #' @include AllClass.r
