@@ -273,6 +273,55 @@ print(ph)
 
 <img src="github_extra/figure/marksym_check-1.png" title="plot of chunk marksym_check" alt="plot of chunk marksym_check" width="600px" height="500px" />
 
+# Trace of the covariance matrix
+
+Consider the case of an 8-vector drawn from some population.
+One observes some fixed number of independent observations of the vector, 
+computes the sample covariance matrix, then computes its trace. Using a
+`madness` object, one can automagically estimate the standard error via the delta method.
+The sample calculation looks as follows:
+
+
+```r
+genrows <- function(nsim, mu, haSg) {
+    p <- length(mu)
+    X <- matrix(rnorm(nsim * p), nrow = nsim, ncol = p) %*% 
+        haSg
+    X <- t(rep(mu, nsim) + t(X))
+}
+
+p <- 8
+set.seed(8644)
+true.mu <- array(rnorm(p), dim = c(p, 1))
+true.Sigma <- diag(runif(p, min = 1, max = 20))
+true.trace <- matrix.trace(true.Sigma)
+haSigma <- chol(true.Sigma)
+
+ndays <- 1250
+
+X <- genrows(ndays, true.mu, haSigma)
+twom <- twomoments(X)
+matt <- matrix.trace(twom$Sigma)
+
+# Now perform some simulations to see if these are
+# accurate:
+
+nsim <- 500
+set.seed(23401)
+retv <- replicate(nsim, {
+    X <- genrows(ndays, true.mu, haSigma)
+    twom <- twomoments(X)
+    matt <- matrix.trace(twom$Sigma)
+    marginal.wald <- (val(matt) - true.trace)/sqrt(diag(vcov(matt)))
+})
+require(ggplot2)
+ph <- qplot(sample = as.numeric(retv), stat = "qq") + 
+    geom_abline(intercept = 0, slope = 1, colour = "red")
+print(ph)
+```
+
+![plot of chunk matracer](github_extra/figure/matracer-1.png) 
+
 # Maximum eigenvalue of the covariance matrix
 
 Consider the case of a 10-vector drawn from a population with covariance matrix whose largest eigenvalue 
