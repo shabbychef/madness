@@ -217,11 +217,11 @@ matt <- matrix.trace(twom$Sigma)
 
 #Now perform some simulations to see if these are accurate:
 
-nsim <- 500
+nsim <- 1000
 set.seed(23401)
 retv <- replicate(nsim,{
   X <- genrows(ndays,true.mu,haSigma)
-	twom <- twomoments(X)
+	twom <- twomoments(X,df=1)
 	matt <- matrix.trace(twom$Sigma)
 	marginal.wald <- (val(matt) - true.trace) / sqrt(diag(vcov(matt)))
 })
@@ -256,7 +256,7 @@ haSigma <- chol(true.Sigma)
 ndays <- 1250
 
 X <- genrows(ndays,true.mu,haSigma)
-twom <- twomoments(X)
+twom <- twomoments(X,df=1)
 maxe <- maxeig(twom$Sigma)
 print(maxe)
 print(vcov(maxe))
@@ -265,11 +265,11 @@ print(vcov(maxe))
 Now perform some simulations to see if these are accurate:
 
 ```{r cosym_mo,cache=TRUE,eval=TRUE,echo=TRUE}
-nsim <- 500
+nsim <- 1000
 set.seed(23401)
 retv <- replicate(nsim,{
   X <- genrows(ndays,true.mu,haSigma)
-	twom <- twomoments(X)
+	twom <- twomoments(X,df=1)
 	maxe <- maxeig(twom$Sigma)
 	marginal.wald <- (val(maxe) - true.maxe) / sqrt(diag(vcov(maxe)))
 })
