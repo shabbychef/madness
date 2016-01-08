@@ -90,6 +90,11 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
+#' @section \madness{} Version 0.1.0.200 (2016-01-07) :
+#' \itemize{
+#' \item exporting \code{diag}.
+#' }
+#'
 #' @section \madness{} Version 0.1.0 (2015-12-15) :
 #' \itemize{
 #' \item first CRAN release.
