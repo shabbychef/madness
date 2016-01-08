@@ -4,14 +4,11 @@
 \name{reshapes}
 \alias{aperm}
 \alias{aperm.madness}
-\alias{diag,madness-method}
 \alias{dim<-,madness,ANY-method}
 \alias{dim<-,madness-method}
 \alias{reshapes}
 \alias{t}
 \alias{t,madness-method}
-\alias{todiag}
-\alias{todiag,madness-method}
 \alias{tril}
 \alias{tril,madness-method}
 \alias{triu}
@@ -22,8 +19,6 @@ t(x)
 
 \S4method{t}{madness}(x)
 
-\S4method{diag}{madness}(x)
-
 tril(x, k = 0, ...)
 
 \S4method{tril}{madness}(x, k = 0)
@@ -31,10 +26,6 @@ tril(x, k = 0, ...)
 triu(x, k = 0, ...)
 
 \S4method{triu}{madness}(x, k = 0)
-
-todiag(x)
-
-\S4method{todiag}{madness}(x)
 
 \S4method{dim}{madness}(x) <- value
 
@@ -68,6 +59,6 @@ Basic Reshape Operations
 Steven E. Pav \email{shabbychef@gmail.com}
 }
 \seealso{
-\code{\link{vec}}
+\code{\link{vec}}, \code{\link{todiag}}
 }
 

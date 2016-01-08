@@ -34,7 +34,7 @@ NULL
 #' @param value an array of the new dimensions of the object value.
 #' @inheritParams Matrix::tril
 #' @param k the index of the diagonal number from which to extract.\code{madness} object.
-#' @seealso \code{\link{vec}}
+#' @seealso \code{\link{vec}}, \code{\link{todiag}}
 #' @name reshapes
 #' @template etc
 NULL
@@ -53,22 +53,6 @@ setMethod("t", signature(x="madness"),
 						val <- t(x@val)
 						dvdx <- .do_commutator(val,x@dvdx)
 						vtag <- paste0('t(',x@vtag,')')
-						varx <- x@varx
-
-						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
-					})
-
-#' @rdname reshapes
-#' @aliases diag,madness-method
-setMethod("diag", signature(x="madness"),
-					function(x) {
-						xtag <- x@xtag
-						val <- x@val
-						takeus <- row(val) == col(val)
-						val <- val[takeus]
-						dim(val) <- c(length(val),1)
-						dvdx <- x@dvdx[which(takeus),]
-						vtag <- paste0('diag(',x@vtag,')')
 						varx <- x@varx
 
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
@@ -115,24 +99,6 @@ setMethod("triu", signature(x="madness"),
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
-#' @rdname reshapes
-#' @aliases todiag
-#' @exportMethod todiag
-setGeneric('todiag', function(x) standardGeneric('todiag'))
-#' @rdname reshapes
-#' @aliases todiag,madness-method
-setMethod("todiag", signature(x="madness"),
-					function(x) {
-						xtag <- x@xtag
-						val <- diag(as.numeric(x@val))
-						takeus <- row(val) == col(val)
-						dvdx <- matrix(0,nrow=length(takeus),ncol=ncol(x@dvdx))
-						dvdx[which(takeus),] <- x@dvdx
-						vtag <- paste0('todiag(',x@vtag,')')
-						varx <- x@varx
-
-						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
-					})
 
 #' @rdname reshapes
 #' @aliases dim<-,madness,ANY-method
