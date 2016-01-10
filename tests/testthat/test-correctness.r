@@ -23,7 +23,7 @@
 # Author: Steven E. Pav <shabbychef@gmail.com>
 # Comments: Steven E. Pav
 
-library(expm)
+#library(expm)
 
 set.char.seed <- function(str) {
 	set.seed(as.integer(charToRaw(str)))
@@ -365,6 +365,27 @@ test_that("solve functions",{#FOLDUP
 	yval <- runif(1)
 	expect_small_err(xval,function(x) { solve(yval,x) },eps=1e-6,errtol=1e-6)
 
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
+test_that("eigen functions",{#FOLDUP
+	set.char.seed("c0529b18-8873-4353-9c41-b4c8bc24d319")
+	xval <- matrix(1 + runif(4*4),nrow=4)
+	xval <- xval + t(xval)
+
+	expect_small_err(xval,function(x) { eigen(0.5 * (x + t(x)),symmetric=TRUE)$values },eps=1e-7,errtol=1e-6)
+	expect_small_err(xval,function(x) { 
+										 ev <- eigen(0.5 * (x + t(x)),symmetric=TRUE)
+										 # force first row to be all positive
+										 ev$vectors %*% diag(sign(val(ev$vectors)[1,,drop=TRUE]))
+									 },
+									 scalfun = function(x) {
+										 ev <- eigen(0.5 * (x + t(x)),symmetric=TRUE)
+										 # force first row to be all positive
+										 ev$vectors %*% diag(sign(ev$vectors[1,,drop=TRUE]))
+									 }, eps=1e-7,errtol=1e-6)
+
+	
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD

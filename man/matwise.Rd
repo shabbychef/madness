@@ -5,11 +5,6 @@
 \alias{chol}
 \alias{chol.madness}
 \alias{matwise}
-\alias{maxeig}
-\alias{maxeig,madness-method}
-\alias{norm}
-\alias{norm,madness,ANY-method}
-\alias{norm,madness,missing-method}
 \alias{sqrtm}
 \alias{sqrtm,madness-method}
 \title{Matrix-wise Multivariate Operations}
@@ -18,38 +13,10 @@ sqrtm(x)
 
 \S4method{sqrtm}{madness}(x)
 
-maxeig(x)
-
-\S4method{maxeig}{madness}(x)
-
-norm(x, type, ...)
-
-\S4method{norm}{madness,missing}(x)
-
-\S4method{norm}{madness,ANY}(x, type = "One")
-
 chol(x,...)
 }
 \arguments{
 \item{x}{\code{madness} object.}
-
-\item{type}{character string, specifying the \emph{type} of matrix
-    norm to be computed.
-    A character indicating the type of norm desired.
-    \describe{
-      \item{\code{"O"}, \code{"o"} or \code{"1"}}{specifies the \bold{o}ne norm,
-	(maximum absolute column sum);}
-      \item{\code{"I"} or \code{"i"}}{specifies the \bold{i}nfinity norm (maximum
-	absolute row sum);}
-      \item{\code{"F"} or \code{"f"}}{specifies the \bold{F}robenius norm (the
-	Euclidean norm of \code{x} treated as if it were a vector);}
-      \item{\code{"M"} or \code{"m"}}{specifies the \bold{m}aximum modulus of
-	all the elements in \code{x}; and}
-      \item{\code{"2"}}{specifies the \dQuote{spectral} or 2-norm, which
-	is the largest singular value (\code{\link{svd}}) of \code{x}.}
-    }
-    The default is \code{"O"}.  Only the first character of
-    \code{type[1]} is used.}
 
 \item{...}{further arguments passed to or from other methods.}
 }
@@ -57,8 +24,9 @@ chol(x,...)
 Element-wise multivariate operations.
 }
 \details{
-These operations are scalar-to-scalar operations applied to each element of a 
-multidimensional array.
+These operations are operatins on matrices: compute the symmetric square root
+or the Cholesky factor. In the future, the matrix exponent and logarithm may
+be implemented?
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}

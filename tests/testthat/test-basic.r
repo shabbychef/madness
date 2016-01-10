@@ -280,6 +280,22 @@ test_that("vech",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("eigen?",{#FOLDUP
+	yt <- 'any'
+	xt <- 'anx'
+	set.char.seed("b41fdb74-7fa4-4cbc-908d-4c7763403212")
+
+	for (nr in c(4)) {
+		xval <- matrix(1 + runif(nr*nr),nrow=nr)
+		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
+		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
+		foo <- eigen(xmad + t(xmad))
+	}
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("theta",{#FOLDUP
 	# first on arrays...
 	set.char.seed('d8ccbb36-1002-4c9e-81d9-0ee6b173047a')
