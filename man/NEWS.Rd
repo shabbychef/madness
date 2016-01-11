@@ -10,6 +10,13 @@ News for package \sQuote{madness}.
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\madness}{\CRANpkg{madness}}
 }
+\section{\madness{} Version 0.1.0.300 (2016-01-10) }{
+
+\itemize{
+\item adding \code{eigen}.
+}
+}
+
 \section{\madness{} Version 0.1.0.200 (2016-01-07) }{
 
 \itemize{

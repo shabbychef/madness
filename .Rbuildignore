@@ -21,3 +21,4 @@ madness.Rcheck
 ^github_extra
 unit_test.log
 LICENSE
+docker
