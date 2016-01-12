@@ -8,6 +8,7 @@
 
 # local build check and whatnot
 *.tar.gz
+*.crancheck
 .local/
 .staging/
 *.Rcheck

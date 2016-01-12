@@ -39,7 +39,7 @@ ENV _R_CHECK_DOT_INTERNAL_ TRUE
 #####################################################
 # entry and cmd# FOLDUP
 # always use array syntax:
-ENTRYPOINT ["/usr/bin/R","CMD","CHECK","--as-cran"]
+ENTRYPOINT ["/usr/bin/R","CMD","check","--as-cran","--output=/tmp"]
 
 # ENTRYPOINT and CMD are better together:
 CMD ["/srv/*.tar.gz"]

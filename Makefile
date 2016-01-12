@@ -15,6 +15,7 @@
 
 SHELL 						 = /bin/bash
 
+DOCKER 						?= $(shell which docker)
 BIN_TIME          ?= $(shell which time)
 
 R_DEV_FILES 			?= $(wildcard ./R/*.[rR])
@@ -340,6 +341,9 @@ $(PKG_TGZ) : $(STAGED_PKG)/DESCRIPTION $(INSTALLED_DEPS) $(EXTRA_PKG_DEPS)
 	$(BUILD_ENV) $(R_LOCALLY) CMD build $(BUILD_FLAGS) $(<D)
 
 #package : $(PKG_TGZ)
+
+%.crancheck : %.tar.gz
+	$(DOCKER) run -it --rm --volume $(PWD):/srv:ro shabbychef/madness-crancheck $^ > $@
 
 build : $(PKG_TGZ)
 
