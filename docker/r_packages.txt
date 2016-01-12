@@ -1,0 +1,5 @@
+matrixcalc
+expm
+methods
+testthat
+knitr
