@@ -24,7 +24,7 @@ chol(x,...)
 Element-wise multivariate operations.
 }
 \details{
-These operations are operatins on matrices: compute the symmetric square root
+These operations are operations on matrices: compute the symmetric square root
 or the Cholesky factor. In the future, the matrix exponent and logarithm may
 be implemented?
 }

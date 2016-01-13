@@ -229,6 +229,29 @@ test_that("sumprod functions",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("maxmin functions",{#FOLDUP
+	set.char.seed("c52e167b-14ea-4827-ad47-5ee165929ed7")
+	xval <- matrix(runif(4*4,min=1,max=2),nrow=4)
+	for (na.rm in c(FALSE,TRUE)) {
+		expect_small_err(xval,function(x) { max(x,na.rm=na.rm) })
+		expect_small_err(xval,function(x) { min(x,na.rm=na.rm) })
+	}
+
+	xval <- matrix(runif(6*6,min=1,max=2),nrow=6)
+	xval[xval < 1.2] <- NA
+	na.rm <- TRUE
+	expect_small_err(xval,function(x) { max(x,na.rm=na.rm) })
+	expect_small_err(xval,function(x) { min(x,na.rm=na.rm) })
+
+	xval <- matrix(rnorm(6*6),nrow=6)
+	xval[xval < -1] <- NA
+	na.rm <- TRUE
+	expect_small_err(xval,function(x) { max(x,na.rm=na.rm) })
+	expect_small_err(xval,function(x) { min(x,na.rm=na.rm) })
+	
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("outer functions",{#FOLDUP
 	set.char.seed("354455b9-2b3f-40fb-b8e7-21a1302b48de")
 	xval <- array(1+runif(2*3*4),dim=c(2,3,4))

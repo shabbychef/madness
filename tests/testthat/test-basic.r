@@ -192,6 +192,57 @@ test_that("just blockrep",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("sumprodmaxmin?",{#FOLDUP
+	yt <- 'any'
+	xt <- 'anx'
+
+	set.char.seed("820d69e3-9140-40b3-8b78-130d48a84b99")
+	for (nr in c(4,6)) {
+		xval <- matrix(1 + runif(nr*nr),nrow=nr)
+		yval <- matrix(1 + runif(nr*nr),nrow=nr)
+		xddd <- matrix(rnorm(length(xval)*5),ncol=5)
+		yddd <- matrix(rnorm(length(yval)*5),ncol=5)
+
+		for (pnan in c(0,25)) {
+			if (pnan > 0) {
+				xval[xval < 1 + (pnan/100)] <- NA
+				yval[yval < 1 + (pnan/100)] <- NA
+			}
+			xmad <- madness(xval,xddd,vtag=yt,xtag=xt)
+			ymad <- madness(yval,yddd,vtag=yt,xtag=xt)
+
+			for (narm in c(FALSE,TRUE)) {
+				blah <- sum(xmad,na.rm=narm)
+				blah <- sum(xmad,ymad,na.rm=narm)
+				blah <- sum(xmad,ymad,xval,na.rm=narm)
+				blah <- prod(xmad,na.rm=narm)
+				blah <- prod(xmad,ymad,na.rm=narm)
+				blah <- prod(xmad,ymad,xval,na.rm=narm)
+
+				blah <- max(xmad,na.rm=narm)
+				blah <- max(xmad,ymad,na.rm=narm)
+				blah <- max(ymad,xmad,na.rm=narm)
+				blah <- max(xmad,ymad,xval,na.rm=narm)
+				blah <- max(xmad,ymad,xval,yval,na.rm=narm)
+				# these are *not* supported yet. bleah.
+				#blah <- max(xmad,xval,ymad,na.rm=narm)
+				#blah <- max(xval,xmad,ymad,na.rm=narm)
+
+				blah <- min(xmad,na.rm=narm)
+				blah <- min(xmad,ymad,na.rm=narm)
+				blah <- min(ymad,xmad,na.rm=narm)
+				blah <- min(xmad,ymad,xval,na.rm=narm)
+				blah <- min(xmad,ymad,xval,yval,na.rm=narm)
+				# these are *not* supported yet. bleah.
+				#blah <- min(xmad,xval,ymad,na.rm=narm)
+				#blah <- min(xval,xmad,ymad,na.rm=narm)
+			}
+		}
+	}
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("outer?",{#FOLDUP
 	yt <- 'any'
 	xt <- 'anx'
