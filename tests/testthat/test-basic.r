@@ -387,6 +387,18 @@ test_that("twomoments",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("to_objective",{#FOLDUP
+	set.char.seed('1407dc0a-ca1b-4620-b436-e13df111b6ab')
+	
+	MV <- array(rnorm(100*3),dim=c(100,3))
+	madM <- madness(MV)
+	Mnorm <- norm(madM)
+	to_objective(Mnorm)
+	expect_error(dumb <- to_objective(madM))
+
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("numerical derivative",{#FOLDUP
 	# first on arrays...
 	set.char.seed('818fae1e-30b3-4bcb-bb54-691f4c8d05ae')
