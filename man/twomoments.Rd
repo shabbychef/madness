@@ -4,10 +4,15 @@
 \alias{twomoments}
 \title{Estimate the mean and covariance of values.}
 \usage{
-twomoments(X, vcov.func=vcov, xtag=NULL, df=NULL)
+twomoments(X, diag.only=FALSE, vcov.func=vcov, xtag=NULL, df=NULL)
 }
 \arguments{
 \item{X}{a multidimensional array (or a data frame) of observed values.}
+
+\item{diag.only}{logical flag, defaulting to \code{FALSE}. When
+\code{TRUE}, only the diagonal of the covariance is computed, and
+returned instead of the entire covariance. This should be used for
+reasons of efficiency when only the marginal variances are needed.}
 
 \item{vcov.func}{a function which takes an object of class \code{lm},
 and computes a variance-covariance matrix. If equal to the string
@@ -22,9 +27,12 @@ matrix estimate. The default value is the number of elements in
 the mean, the so-called Bessel's correction.}
 }
 \value{
-A two element list. The first is the 'mu', representing the mean,
-a \code{madness} object, the second is 'Sigma', representing the covariance,
-also a \code{madness} object.
+A two element list. When \code{diag.only=FALSE}, the first
+element of the list is \code{mu}, representing the mean,
+a \code{madness} object, the second is \code{Sigma}, representing the covariance,
+also a \code{madness} object. When \code{diag.only=TRUE}, the first element
+is \code{mu}, but the second is \code{sigmasq}, a \code{madness} object
+representing the diagonal of the covariance matrix.
 }
 \description{
 Given rows of observations of some vector (or multidimensional
@@ -43,6 +51,8 @@ array of the covariance, based on \eqn{n}{n} observations,
 returned as two \code{\link{madness}} objects. The variance-covariance
 of each is estimated. The two objects have the same 'xtag', and so
 may be combined together.
+When the \code{diag.only=TRUE}, only the diagonal of the covariance is
+computed and returned.
 
 One may use the default method for computing covariance,
 via the \code{\link{vcov}} function, or via a 'fancy' estimator,
@@ -54,6 +64,10 @@ X <- matrix(rnorm(1000*8),ncol=8)
 alst <- twomoments(X)
 markowitz <- solve(alst$Sigma,alst$mu)
 vcov(markowitz)
+
+# now compute the Sharpe ratios:
+alst <- twomoments(X,diag.only=TRUE,df=1)
+srs <- alst$mu / sqrt(alst$sigmasq)
 
 }
 \author{

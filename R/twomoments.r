@@ -48,6 +48,8 @@ NULL
 #' returned as two \code{\link{madness}} objects. The variance-covariance
 #' of each is estimated. The two objects have the same 'xtag', and so
 #' may be combined together.
+#' When the \code{diag.only=TRUE}, only the diagonal of the covariance is
+#' computed and returned.
 #'
 #' One may use the default method for computing covariance,
 #' via the \code{\link{vcov}} function, or via a 'fancy' estimator,
@@ -55,16 +57,23 @@ NULL
 #'
 #' @usage
 #'
-#' twomoments(X, vcov.func=vcov, xtag=NULL, df=NULL)
+#' twomoments(X, diag.only=FALSE, vcov.func=vcov, xtag=NULL, df=NULL)
 #'
 #' @inheritParams theta
+#' @param diag.only logical flag, defaulting to \code{FALSE}. When
+#' \code{TRUE}, only the diagonal of the covariance is computed, and
+#' returned instead of the entire covariance. This should be used for
+#' reasons of efficiency when only the marginal variances are needed.
 #' @param df the number of degrees of freedom to subtract
 #' from the sample size in the denominator of the covariance
 #' matrix estimate. The default value is the number of elements in
 #' the mean, the so-called Bessel's correction.
-#' @return A two element list. The first is the 'mu', representing the mean,
-#' a \code{madness} object, the second is 'Sigma', representing the covariance,
-#' also a \code{madness} object.
+#' @return A two element list. When \code{diag.only=FALSE}, the first
+#' element of the list is \code{mu}, representing the mean,
+#' a \code{madness} object, the second is \code{Sigma}, representing the covariance,
+#' also a \code{madness} object. When \code{diag.only=TRUE}, the first element
+#' is \code{mu}, but the second is \code{sigmasq}, a \code{madness} object
+#' representing the diagonal of the covariance matrix.
 #' @template etc
 #' @seealso \code{\link{theta}}
 #' @examples 
@@ -74,9 +83,13 @@ NULL
 #' markowitz <- solve(alst$Sigma,alst$mu)
 #' vcov(markowitz)
 #'
+#' # now compute the Sharpe ratios:
+#' alst <- twomoments(X,diag.only=TRUE,df=1)
+#' srs <- alst$mu / sqrt(alst$sigmasq)
+#'
 #' @export
 #' @rdname twomoments
-twomoments <- function(X,vcov.func=vcov,xtag=NULL, df=NULL) {
+twomoments <- function(X,diag.only=FALSE, vcov.func=vcov, xtag=NULL, df=NULL) {
 	if (missing(xtag)) {
 		xtag <- deparse(substitute(X))
 	}
@@ -88,26 +101,51 @@ twomoments <- function(X,vcov.func=vcov,xtag=NULL, df=NULL) {
 	n <- dimX[1]
 	p <- prod(dimX[2:length(dimX)])
 	dim(X) <- c(n,p)
-	X <- cbind(1,X)
-	# delegate
-	tht <- theta(X,vcov.func=vcov.func,xtag=xtag)
-	# interpret
-	mu <- tht[1 + (1:p),1]
-	# 2FIX: allow df instead of always chosing p here.
 	if (missing(df)) { df <- p }
-	Sigma <- (n/(n-df)) * (tht[1 + (1:p),1 + (1:p)] - mu %*% t(mu))
-	
-	if (length(dimX) <= 2) {
-		# not entirely necessary, I think:
-		dim(mu) <- c(p,1)
-		dim(Sigma) <- c(p,p)
+
+	if (diag.only) {
+		Y <- cbind(X,X^2)
+		mod2 <- lm(Y ~ 1)
+		rm(Y)
+		mu <- mod2$coefficients
+		dim(mu) <- c(length(mu),1)
+		Ohat = vcov.func(mod2)
+		rm(mod2)
+
+		tht <- madness(val=mu, vtag='theta', xtag=xtag, varx=Ohat)
+		mu <- tht[1:p,1]
+		sigmasq <- (n/(n-df)) * (tht[p + (1:p),1] - mu^2)
+
+		if (length(dimX) <= 2) {
+			# not entirely necessary, I think:
+			dim(mu) <- c(p,1)
+			dim(sigmasq) <- c(p,1)
+		} else {
+			dim(mu) <- dimX[2:length(dimX)]
+			dim(sigmasq) <- dimX[2:length(dimX)]
+		}
+		retv <- list(mu=mu,sigmasq=sigmasq)
 	} else {
-		dim(mu) <- dimX[2:length(dimX)]
-		dim(Sigma) <- c(dimX[2:length(dimX)],dimX[2:length(dimX)])
+		X <- cbind(1,X)
+		# delegate
+		tht <- theta(X,vcov.func=vcov.func,xtag=xtag)
+		# interpret
+		mu <- tht[1 + (1:p),1]
+		Sigma <- (n/(n-df)) * (tht[1 + (1:p),1 + (1:p)] - mu %*% t(mu))
+		
+		if (length(dimX) <= 2) {
+			# not entirely necessary, I think:
+			dim(mu) <- c(p,1)
+			dim(Sigma) <- c(p,p)
+		} else {
+			dim(mu) <- dimX[2:length(dimX)]
+			dim(Sigma) <- c(dimX[2:length(dimX)],dimX[2:length(dimX)])
+		}
+		mu@vtag <- 'mu'
+		Sigma@vtag <- 'Sigma'
+		retv <- list(mu=mu,Sigma=Sigma)
 	}
-	mu@vtag <- 'mu'
-	Sigma@vtag <- 'Sigma'
-	retv <- list(mu=mu,Sigma=Sigma)
+
 	retv
 }
 

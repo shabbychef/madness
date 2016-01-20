@@ -104,6 +104,7 @@ theta <- function(X,vcov.func=vcov,xtag=NULL) {
 	mu <- mod2$coefficients
 	dim(mu) <- c(length(mu),1)
 	Ohat = vcov.func(mod2)
+	rm(mod2)
 
 	retv <- madness(val=mu, vtag='theta', xtag=xtag, varx=Ohat)
 	# this has been vech'ed, so unvech it:

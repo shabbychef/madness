@@ -368,21 +368,27 @@ test_that("theta",{#FOLDUP
 })#UNFOLD
 test_that("twomoments",{#FOLDUP
 	# first on arrays...
-	set.char.seed('818fae1e-30b3-4bcb-bb54-691f4c8d05ae')
-	MV <- array(rnorm(100*3),dim=c(100,3))
-	th <- twomoments(MV)
-	MV <- array(rnorm(100*3*3),dim=c(100,3,3))
-	th <- twomoments(MV)
-	MV <- array(rnorm(100*3*3*3),dim=c(100,3,3,3))
-	th <- twomoments(MV)
-	th <- twomoments(MV,xtag='FOO')
-	th <- twomoments(MV,xtag='FOO',df=0)
+	set.char.seed('34b7717b-ddff-473a-98d1-422b040b6d82')
+
+	checkem <- list(array(rnorm(100*3),dim=c(100,3)),
+								 	array(rnorm(100*3*3),dim=c(100,3,3)),
+									array(rnorm(100*3*3*3),dim=c(100,3,3,3)))
+
+	for (ccc in seq_along(checkem)) {
+		MV <- checkem[[ccc]]
+		th <- twomoments(MV)
+		th <- twomoments(MV,xtag='FOO')
+		th <- twomoments(MV,xtag='FOO',df=0)
+		th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE)
+		th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE,vcov.func=vcov)
+	}
 
 	# and as data frame.
 	MV <- data.frame(a=runif(100),b=rnorm(100),c=exp(runif(100)))
 	th <- twomoments(MV)
 	th <- twomoments(MV,xtag='FOO')
 	th <- twomoments(MV,xtag='FOO',df=0)
+	th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE)
 
 	# sentinel:
 	expect_true(TRUE)
