@@ -32,9 +32,9 @@ GS_QUALITY 				?= 'ebook'
 M4_FILES					?= $(wildcard m4/*.m4)
 
 VMAJOR 						 = 0
-VMINOR 						 = 1
+VMINOR 						 = 2
 VPATCH  					 = 0
-VDEV 							 = .5000
+VDEV 							 = 
 #VERSION 					 = 0.1402
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
@@ -68,7 +68,7 @@ RSCRIPT   				 = $(RBIN)/Rscript
 R_FLAGS 					?= -q --no-save --no-restore --no-init-file
 
 # packages I need to test this one
-DEV_DEPS           = testthat roxygen2 knitr covr curl
+DEV_DEPS           = testthat roxygen2 knitr covr curl R.rsp
 PACKAGE_DEPS       = matrixcalc expm 
 PACKAGE_SUGGESTS   = sandwich 
 TEST_DEPS  				 = $(DEV_DEPS) $(PACKAGE_DEPS) $(PACKAGE_SUGGESTS)
@@ -92,8 +92,8 @@ NODIST_FILES			 = ./Makefile $(M4_FILES) .gitignore .gitattributes
 NODIST_FILES			+= rebuildTags.sh .tags .R_tags 
 NODIST_FILES			+= Makefile
 NODIST_DIRS				 = .git man-roxygen m4 $(NODIST_R_DIR)
-NODIST_DIRS				+= $(VIGNETTE_D)/figure 
-NODIST_DIRS				+= $(VIGNETTE_D)
+#NODIST_DIRS				+= $(VIGNETTE_D)/figure 
+#NODIST_DIRS				+= $(VIGNETTE_D)
 
 # extradata
 EXTDATA_D 				 = inst/extdata
@@ -104,9 +104,13 @@ EXTDATA_FILES	 		 = $(PREMAKE_RDA)
 # vignette stuff
 VIGNETTE_D 				 = vignettes
 VIGNETTE_CACHE 		 = $(VIGNETTE_D)/cache
-VIGNETTE_EXTRAS		 = $(VIGNETTE_D)/$(PKG_NAME).Rnw $(VIGNETTE_D)/$(PKG_NAME).sty
-VIGNETTE_SRCS  		 = $(VIGNETTE_D)/$(PKG_NAME).Rnw $(VIGNETTE_D)/$(PKG_NAME).bib
-VIGNETTE_PDF   		 = $(VIGNETTE_D)/$(PKG_NAME).pdf
+VIGNETTE_EXTRAS		 = $(VIGNETTE_D)/introducing_madness.pdf
+#VIGNETTE_EXTRAS		 = $(VIGNETTE_D)/$(PKG_NAME).Rnw $(VIGNETTE_D)/$(PKG_NAME).sty
+#VIGNETTE_SRCS  		 = $(VIGNETTE_D)/$(PKG_NAME).Rnw $(VIGNETTE_D)/$(PKG_NAME).bib
+#VIGNETTE_PDF   		 = $(VIGNETTE_D)/$(PKG_NAME).pdf
+VIGNETTE_EXTRAS		 = 
+VIGNETTE_SRCS  		 = 
+VIGNETTE_PDF 			 = $(VIGNETTE_D)/introducing_madness.pdf
 VIGNETTE_HTML  		 = $(VIGNETTE_D)/index.html
 VIGNETTE_CACHE_SENTINEL = $(VIGNETTE_CACHE)/__$(PKG_NAME).etc
 
@@ -324,6 +328,7 @@ $(STAGED_PKG)/DESCRIPTION : $(R_FILES) $(SUPPORT_FILES) $(EXTRA_PKG_DEPS)
   --include=man/ --include=man/* \
   --include=NAMESPACE --include=DESCRIPTION \
   --include=$(EXTDATA_D)/ \
+  --include=$(VIGNETTE_D)/* \
   --exclude-from=.gitignore \
  $(patsubst %, % \${\n},$(patsubst %,--exclude=%,$(NODIST_FILES)))  --exclude=$(LOCAL) \
  $(patsubst %, % \${\n},$(patsubst %,--exclude=%,$(NODIST_DIRS)))  --exclude=$(basename $(STAGING)) \
