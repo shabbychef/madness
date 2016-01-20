@@ -1,0 +1,3 @@
+pandoc
+ghostscript
+qpdf

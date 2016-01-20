@@ -3,3 +3,4 @@ expm
 methods
 testthat
 knitr
+R.rsp

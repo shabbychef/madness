@@ -8,23 +8,25 @@ License: LGPL-3
 Title: Automatic Differentiation of Multivariate Operations
 BugReports: https://github.com/shabbychef/madness/issues
 Description: An object that supports automatic differentiation
-    of matrix- and multidimensional-valued functions with 
-    respect to multidimensional independent variables. 
+    of matrix- and multidimensional-valued functions with
+    respect to multidimensional independent variables.
     Automatic differentiation is via 'forward accumulation'.
-Depends: 
+Depends:
     R (>= 3.2.0)
 Imports:
     matrixcalc,
     expm,
     methods
-Suggests: 
-    testthat, 
+Suggests:
+    testthat,
     R.rsp,
     knitr
 URL: https://github.com/shabbychef/madness
 VignetteBuilder: R.rsp
 Collate:
     'AllClass.r'
+    'utils.r'
+    'Ops.r'
     'bind.r'
     'blockrep.r'
     'coerce.r'
@@ -37,7 +39,6 @@ Collate:
     'max.r'
     'norm.r'
     'numderiv.r'
-    'Ops.r'
     'reshape.r'
     'solve.r'
     'sum.r'
@@ -46,6 +47,6 @@ Collate:
     'to_objective.r'
     'trace.r'
     'twomoments.r'
-    'utils.r'
     'vcov.r'
     'vec.r'
+RoxygenNote: 5.0.0
