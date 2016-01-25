@@ -118,6 +118,12 @@ print(mynorm)
 print(vcov(mynorm))
 ```
 
+-----------------
+
+![Delta Method All the Things!](github_extra/figure/GevbfLD.jpg)
+
+
+
 # Markowitz portfolio
 
 There are two utilities for easily computing `madness` objects representing the first two moments of an object.
