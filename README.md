@@ -326,7 +326,7 @@ ph <- qplot(sample = as.numeric(retv), stat = "qq") +
 print(ph)
 ```
 
-![plot of chunk matracer](github_extra/figure/matracer-1.png) 
+<img src="github_extra/figure/matracer-1.png" title="plot of chunk matracer" alt="plot of chunk matracer" width="600px" height="500px" />
 
 # Maximum eigenvalue of the covariance matrix
 
@@ -399,7 +399,7 @@ ph <- qplot(sample = as.numeric(retv), stat = "qq") +
 print(ph)
 ```
 
-![plot of chunk cosym_mo](github_extra/figure/cosym_mo-1.png) 
+<img src="github_extra/figure/cosym_mo-1.png" title="plot of chunk cosym_mo" alt="plot of chunk cosym_mo" width="600px" height="500px" />
 
 Why the bias? There are a number of possibilities:
 

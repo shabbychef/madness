@@ -201,7 +201,7 @@ computes the sample covariance matrix, then computes its trace. Using a
 `madness` object, one can automagically estimate the standard error via the delta method.
 The sample calculation looks as follows:
 
-```{r matracer,cache=TRUE,eval=TRUE,echo=TRUE}
+```{r matracer,cache=TRUE,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
 genrows <- function(nsim,mu,haSg) {
 	p <- length(mu)
   X <- matrix(rnorm(nsim*p),nrow=nsim,ncol=p) %*% haSg
@@ -270,7 +270,7 @@ print(vcov(maxe))
 
 Now perform some simulations to see if these are accurate:
 
-```{r cosym_mo,cache=TRUE,eval=TRUE,echo=TRUE}
+```{r cosym_mo,cache=TRUE,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
 nsim <- 1000
 set.seed(23401)
 retv <- replicate(nsim,{
