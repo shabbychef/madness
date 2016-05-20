@@ -18,6 +18,11 @@ warnings_are_errors : true
 
 r_build_args : " --compact-vignettes=gs+qpdf"
 
+# c.f. https://cran.r-project.org/doc/manuals/r-release/R-ints.html#Tools
+# http://jtleek.com/protocols/travis_bioc_devel/
+# https://github.com/travis-ci/travis-ci/issues/3697
+r_check_args : "--as-cran"
+
 after_success:
   - Rscript -e 'library(covr);codecov()'
 
