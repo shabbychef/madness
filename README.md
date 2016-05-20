@@ -4,8 +4,9 @@
 
 [![Build Status](https://travis-ci.org/shabbychef/madness.png)](https://travis-ci.org/shabbychef/madness)
 [![codecov.io](http://codecov.io/github/shabbychef/madness/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/madness?branch=master)
-[![CRAN](http://www.r-pkg.org/badges/version/madness)](http://cran.rstudio.com/package=madness) 
+[![CRAN](http://www.r-pkg.org/badges/version/madness)](https://cran.r-project.org/package=madness)
 [![Downloads](http://cranlogs.r-pkg.org/badges/madness?color=brightgreen)](http://www.r-pkg.org/pkg/madness)
+[![Total](http://cranlogs.r-pkg.org/badges/grand-total/madness?color=green)](http://www.r-pkg.org/pkg/madness)
 
 'madness' is a 'Multivariate Automatic Differentiation' package for R. It allows one to compute and track the derivative of 
 multivariate to multivariate functions applied to concrete data via forward differentiation and the chain rule. 

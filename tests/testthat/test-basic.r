@@ -262,6 +262,9 @@ test_that("outer?",{#FOLDUP
 		blah <- outer(xmad,ymad,'*')
 		blah <- outer(xmad,ymad,'+')
 		blah <- outer(xmad,ymad,'-')
+
+		# kronecker should just call outer?
+		blah <- xmad %o% ymad
 	}
 
 	# sentinel:

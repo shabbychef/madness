@@ -2,6 +2,7 @@
 % Please edit documentation in R/Ops.r
 \docType{methods}
 \name{outer}
+\alias{\%o\%}
 \alias{kronecker,array,madness-class}
 \alias{kronecker,array,madness-method}
 \alias{kronecker,madness,array-class}
@@ -24,6 +25,8 @@ outer(X, Y, FUN = "*", ...)
 \S4method{outer}{madness,array}(X, Y, FUN = "*", ...)
 
 \S4method{outer}{array,madness}(X, Y, FUN = "*", ...)
+
+X \%o\% Y
 
 \S4method{kronecker}{madness,madness}(X, Y)
 

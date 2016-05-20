@@ -647,6 +647,11 @@ setMethod("outer", signature(X="array",Y="madness"),
 })
 
 
+#' @rdname outer
+#' @export
+`%o%` <- base::`%o%`
+environment(`%o%`) <- environment()
+
 #UNFOLD
 
 # kronecker multiplication!#FOLDUP
