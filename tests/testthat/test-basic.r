@@ -141,6 +141,21 @@ test_that("basic getters and setters",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("basic indexing getters",{#FOLDUP
+	set.char.seed("29d8912a-6950-4670-8a81-a2c5ed72e5cf")
+	xval <- matrix(1 + runif(4*4),nrow=4)
+	xmad <- madness(xval)
+
+	# make sure these run:
+	xmad[1,2]
+	xmad[1,c(2,3)]
+	xmad[c(1,2,3)]
+
+	expect_equal(as.numeric(val(rev(xmad))),as.numeric(rev(val(xmad))))
+	
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("just vcov",{#FOLDUP
 	yt <- 'any'
 	xt <- 'anx'

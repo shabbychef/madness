@@ -4,9 +4,12 @@
 \name{[}
 \alias{[}
 \alias{[,madness,ANY,ANY,ANY-method}
+\alias{[,madness,ANY,missing,ANY-method}
 \title{Extract parts of a \code{madness} value.}
 \usage{
 \S4method{[}{madness,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{madness,ANY,missing,ANY}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{a \code{madness} object.}
