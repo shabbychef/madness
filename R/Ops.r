@@ -96,6 +96,27 @@ setMethod("-", signature(e1="madness",e2="missing"),
 					})
 #UNFOLD
 
+.isscalar <- function(x) { length(x) == 1 }
+
+# replicate columns into a matrix
+.crep <- function(x,nrep) {
+	if (nrep == 1) {
+		retv <- x
+	} else {
+		retv <- do.call(cbind,rep(list(x),nrep))
+	}
+	retv
+}
+# replicate columns into a matrix
+.crepto <- function(X,nco) {
+	if (ncol(X) == nco) {
+		retv <- X
+	} else {
+		retv <- .crep(X,nco)
+	}
+	retv
+}
+
 # addition#FOLDUP
 #' @rdname arithops
 #' @aliases +,madness,madness-class
@@ -103,7 +124,8 @@ setMethod("+", signature(e1="madness",e2="madness"),
 					function(e1,e2) {
 						xtag <- .check_common_xtag(e1,e2)
 						val <- e1@val + e2@val
-						dvdx <- e1@dvdx + e2@dvdx
+						# rigamarole if one is a scalar...
+						dvdx <- .crepto(e1@dvdx,length(val)) + .crepto(e2@dvdx,length(val))
 						vtag <- paste0('(',e1@vtag,' + ',e2@vtag,')')
 						varx <- .get_a_varx(e1,e2)
 
@@ -113,7 +135,7 @@ setMethod("+", signature(e1="madness",e2="madness"),
 mplusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val + e2
-						dvdx <- e1@dvdx 
+						dvdx <- .crep(e1@dvdx,length(e2))
 						vtag <- paste0('(',e1@vtag,' + numeric)')
 						varx <- e1@varx
 
@@ -129,7 +151,7 @@ setMethod("+", signature(e1="madness",e2="array"),mplusn)
 nplusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 + e2@val
-						dvdx <- e2@dvdx 
+						dvdx <- .crep(e2@dvdx,length(e1))
 						vtag <- paste0('(numeric + ',e2@vtag,')')
 						varx <- e2@varx
 

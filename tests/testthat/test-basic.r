@@ -156,6 +156,21 @@ test_that("basic indexing getters",{#FOLDUP
 	# sentinel:
 	expect_true(TRUE)
 })#UNFOLD
+test_that("scalar to array promotion",{#FOLDUP
+	set.char.seed("8d40c3b6-67b7-4640-a710-168b09a09732")
+	xmad <- madness(array(runif(1)))
+	yscl <- 1:5
+
+	# make sure these run:
+	xmad + yscl
+	xmad - yscl
+	xmad * yscl
+	xmad / yscl
+	xmad ^ yscl
+	
+	# sentinel:
+	expect_true(TRUE)
+})#UNFOLD
 test_that("just vcov",{#FOLDUP
 	yt <- 'any'
 	xt <- 'anx'
