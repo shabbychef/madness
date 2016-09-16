@@ -7,7 +7,7 @@
 News for package \sQuote{madness}.
 
 \newcommand{\pkg}{#1}
-\newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\madness}{\CRANpkg{madness}}
 }
 \section{\madness{} Version 0.2.0 (2016-01-19) }{
