@@ -150,7 +150,6 @@ setMethod("[", signature(x="madness",i="ANY",j="ANY"),
 #' @rdname reshapes
 #' @export 
 #' @method aperm madness
-#' @usage aperm(a, perm=NULL, resize=TRUE, ...)
 #' @inheritParams base::aperm
 #' @aliases aperm
 aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {

@@ -71,7 +71,6 @@ setMethod("sqrtm", signature(x="madness"),
 #' @rdname matwise
 #' @export 
 #' @method chol madness
-#' @usage chol(x,...)
 #' @aliases chol
 chol.madness <- function(x,...) {
  	xtag <- x@xtag
