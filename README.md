@@ -170,7 +170,7 @@ print(vcov(mynorm))
 
 -----------------
 
-![Delta Method All the Things!](github_extra/figure/GevbfLD.jpg)
+![Delta Method All the Things!](tools/figure/GevbfLD.jpg)
 
 
 
