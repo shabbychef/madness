@@ -90,6 +90,12 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
+#' @section \madness{} Version 0.2.1 (2017-04-13) :
+#' \itemize{
+#' \item emergency CRAN release for failed build.
+#' \item no new functionality.
+#' }
+#'
 #' @section \madness{} Version 0.2.0 (2016-01-19) :
 #' \itemize{
 #' \item add static vignette.

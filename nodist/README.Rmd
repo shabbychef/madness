@@ -11,7 +11,8 @@ opts_chunk$set(cache=TRUE,cache.path="cache/")
 
 #opts_chunk$set(fig.path="github_extra/figure/",dev=c("pdf","cairo_ps"))
 #opts_chunk$set(fig.path="github_extra/figure/",dev=c("png","pdf"))
-opts_chunk$set(fig.path="github_extra/figure/",dev=c("png"))
+#opts_chunk$set(fig.path="github_extra/figure/",dev=c("png"))
+opts_chunk$set(fig.path="tools/figure/",dev=c("png"))
 opts_chunk$set(fig.width=6,fig.height=5,dpi=256)
 
 # doing this means that png files are made of figures;
@@ -121,7 +122,7 @@ print(vcov(mynorm))
 
 -----------------
 
-![Delta Method All the Things!](github_extra/figure/GevbfLD.jpg)
+![Delta Method All the Things!](tools/figure/GevbfLD.jpg)
 
 
 

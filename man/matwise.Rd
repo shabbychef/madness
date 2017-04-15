@@ -13,7 +13,7 @@ sqrtm(x)
 
 \S4method{sqrtm}{madness}(x)
 
-chol(x,...)
+\method{chol}{madness}(x, ...)
 }
 \arguments{
 \item{x}{\code{madness} object.}

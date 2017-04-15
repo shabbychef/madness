@@ -29,7 +29,7 @@ triu(x, k = 0, ...)
 
 \S4method{dim}{madness}(x) <- value
 
-aperm(a, perm=NULL, resize=TRUE, ...)
+\method{aperm}{madness}(a, perm = NULL, resize = TRUE, ...)
 }
 \arguments{
 \item{x}{\code{madness} object.}

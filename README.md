@@ -170,7 +170,7 @@ print(vcov(mynorm))
 
 -----------------
 
-![Delta Method All the Things!](github_extra/figure/GevbfLD.jpg)
+![Delta Method All the Things!](tools/figure/GevbfLD.jpg)
 
 
 
@@ -212,9 +212,9 @@ print(vcov(markowitz))
 
 ```
 ##        [,1]    [,2]    [,3]
-## [1,]  0.303 -0.0478 -0.1436
-## [2,] -0.048  0.9924  0.0057
-## [3,] -0.144  0.0057  0.7508
+## [1,]  0.304 -0.0444 -0.1507
+## [2,] -0.044  0.9790  0.0046
+## [3,] -0.151  0.0046  0.7499
 ```
 
 ```r
@@ -226,7 +226,7 @@ print(wald)
 ##      [,1]
 ## [1,]  2.4
 ## [2,]  1.3
-## [3,]  2.5
+## [3,]  2.6
 ```
 
 ## Does that really work?
@@ -278,7 +278,7 @@ ph <- qplot(sample = retv[1, , 1], stat = "qq") + geom_abline(intercept = 0,
 print(ph)
 ```
 
-<img src="github_extra/figure/marksym_check-1.png" title="plot of chunk marksym_check" alt="plot of chunk marksym_check" width="600px" height="500px" />
+<img src="tools/figure/marksym_check-1.png" title="plot of chunk marksym_check" alt="plot of chunk marksym_check" width="600px" height="500px" />
 
 # Trace of the covariance matrix
 
@@ -327,7 +327,7 @@ ph <- qplot(sample = as.numeric(retv), stat = "qq") +
 print(ph)
 ```
 
-<img src="github_extra/figure/matracer-1.png" title="plot of chunk matracer" alt="plot of chunk matracer" width="600px" height="500px" />
+<img src="tools/figure/matracer-1.png" title="plot of chunk matracer" alt="plot of chunk matracer" width="600px" height="500px" />
 
 # Maximum eigenvalue of the covariance matrix
 
@@ -400,7 +400,7 @@ ph <- qplot(sample = as.numeric(retv), stat = "qq") +
 print(ph)
 ```
 
-<img src="github_extra/figure/cosym_mo-1.png" title="plot of chunk cosym_mo" alt="plot of chunk cosym_mo" width="600px" height="500px" />
+<img src="tools/figure/cosym_mo-1.png" title="plot of chunk cosym_mo" alt="plot of chunk cosym_mo" width="600px" height="500px" />
 
 Why the bias? There are a number of possibilities:
 

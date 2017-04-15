@@ -33,8 +33,9 @@ M4_FILES					?= $(wildcard m4/*.m4)
 
 VMAJOR 						 = 0
 VMINOR 						 = 2
-VPATCH  					 = 0
-VDEV 							 = .2000
+VPATCH  					 = 1
+VDEV 							 = 
+#VDEV 							 = .3000
 #VERSION 					 = 0.1402
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
@@ -274,6 +275,7 @@ cached_data : $(PREMAKE_RDA)
 README.md : $(NODIST_R_DIR)/README.md
 	mv $< $@
 	rsync -av --delete $(NODIST_R_DIR)/github_extra/ ./github_extra/
+	rsync -av --delete $(NODIST_R_DIR)/github_extra/figure ./tools/
 
 # macro for local R
 R_LOCALLY  						= R_LIBS=$(LOCAL) $(R) $(R_FLAGS)
