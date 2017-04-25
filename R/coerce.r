@@ -52,12 +52,16 @@ setAs(from='madness', to='complex', def=function(from) as.complex(val(from)) )
 # what. a fucking mess.
 # http://stackoverflow.com/a/11285863/164611
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+#setGeneric('as.array', signature="x", function(x,...) standardGeneric('as.array'))
+#setGeneric('as.matrix', signature="x", function(x,...) standardGeneric('as.matrix'))
+#setGeneric('as.numeric', signature="x", function(x,...) standardGeneric('as.numeric'))
+
 #' @rdname as
 #' @aliases as.array
 #' @exportMethod as.array
 #' @param x a \code{madness} object
 #' @param ... further arguments passed to or from other methods.
-setGeneric('as.array', signature="x", function(x,...) standardGeneric('as.array'))
 #' @rdname as
 #' @aliases as.array,madness-method
 setMethod('as.array', 'madness', function(x,...) { as(x,'array') })
@@ -65,7 +69,6 @@ setMethod('as.array', 'madness', function(x,...) { as(x,'array') })
 #' @rdname as
 #' @aliases as.matrix
 #' @exportMethod as.matrix
-setGeneric('as.matrix', signature="x", function(x,...) standardGeneric('as.matrix'))
 #' @rdname as
 #' @aliases as.matrix,madness-method
 setMethod('as.matrix', 'madness', function(x,...) { as(x,'matrix') })
@@ -73,7 +76,6 @@ setMethod('as.matrix', 'madness', function(x,...) { as(x,'matrix') })
 #' @rdname as
 #' @aliases as.numeric
 #' @exportMethod as.numeric
-#setGeneric('as.numeric', signature="x", function(x,...) standardGeneric('as.numeric'))
 #' @rdname as
 #' @aliases as.numeric,madness-method
 setMethod('as.numeric', 'madness', function(x,...) { as(x,'numeric') })

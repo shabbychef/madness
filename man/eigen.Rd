@@ -6,8 +6,6 @@
 \alias{eigen,madness-method}
 \title{Spectral Decomposition of a Matrix}
 \usage{
-eigen(x, symmetric, only.values = FALSE, EISPACK = FALSE)
-
 \S4method{eigen}{madness}(x, symmetric, only.values = FALSE,
   EISPACK = FALSE)
 }

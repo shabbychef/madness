@@ -14,8 +14,6 @@
 
 det(x, ...)
 
-determinant(x, logarithm = TRUE, ...)
-
 \S4method{determinant}{madness,ANY}(x, logarithm = TRUE, ...)
 
 \S4method{determinant}{madness,missing}(x, logarithm = TRUE, ...)

@@ -27,8 +27,6 @@
 
 \S4method{\%*\%}{array,madness}(x, y)
 
-crossprod(x, y = NULL, ...)
-
 \S4method{crossprod}{madness,madness}(x, y)
 
 \S4method{crossprod}{madness,ANY}(x, y)
@@ -36,8 +34,6 @@ crossprod(x, y = NULL, ...)
 \S4method{crossprod}{madness,missing}(x, y)
 
 \S4method{crossprod}{ANY,madness}(x, y)
-
-tcrossprod(x, y = NULL, ...)
 
 \S4method{tcrossprod}{madness,madness}(x, y)
 

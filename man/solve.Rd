@@ -12,8 +12,6 @@
 \alias{solve,madness,missing-method}
 \title{Basic Matrix Inversion}
 \usage{
-solve(a, b, ...)
-
 \S4method{solve}{ANY,missing}(a, b)
 
 \S4method{solve}{madness,missing}(a, b)
@@ -30,8 +28,6 @@ solve(a, b, ...)
 }
 \arguments{
 \item{a, b}{\code{madness} object or matrix value.}
-
-\item{...}{further arguments passed to or from other methods}
 }
 \description{
 Basic Matrix Inversion

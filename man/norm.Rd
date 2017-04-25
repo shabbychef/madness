@@ -6,14 +6,11 @@
 \alias{maxeig,madness-method}
 \alias{norm}
 \alias{norm,madness,ANY-method}
-\alias{norm,madness,missing-method}
 \title{Matrix and vector norms.}
 \usage{
 maxeig(x)
 
 \S4method{maxeig}{madness}(x)
-
-norm(x, type, ...)
 
 \S4method{norm}{madness,missing}(x)
 

@@ -15,15 +15,9 @@
 \alias{triu,madness-method}
 \title{Basic Reshape Operations}
 \usage{
-t(x)
-
 \S4method{t}{madness}(x)
 
-tril(x, k = 0, ...)
-
 \S4method{tril}{madness}(x, k = 0)
-
-triu(x, k = 0, ...)
 
 \S4method{triu}{madness}(x, k = 0)
 
@@ -35,8 +29,6 @@ triu(x, k = 0, ...)
 \item{x}{\code{madness} object.}
 
 \item{k}{the index of the diagonal number from which to extract.\code{madness} object.}
-
-\item{...}{Optional arguments used by specific methods. (None used at present.)}
 
 \item{value}{an array of the new dimensions of the object value.}
 
@@ -51,6 +43,8 @@ triu(x, k = 0, ...)
 
 \item{resize}{a flag indicating whether the vector should be
     resized as well as having its elements reordered (default \code{TRUE}).}
+
+\item{...}{Optional arguments used by specific methods. (None used at present.)}
 }
 \description{
 Basic Reshape Operations

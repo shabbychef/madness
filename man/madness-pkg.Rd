@@ -46,6 +46,8 @@ Econometric Theory 2 (1986): 157-190.
 
 Fackler, Paul L. "Notes on Matrix Calculus." (2005).
 \url{http://www4.ncsu.edu/~pfackler/MatCalc.pdf}
+
+MM: DO use  @importFrom (whimps use full imports ..) !
 }
 \keyword{package}
 

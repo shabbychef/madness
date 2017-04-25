@@ -90,10 +90,12 @@ determinant.madness <- function(x,logarithm=TRUE,...) {
 det <- base::det
 environment(det) <- environment()
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+#setGeneric('determinant', function(x,logarithm=TRUE,...) standardGeneric('determinant'))
+
 #' @rdname det
 #' @exportMethod determinant
 #' @aliases determinant
-setGeneric('determinant', function(x,logarithm=TRUE,...) standardGeneric('determinant'))
 
 #' @rdname det
 #' @aliases determinant,madness,missing-method

@@ -27,15 +27,21 @@
 #' @include utils.r
 NULL
 
+
+##MM: do _NOT_ gives a conflict with other pkg's setMethod():
+## setGeneric('diag')
+## MM the generated ../man/todiag.Rd should not really mention nrow & ncol :
+## ==> The 3 lines below are comment & moved here
+#-' @param nrow,ncol Optional dimensions for the result when \code{x} is not a matrix value (NYI here)
+#-' The \code{nrow} and \code{ncol} are ignored.
+#-' @inheritParams base::diag
+
 #' Diagonal Operations 
 #'
 #' @include AllClass.r
 #' @param x \code{madness} object.
-#' @param nrow,ncol Optional dimensions for the result when \code{x} is not a matrix value (NYI here)
-#' @inheritParams base::diag
 #' @note the (somewhat odd) use of \code{stats::diag} for two different
 #' functions is \emph{not} repeated here, at least for now.
-#' The \code{nrow} and \code{ncol} are ignored.
 #' @seealso \code{\link{reshapes}}
 #' @name todiag
 #' @template etc
@@ -44,16 +50,14 @@ NULL
 #' @rdname todiag
 #' @aliases diag
 #' @exportMethod diag
-#' @inheritParams base::diag
-setGeneric('diag', function(x,nrow,ncol) standardGeneric('diag'))
 #' @rdname todiag
 #' @aliases diag,madness-method
 setMethod("diag", signature(x="madness"),
-					function(x,nrow,ncol) {
+          function(x) {
 						xtag <- x@xtag
 						val <- x@val
-						# 2FIX: this should just use the diag method, so that if e.g.
-						# nrow and ncol are given, it does the right thing?
+              ## 2FIX: this should just use the diag method, so that if e.g.
+              ## nrow and ncol are given, it does the right thing?
 						takeus <- row(val) == col(val)
 						val <- val[takeus]
 						dim(val) <- c(length(val),1)

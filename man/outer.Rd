@@ -16,8 +16,6 @@
 \alias{outer,madness,madness-method}
 \title{Outer product.}
 \usage{
-outer(X, Y, FUN = "*", ...)
-
 \S4method{outer}{ANY,ANY}(X, Y, FUN = "*", ...)
 
 \S4method{outer}{madness,madness}(X, Y, FUN = "*", ...)

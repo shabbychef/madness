@@ -27,6 +27,11 @@
 #' @include utils.r
 NULL
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+# setGeneric('solve', function(a,b) standardGeneric('solve'))
+
+# solve#FOLDUP
+
 #' Basic Matrix Inversion 
 #'
 #' @include AllClass.r
@@ -35,10 +40,6 @@ NULL
 #' @name solve
 #' @template etc
 #' @exportMethod solve
-setGeneric('solve', function(a,b) standardGeneric('solve'))
-
-# solve#FOLDUP
-
 #' @rdname solve
 #' @aliases solve,ANY,missing-method
 setMethod("solve", signature(a="ANY",b="missing"),

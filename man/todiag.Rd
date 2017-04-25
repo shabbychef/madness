@@ -8,9 +8,7 @@
 \alias{todiag,madness-method}
 \title{Diagonal Operations}
 \usage{
-diag(x, nrow, ncol)
-
-\S4method{diag}{madness}(x, nrow, ncol)
+\S4method{diag}{madness}(x)
 
 todiag(x)
 
@@ -18,8 +16,6 @@ todiag(x)
 }
 \arguments{
 \item{x}{\code{madness} object.}
-
-\item{nrow, ncol}{Optional dimensions for the result when \code{x} is not a matrix value (NYI here)}
 }
 \description{
 Diagonal Operations
@@ -27,7 +23,6 @@ Diagonal Operations
 \note{
 the (somewhat odd) use of \code{stats::diag} for two different
 functions is \emph{not} repeated here, at least for now.
-The \code{nrow} and \code{ncol} are ignored.
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}

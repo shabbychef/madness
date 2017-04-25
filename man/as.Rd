@@ -11,11 +11,7 @@
 \alias{as.numeric,madness-method}
 \title{Coerce madness to something else}
 \usage{
-as.array(x, ...)
-
 \S4method{as.array}{madness}(x, ...)
-
-as.matrix(x, ...)
 
 \S4method{as.matrix}{madness}(x, ...)
 
