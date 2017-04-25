@@ -2,11 +2,11 @@
 % Please edit documentation in R/sum.r
 \docType{methods}
 \name{sumprod}
-\alias{prod}
-\alias{prod,madness-method}
-\alias{sum}
-\alias{sum,madness-method}
 \alias{sumprod}
+\alias{sum,madness-method}
+\alias{sum}
+\alias{prod,madness-method}
+\alias{prod}
 \title{Sum and Product.}
 \usage{
 \S4method{sum}{madness}(x, ..., na.rm = FALSE)
@@ -36,4 +36,3 @@ sum(xv)
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

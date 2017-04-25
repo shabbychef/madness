@@ -2,17 +2,17 @@
 % Please edit documentation in R/reshape.r
 \docType{methods}
 \name{reshapes}
-\alias{aperm}
-\alias{aperm.madness}
-\alias{dim<-,madness,ANY-method}
-\alias{dim<-,madness-method}
 \alias{reshapes}
-\alias{t}
 \alias{t,madness-method}
-\alias{tril}
+\alias{t}
 \alias{tril,madness-method}
-\alias{triu}
+\alias{tril}
 \alias{triu,madness-method}
+\alias{triu}
+\alias{dim<-,madness-method}
+\alias{dim<-,madness,ANY-method}
+\alias{aperm.madness}
+\alias{aperm}
 \title{Basic Reshape Operations}
 \usage{
 \S4method{t}{madness}(x)
@@ -49,10 +49,9 @@
 \description{
 Basic Reshape Operations
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{vec}}, \code{\link{todiag}}
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

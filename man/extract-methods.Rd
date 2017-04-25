@@ -52,4 +52,3 @@ Extract parts of a \code{madness} value.
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

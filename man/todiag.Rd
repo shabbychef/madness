@@ -2,8 +2,9 @@
 % Please edit documentation in R/diag.r
 \docType{methods}
 \name{todiag}
-\alias{diag}
+\alias{todiag}
 \alias{diag,madness-method}
+\alias{diag}
 \alias{todiag}
 \alias{todiag,madness-method}
 \title{Diagonal Operations}
@@ -24,10 +25,9 @@ Diagonal Operations
 the (somewhat odd) use of \code{stats::diag} for two different
 functions is \emph{not} repeated here, at least for now.
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{reshapes}}
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

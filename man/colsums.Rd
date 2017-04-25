@@ -2,14 +2,15 @@
 % Please edit documentation in R/sums.r
 \docType{methods}
 \name{colsums}
-\alias{colMeans}
-\alias{colMeans,madness-method}
-\alias{colSums}
 \alias{colsums}
-\alias{rowMeans}
-\alias{rowMeans,madness-method}
-\alias{rowSums}
+\alias{colSums}
+\alias{colSums,madness-method}
+\alias{colMeans,madness-method}
+\alias{colMeans}
 \alias{rowSums,madness-method}
+\alias{rowSums}
+\alias{rowMeans,madness-method}
+\alias{rowMeans}
 \title{Form Row and Column Sums and Means}
 \usage{
 \S4method{colSums}{madness}(x, na.rm = FALSE, dims = 1)
@@ -43,4 +44,3 @@ Form Row and Column Sums and Means for \code{madness} objects.
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

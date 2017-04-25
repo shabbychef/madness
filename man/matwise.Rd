@@ -2,10 +2,12 @@
 % Please edit documentation in R/matwise.r
 \docType{methods}
 \name{matwise}
-\alias{chol}
-\alias{chol.madness}
+\alias{matwise}
 \alias{matwise}
 \alias{sqrtm}
+\alias{sqrtm,madness-method}
+\alias{chol.madness}
+\alias{chol}
 \title{Matrix-wise Multivariate Operations}
 \usage{
 \S4method{sqrtm}{madness}(x)
@@ -28,4 +30,3 @@ be implemented?
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

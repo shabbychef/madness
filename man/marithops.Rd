@@ -2,23 +2,23 @@
 % Please edit documentation in R/Ops.r
 \docType{methods}
 \name{marithops}
-\alias{\%*\%,array,madness-class}
-\alias{\%*\%,array,madness-method}
-\alias{\%*\%,madness,array-class}
-\alias{\%*\%,madness,array-method}
+\alias{marithops}
 \alias{\%*\%,madness,madness-method}
 \alias{`\%*\%`,madness,madness-class}
-\alias{crossprod}
-\alias{crossprod,ANY,madness-method}
-\alias{crossprod,madness,ANY-method}
+\alias{\%*\%,madness,array-method}
+\alias{\%*\%,madness,array-class}
+\alias{\%*\%,array,madness-method}
+\alias{\%*\%,array,madness-class}
 \alias{crossprod,madness,madness-method}
+\alias{crossprod}
+\alias{crossprod,madness,ANY-method}
 \alias{crossprod,madness,missing-method}
-\alias{marithops}
-\alias{tcrossprod}
-\alias{tcrossprod,ANY,madness-method}
-\alias{tcrossprod,madness,ANY-method}
+\alias{crossprod,ANY,madness-method}
 \alias{tcrossprod,madness,madness-method}
+\alias{tcrossprod}
+\alias{tcrossprod,madness,ANY-method}
 \alias{tcrossprod,madness,missing-method}
+\alias{tcrossprod,ANY,madness-method}
 \title{Basic Matrix Arithmetic Operations.}
 \usage{
 \S4method{\%*\%}{madness,madness}(x, y)
@@ -72,4 +72,3 @@ anobj <- tcrossprod(obj0,obj0)
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

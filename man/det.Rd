@@ -3,11 +3,12 @@
 \docType{methods}
 \name{det}
 \alias{det}
-\alias{determinant}
-\alias{determinant,madness,ANY-method}
-\alias{determinant,madness,logical-method}
-\alias{determinant,madness,missing-method}
 \alias{determinant.madness}
+\alias{det}
+\alias{determinant,madness,ANY-method}
+\alias{determinant}
+\alias{determinant,madness,missing-method}
+\alias{determinant,madness,logical-method}
 \title{Matrix Determinant}
 \usage{
 \method{determinant}{madness}(x, logarithm = TRUE, ...)
@@ -44,4 +45,3 @@ throws an error for non-square matrices or non-matrix input.
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

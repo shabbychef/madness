@@ -4,8 +4,9 @@
 \name{max}
 \alias{max}
 \alias{max,madness-method}
-\alias{min}
+\alias{max}
 \alias{min,madness-method}
+\alias{min}
 \title{Maxima and Minima}
 \usage{
 \S4method{max}{madness}(x, ..., na.rm = FALSE)
@@ -40,4 +41,3 @@ The minimum and maximum of a numeric empty set are \code{+Inf} and
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

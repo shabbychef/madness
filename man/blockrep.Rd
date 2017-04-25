@@ -54,4 +54,3 @@ anobj <- repto(obj0,c(9,12,4))
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

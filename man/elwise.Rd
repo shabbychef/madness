@@ -2,14 +2,14 @@
 % Please edit documentation in R/elwise.r
 \docType{methods}
 \name{elwise}
-\alias{abs,madness-method}
-\alias{cos,madness-method}
 \alias{elwise}
+\alias{abs,madness-method}
 \alias{exp,madness-method}
 \alias{log,madness-method}
 \alias{log10,madness-method}
-\alias{sin,madness-method}
 \alias{sqrt,madness-method}
+\alias{sin,madness-method}
+\alias{cos,madness-method}
 \alias{tan,madness-method}
 \title{Element-wise Multivariate Operations}
 \usage{
@@ -44,10 +44,9 @@ The \code{exp}, \code{log}, and \code{sqrt}
 functions are not to be confused with the matrix-wise operations,
 \code{expm}, \code{logm} and \code{sqrtm}
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \link{matwise}
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

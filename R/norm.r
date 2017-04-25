@@ -111,13 +111,12 @@ setMethod("maxeig", signature(x="madness"),
 
 #' @name norm
 #' @rdname norm
-#' @aliases norm
+#' @aliases norm norm,madness-method norm,madness,missing-method
 #' @exportMethod norm
 #' @rdname norm
-#' @aliases maxeig,madness-method
 setMethod("norm", signature(x="madness",type='missing'), function(x) .normit(x))
 #' @rdname norm
-#' @aliases maxeig,madness-method
+#' @aliases norm,madness-method
 setMethod("norm", signature(x="madness",type='ANY'), .normit)
 
 #for vim modeline: (do not edit)

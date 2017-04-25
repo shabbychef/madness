@@ -53,10 +53,9 @@ NULL
 #' @name colsums
 #' @rdname colsums
 #' @exportMethod colSums
-#' @aliases colSums
+#' @aliases colSums colSums,madness-method
 #' @template etc
 #' @rdname colsums
-#' @aliases colSums,madness-method
 setMethod("colSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag
@@ -79,9 +78,8 @@ setMethod("colSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					})
 #' @rdname colsums
 #' @exportMethod colMeans
-#' @aliases colMeans
+#' @aliases colMeans colMeans,madness-method
 #' @rdname colsums
-#' @aliases colMeans,madness-method
 setMethod("colMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag
@@ -107,9 +105,8 @@ setMethod("colMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 
 #' @rdname colsums
 #' @exportMethod rowSums
-#' @aliases rowSums
+#' @aliases rowSums rowSums,madness-method
 #' @rdname colsums
-#' @aliases rowSums,madness-method
 setMethod("rowSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag
@@ -133,9 +130,8 @@ setMethod("rowSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					})
 #' @rdname colsums
 #' @exportMethod rowMeans
-#' @aliases rowMeans
+#' @aliases rowMeans rowMeans,madness-method
 #' @rdname colsums
-#' @aliases rowMeans,madness-method
 setMethod("rowMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag

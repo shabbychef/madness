@@ -55,11 +55,10 @@ NULL
 
 #' @name matwise
 #' @rdname matwise
-#' @aliases sqrtm
+#' @aliases sqrtm sqrtm,madness-method
 #' @importFrom expm sqrtm
 #' @exportMethod sqrtm
 #' @rdname matwise
-#' @aliases sqrtm,madness-method
 setMethod("sqrtm", signature(x="madness"),
 					function(x) {
 						xtag <- x@xtag

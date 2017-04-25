@@ -42,4 +42,3 @@ fooz <- nlm(fitfun, R0, L, Y, iterlim=3)
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

@@ -19,11 +19,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Lesser General Public License for more details.
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
 
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \references{
 Griewank, Andreas and Walther, Andrea. "Evaluating Derivatives: principles and techniques of algorithmic differentiation."
 SIAM (2008).
@@ -49,5 +45,9 @@ Fackler, Paul L. "Notes on Matrix Calculus." (2005).
 
 MM: DO use  @importFrom (whimps use full imports ..) !
 }
-\keyword{package}
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
 
+Steven E. Pav \email{shabbychef@gmail.com}
+}
+\keyword{package}
