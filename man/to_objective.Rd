@@ -24,6 +24,7 @@ An error will be thrown if the value is not a scalar.
 \examples{
 # an objective function for matrix factorization with penalty:
 fitfun <- function(R,L,Y,nu=-0.1) {
+ dim(R) <- c(length(R),1)
 Rmad <- madness(R)
 dim(Rmad) <- c(ncol(L),ncol(Y))
 Err <- Y - L \%*\% Rmad

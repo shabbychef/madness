@@ -235,6 +235,7 @@ as.madness.default <- function(x, vtag=NULL, xtag=NULL) {
 		xtag <- vtag
 	}
 	val <- coef(x)
+	dim(val) <- c(length(val),1)
 	varx <- tryCatch({ vcov(x) },error = function(e) { NULL })
 	invisible(madness(val,xtag=xtag,vtag=vtag,varx=varx))
 }
