@@ -33,7 +33,7 @@ M4_FILES					?= $(wildcard m4/*.m4)
 
 VMAJOR 						 = 0
 VMINOR 						 = 2
-VPATCH  					 = 2
+VPATCH  					 = 3
 VDEV 							 = 
 #VDEV 							 = .3000
 #VERSION 					 = 0.1402

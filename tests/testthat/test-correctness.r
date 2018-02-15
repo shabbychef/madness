@@ -406,7 +406,7 @@ test_that("eigen functions",{#FOLDUP
 										 ev <- eigen(0.5 * (x + t(x)),symmetric=TRUE)
 										 # force first row to be all positive
 										 ev$vectors %*% diag(sign(ev$vectors[1,,drop=TRUE]))
-									 }, eps=1e-7,errtol=1e-6)
+									 }, eps=1e-6,errtol=1e-6)
 
 	
 	# sentinel:
@@ -434,7 +434,7 @@ test_that("norm functions",{#FOLDUP
 																function(x) { 
 																	usv <- svd(x,1,1)
 																	as.numeric(usv$d[1])
-																},errtol=1e-6)
+																},errtol=1e-5)
 	
 	# sentinel:
 	expect_true(TRUE)

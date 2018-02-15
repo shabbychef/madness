@@ -91,6 +91,12 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
+#' @section \madness{} Version 0.2.3 (2018-02-14) :
+#' \itemize{
+#' \item emergency CRAN release to deal with failing tests
+#' under alternative BLAS/LAPACK libraries.
+#' }
+#'
 #' @section \madness{} Version 0.2.2 (2017-04-26) :
 #' \itemize{
 #' \item emergency CRAN release for upstream changes to \code{diag}.
