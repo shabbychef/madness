@@ -7,6 +7,8 @@
 [![CRAN](http://www.r-pkg.org/badges/version/madness)](https://cran.r-project.org/package=madness)
 [![Downloads](http://cranlogs.r-pkg.org/badges/madness?color=brightgreen)](http://www.r-pkg.org/pkg/madness)
 [![Total](http://cranlogs.r-pkg.org/badges/grand-total/madness?color=green)](http://www.r-pkg.org/pkg/madness)
+[![Rdoc](http://www.rdocumentation.org/badges/version/madness)](http://www.rdocumentation.org/packages/madness)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
 'madness' is a 'Multivariate Automatic Differentiation' package for R. It allows one to compute and track the derivative of 
 multivariate to multivariate functions applied to concrete data via forward differentiation and the chain rule. 
