@@ -4,14 +4,14 @@
 \name{bind}
 \alias{bind}
 \alias{c.madness}
-\alias{cbind2,ANY,madness-method}
-\alias{cbind2,madness,ANY-method}
-\alias{cbind2,madness,madness-method}
 \alias{cbind2,madness,missing-method}
-\alias{rbind2,ANY,madness-method}
-\alias{rbind2,madness,ANY-method}
-\alias{rbind2,madness,madness-method}
+\alias{cbind2,madness,madness-method}
+\alias{cbind2,madness,ANY-method}
+\alias{cbind2,ANY,madness-method}
 \alias{rbind2,madness,missing-method}
+\alias{rbind2,madness,madness-method}
+\alias{rbind2,madness,ANY-method}
+\alias{rbind2,ANY,madness-method}
 \title{Row and Column Bind}
 \usage{
 \\method{c}{madness}(...)
@@ -43,4 +43,3 @@ Row and Column Bind
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

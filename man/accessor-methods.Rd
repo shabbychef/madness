@@ -3,18 +3,18 @@
 \docType{methods}
 \name{accessor}
 \alias{accessor}
-\alias{dim,madness-method}
-\alias{dvdx}
-\alias{dvdx,madness-method}
-\alias{length,madness-method}
 \alias{val}
 \alias{val,madness-method}
-\alias{varx}
-\alias{varx,madness-method}
-\alias{vtag}
-\alias{vtag,madness-method}
+\alias{dim,madness-method}
+\alias{length,madness-method}
+\alias{dvdx}
+\alias{dvdx,madness-method}
 \alias{xtag}
 \alias{xtag,madness-method}
+\alias{vtag}
+\alias{vtag,madness-method}
+\alias{varx}
+\alias{varx,madness-method}
 \title{Accessor methods.}
 \usage{
 val(x)
@@ -50,4 +50,3 @@ Access slot data from a \code{madness} object.
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

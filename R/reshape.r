@@ -39,12 +39,18 @@ NULL
 #' @template etc
 NULL
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+# setGeneric('t', function(x) standardGeneric('t'))
+# Import these from Matrix !
+# setGeneric('tril', function(x,k=0,...) standardGeneric('tril'))
+# setGeneric('triu', function(x,k=0,...) standardGeneric('triu'))
+
+
 # transpose#FOLDUP
 
 #' @rdname reshapes
 #' @aliases t
 #' @exportMethod t
-setGeneric('t', function(x) standardGeneric('t'))
 #' @rdname reshapes
 #' @aliases t,madness-method
 setMethod("t", signature(x="madness"),
@@ -60,9 +66,8 @@ setMethod("t", signature(x="madness"),
 
 #' @rdname reshapes
 #' @aliases tril
+#' @importFrom Matrix tril
 #' @exportMethod tril
-setGeneric('tril', function(x,k=0,...) standardGeneric('tril'))
-# 2FIX: must I check if this has already been defined as a generic?
 #' @rdname reshapes
 #' @aliases tril,madness-method
 setMethod("tril", signature(x="madness"),
@@ -81,8 +86,8 @@ setMethod("tril", signature(x="madness"),
 
 #' @rdname reshapes
 #' @aliases triu
+#' @importFrom Matrix triu
 #' @exportMethod triu
-setGeneric('triu', function(x,k=0,...) standardGeneric('triu'))
 #' @rdname reshapes
 #' @aliases triu,madness-method
 setMethod("triu", signature(x="madness"),
@@ -167,7 +172,6 @@ setMethod("[", signature(x="madness",i="ANY",j="missing"),
 #' @rdname reshapes
 #' @export 
 #' @method aperm madness
-#' @usage aperm(a, perm=NULL, resize=TRUE, ...)
 #' @inheritParams base::aperm
 #' @aliases aperm
 aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {

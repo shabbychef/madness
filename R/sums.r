@@ -27,6 +27,13 @@
 #' @include utils.r
 NULL
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+# setGeneric('colSums', function(x,na.rm,dims) standardGeneric('colSums'))
+# setGeneric('colMeans', function(x,na.rm=FALSE,dims=1) standardGeneric('colMeans'))
+# setGeneric('rowSums', function(x,na.rm,dims) standardGeneric('rowSums'))
+# setGeneric('rowMeans', function(x,na.rm,dims) standardGeneric('rowMeans'))
+
+
 #' @title Form Row and Column Sums and Means
 #'
 #' @description
@@ -46,11 +53,9 @@ NULL
 #' @name colsums
 #' @rdname colsums
 #' @exportMethod colSums
-#' @aliases colSums
+#' @aliases colSums colSums,madness-method
 #' @template etc
-setGeneric('colSums', function(x,na.rm,dims) standardGeneric('colSums'))
 #' @rdname colsums
-#' @aliases colSums,madness-method
 setMethod("colSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag
@@ -73,10 +78,8 @@ setMethod("colSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					})
 #' @rdname colsums
 #' @exportMethod colMeans
-#' @aliases colMeans
-setGeneric('colMeans', function(x,na.rm=FALSE,dims=1) standardGeneric('colMeans'))
+#' @aliases colMeans colMeans,madness-method
 #' @rdname colsums
-#' @aliases colMeans,madness-method
 setMethod("colMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag
@@ -102,10 +105,8 @@ setMethod("colMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 
 #' @rdname colsums
 #' @exportMethod rowSums
-#' @aliases rowSums
-setGeneric('rowSums', function(x,na.rm,dims) standardGeneric('rowSums'))
+#' @aliases rowSums rowSums,madness-method
 #' @rdname colsums
-#' @aliases rowSums,madness-method
 setMethod("rowSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag
@@ -129,10 +130,8 @@ setMethod("rowSums", signature(x="madness",na.rm="ANY",dims="ANY"),
 					})
 #' @rdname colsums
 #' @exportMethod rowMeans
-#' @aliases rowMeans
-setGeneric('rowMeans', function(x,na.rm,dims) standardGeneric('rowMeans'))
+#' @aliases rowMeans rowMeans,madness-method
 #' @rdname colsums
-#' @aliases rowMeans,madness-method
 setMethod("rowMeans", signature(x="madness",na.rm="ANY",dims="ANY"),
 					function(x,na.rm=FALSE,dims=1) {
 						xtag <- x@xtag

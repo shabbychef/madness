@@ -56,7 +56,8 @@
 #' Fackler, Paul L. "Notes on Matrix Calculus." (2005).
 #' \url{http://www4.ncsu.edu/~pfackler/MatCalc.pdf}
 #'
-#' @import matrixcalc expm methods
+#' MM: DO use  @importFrom (whimps use full imports ..) !
+#' @import matrixcalc methods
 #' @importFrom methods cbind2
 #' @importFrom methods rbind2
 #' @importFrom methods coerce
@@ -89,6 +90,24 @@ NULL
 #' \newcommand{\pkg}{#1}
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
+#'
+#' @section \madness{} Version 0.2.3 (2018-02-14) :
+#' \itemize{
+#' \item emergency CRAN release to deal with failing tests
+#' under alternative BLAS/LAPACK libraries.
+#' }
+#'
+#' @section \madness{} Version 0.2.2 (2017-04-26) :
+#' \itemize{
+#' \item emergency CRAN release for upstream changes to \code{diag}.
+#' thanks to Martin Maechler for the patch.
+#' }
+#'
+#' @section \madness{} Version 0.2.1 (2017-04-13) :
+#' \itemize{
+#' \item emergency CRAN release for failed build.
+#' \item no new functionality.
+#' }
 #'
 #' @section \madness{} Version 0.2.0 (2016-01-19) :
 #' \itemize{

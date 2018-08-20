@@ -45,10 +45,9 @@ obj <- madness(val=y,dvdx=dy,varx=dx)
 print(vcov(obj))
 
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link[stats]{vcov}}.
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

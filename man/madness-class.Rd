@@ -2,10 +2,10 @@
 % Please edit documentation in R/AllClass.r
 \docType{class}
 \name{madness-class}
-\alias{initialize,madness-class}
-\alias{initialize,madness-method}
-\alias{madness}
 \alias{madness-class}
+\alias{initialize,madness-method}
+\alias{initialize,madness-class}
+\alias{madness}
 \title{Madness Class.}
 \usage{
 \S4method{initialize}{madness}(.Object, val, dvdx, xtag = NA_character_,
@@ -92,13 +92,11 @@ This will be propagated forward.}
 \item{\code{varx}}{an optional variance-covariance matrix of
 the independent variable, \eqn{X}{X}.}
 }}
+
 \examples{
 obj <- new("madness", val=matrix(rnorm(10*10),nrow=10), dvdx=diag(100), xtag="foo", vtag="foo")
 obj2 <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", vtag="foo^2")
 
-}
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
 }
 \references{
 Petersen, Kaare Brandt and Pedersen, Michael Syskind. "The Matrix Cookbook."
@@ -109,6 +107,8 @@ Magnus, Jan R. and Neudecker, H. "Matrix Differential Calculus with Applications
 3rd Edition. Wiley Series in Probability and Statistics: Texts and References Section (2007).
 \url{http://www.janmagnus.nl/misc/mdc2007-3rdedition}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{differentiation}
 \keyword{multivariate}
-

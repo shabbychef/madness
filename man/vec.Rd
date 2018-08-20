@@ -2,15 +2,16 @@
 % Please edit documentation in R/vec.r
 \docType{methods}
 \name{vec}
-\alias{ivech}
-\alias{ivech,ANY-method}
-\alias{ivech,madness-method}
 \alias{vec}
-\alias{vec,array-method}
+\alias{vec}
 \alias{vec,madness-method}
+\alias{vec,array-method}
 \alias{vech}
 \alias{vech,array-method}
 \alias{vech,madness-method}
+\alias{ivech}
+\alias{ivech,ANY-method}
+\alias{ivech,madness-method}
 \title{vectorize a multidimensional array.}
 \usage{
 vec(x)
@@ -63,10 +64,9 @@ ivech(c(1,2,3),-1)
 ivech(c(1,2,3),-1,symmetric=TRUE)
 ivech(c(1,2,3,4,5,6,7,8),1)
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{reshapes}}, in particular \code{tril}.
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

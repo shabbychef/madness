@@ -3,12 +3,12 @@
 \docType{methods}
 \name{setter}
 \alias{setter}
-\alias{varx<-}
-\alias{varx<-,madness-method}
-\alias{vtag<-}
-\alias{vtag<-,madness-method}
 \alias{xtag<-}
 \alias{xtag<-,madness-method}
+\alias{vtag<-}
+\alias{vtag<-,madness-method}
+\alias{varx<-}
+\alias{varx<-,madness-method}
 \title{Setter methods.}
 \usage{
 xtag(x) <- value
@@ -36,4 +36,3 @@ likely result in badly computed derivatives.
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

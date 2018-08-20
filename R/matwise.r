@@ -47,19 +47,22 @@ NULL
 #' @template etc
 NULL
 
+
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+#setGeneric('sqrtm', signature="x", function(x) standardGeneric('sqrtm'))
+
 # 2FIX: add logm, expm
 
 #' @name matwise
 #' @rdname matwise
-#' @aliases sqrtm
+#' @aliases sqrtm sqrtm,madness-method
+#' @importFrom expm sqrtm
 #' @exportMethod sqrtm
-setGeneric('sqrtm', signature="x", function(x) standardGeneric('sqrtm'))
 #' @rdname matwise
-#' @aliases sqrtm,madness-method
 setMethod("sqrtm", signature(x="madness"),
 					function(x) {
 						xtag <- x@xtag
-						val <- expm::sqrtm(x@val)
+						val <- sqrtm(x@val)
 						scalby <- (t(val) %x% diag(dim(val)[2])) + (diag(dim(val)[2]) %x% val)
 						dvdx <- solve(scalby,x@dvdx)
 						vtag <- paste0('sqrtm(',x@vtag,')')
@@ -71,7 +74,6 @@ setMethod("sqrtm", signature(x="madness"),
 #' @rdname matwise
 #' @export 
 #' @method chol madness
-#' @usage chol(x,...)
 #' @aliases chol
 chol.madness <- function(x,...) {
  	xtag <- x@xtag

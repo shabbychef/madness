@@ -3,19 +3,15 @@
 \docType{methods}
 \name{as}
 \alias{as}
-\alias{as.array}
 \alias{as.array,madness-method}
-\alias{as.matrix}
+\alias{as.array}
 \alias{as.matrix,madness-method}
-\alias{as.numeric}
+\alias{as.matrix}
 \alias{as.numeric,madness-method}
+\alias{as.numeric}
 \title{Coerce madness to something else}
 \usage{
-as.array(x, ...)
-
 \S4method{as.array}{madness}(x, ...)
-
-as.matrix(x, ...)
 
 \S4method{as.matrix}{madness}(x, ...)
 
@@ -32,4 +28,3 @@ Coerce as something else
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

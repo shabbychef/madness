@@ -3,11 +3,10 @@
 \docType{methods}
 \name{eigen}
 \alias{eigen}
+\alias{eigen}
 \alias{eigen,madness-method}
 \title{Spectral Decomposition of a Matrix}
 \usage{
-eigen(x, symmetric, only.values = FALSE, EISPACK = FALSE)
-
 \S4method{eigen}{madness}(x, symmetric, only.values = FALSE,
   EISPACK = FALSE)
 }
@@ -59,9 +58,6 @@ where \eqn{U} and \eqn{V} are orthogonal, \eqn{V'} is \eqn{V}
 transposed, and \eqn{D} is a diagonal matrix with the singular
 values on the diagonal.
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \references{
 Izenman, Alan Julian. "Reduced-Rank Regression for the Multivariate Linear
 Model." Journal of Multivariate Analysis 5, pp 248-264 (1975).
@@ -74,4 +70,6 @@ Springer (1995).
 \seealso{
 \code{\link{eigen}}.
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

@@ -53,10 +53,9 @@ set.seed(456)
 X <- data.frame(a=runif(100),b=rnorm(100),c=1)
 th <- theta(X)
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{twomoments}}
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

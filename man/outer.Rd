@@ -2,22 +2,21 @@
 % Please edit documentation in R/Ops.r
 \docType{methods}
 \name{outer}
-\alias{\%o\%}
-\alias{kronecker,array,madness-class}
-\alias{kronecker,array,madness-method}
-\alias{kronecker,madness,array-class}
-\alias{kronecker,madness,array-method}
-\alias{kronecker,madness,madness-class}
-\alias{kronecker,madness,madness-method}
 \alias{outer}
 \alias{outer,ANY,ANY-method}
-\alias{outer,array,madness-method}
-\alias{outer,madness,array-method}
+\alias{outer}
 \alias{outer,madness,madness-method}
+\alias{outer,madness,array-method}
+\alias{outer,array,madness-method}
+\alias{\%o\%}
+\alias{kronecker,madness,madness-method}
+\alias{kronecker,madness,madness-class}
+\alias{kronecker,madness,array-method}
+\alias{kronecker,madness,array-class}
+\alias{kronecker,array,madness-method}
+\alias{kronecker,array,madness-class}
 \title{Outer product.}
 \usage{
-outer(X, Y, FUN = "*", ...)
-
 \S4method{outer}{ANY,ANY}(X, Y, FUN = "*", ...)
 
 \S4method{outer}{madness,madness}(X, Y, FUN = "*", ...)
@@ -70,4 +69,3 @@ anobj <- outer(obj0,obj1,'/')
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

@@ -2,18 +2,20 @@
 % Please edit documentation in R/norm.r
 \docType{methods}
 \name{norm}
+\alias{norm}
+\alias{norm}
 \alias{maxeig}
 \alias{maxeig,madness-method}
 \alias{norm}
-\alias{norm,madness,ANY-method}
+\alias{norm,madness-method}
 \alias{norm,madness,missing-method}
+\alias{norm,madness,ANY-method}
+\alias{norm,madness-method}
 \title{Matrix and vector norms.}
 \usage{
 maxeig(x)
 
 \S4method{maxeig}{madness}(x)
-
-norm(x, type, ...)
 
 \S4method{norm}{madness,missing}(x)
 
@@ -55,4 +57,3 @@ This should probably be fixed to return a scalar, not a 1 by 1 matrix?
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

@@ -3,17 +3,15 @@
 \docType{methods}
 \name{solve}
 \alias{solve}
-\alias{solve,ANY,madness-method}
 \alias{solve,ANY,missing-method}
-\alias{solve,array,madness-method}
-\alias{solve,madness,ANY-method}
-\alias{solve,madness,array-method}
-\alias{solve,madness,madness-method}
 \alias{solve,madness,missing-method}
+\alias{solve,madness,madness-method}
+\alias{solve,madness,array-method}
+\alias{solve,madness,ANY-method}
+\alias{solve,array,madness-method}
+\alias{solve,ANY,madness-method}
 \title{Basic Matrix Inversion}
 \usage{
-solve(a, b, ...)
-
 \S4method{solve}{ANY,missing}(a, b)
 
 \S4method{solve}{madness,missing}(a, b)
@@ -30,8 +28,6 @@ solve(a, b, ...)
 }
 \arguments{
 \item{a, b}{\code{madness} object or matrix value.}
-
-\item{...}{further arguments passed to or from other methods}
 }
 \description{
 Basic Matrix Inversion
@@ -39,4 +35,3 @@ Basic Matrix Inversion
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

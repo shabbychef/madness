@@ -2,11 +2,11 @@
 % Please edit documentation in R/numderiv.r
 \docType{methods}
 \name{numderiv}
-\alias{ANY,array-method}
-\alias{ANY,madness-method}
 \alias{numderiv}
 \alias{numderiv,ANY,array-method}
+\alias{ANY,array-method}
 \alias{numderiv,ANY,madness-method}
+\alias{ANY,madness-method}
 \title{Numerical (approximate) Differentiation.}
 \usage{
 numderiv(f, x, eps=1e-8, type=c('forward','central','backward'),...)
@@ -53,4 +53,3 @@ madx <- numderiv(f,x,1e-8,h=pi)
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

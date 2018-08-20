@@ -70,10 +70,9 @@ alst <- twomoments(X,diag.only=TRUE,df=1)
 srs <- alst$mu / sqrt(alst$sigmasq)
 
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{theta}}
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}

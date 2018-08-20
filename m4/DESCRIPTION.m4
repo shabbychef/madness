@@ -18,6 +18,7 @@ Description: An object that supports automatic differentiation
 Depends: 
     R (>= 3.2.0)
 Imports:
+		Matrix,
     matrixcalc,
     expm,
     methods

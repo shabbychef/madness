@@ -82,10 +82,12 @@ NULL
 #' @template etc
 NULL
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+#setGeneric('eigen', function(x,symmetric,only.values=FALSE,EISPACK=FALSE) standardGeneric('eigen'))
+
 #' @name eigen
 #' @rdname eigen
 #' @exportMethod eigen
-setGeneric('eigen', function(x,symmetric,only.values=FALSE,EISPACK=FALSE) standardGeneric('eigen'))
 #' @rdname eigen
 #' @aliases eigen,madness-method
 setMethod("eigen", signature(x="madness"),

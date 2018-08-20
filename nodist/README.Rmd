@@ -11,7 +11,8 @@ opts_chunk$set(cache=TRUE,cache.path="cache/")
 
 #opts_chunk$set(fig.path="github_extra/figure/",dev=c("pdf","cairo_ps"))
 #opts_chunk$set(fig.path="github_extra/figure/",dev=c("png","pdf"))
-opts_chunk$set(fig.path="github_extra/figure/",dev=c("png"))
+#opts_chunk$set(fig.path="github_extra/figure/",dev=c("png"))
+opts_chunk$set(fig.path="tools/figure/",dev=c("png"))
 opts_chunk$set(fig.width=6,fig.height=5,dpi=256)
 
 # doing this means that png files are made of figures;
@@ -38,6 +39,8 @@ opts_chunk$set(tidy=TRUE,tidy.opts=list(width.cutoff=50,keep.blank.line=TRUE))
 [![CRAN](http://www.r-pkg.org/badges/version/madness)](https://cran.r-project.org/package=madness)
 [![Downloads](http://cranlogs.r-pkg.org/badges/madness?color=brightgreen)](http://www.r-pkg.org/pkg/madness)
 [![Total](http://cranlogs.r-pkg.org/badges/grand-total/madness?color=green)](http://www.r-pkg.org/pkg/madness)
+[![Rdoc](http://www.rdocumentation.org/badges/version/madness)](http://www.rdocumentation.org/packages/madness)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
 'madness' is a 'Multivariate Automatic Differentiation' package for R. It allows one to compute and track the derivative of 
 multivariate to multivariate functions applied to concrete data via forward differentiation and the chain rule. 
@@ -121,7 +124,7 @@ print(vcov(mynorm))
 
 -----------------
 
-![Delta Method All the Things!](github_extra/figure/GevbfLD.jpg)
+![Delta Method All the Things!](tools/figure/GevbfLD.jpg)
 
 
 

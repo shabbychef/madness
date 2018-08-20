@@ -440,13 +440,18 @@ setMethod("%*%", signature(x="array",y="madness"),
 					})
 #UNFOLD
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+# setGeneric('crossprod', function(x,y) standardGeneric('crossprod'))
+# setGeneric('tcrossprod', function(x,y) standardGeneric('tcrossprod'))
+# setGeneric('outer', function(X,Y,FUN="*",...) standardGeneric('outer'))
+
+
 # cross product!#FOLDUP
 
 #' @param ... ignored here.
 #' @rdname marithops
 #' @aliases crossprod
 #' @exportMethod crossprod
-setGeneric('crossprod', function(x,y) standardGeneric('crossprod'))
 #' @rdname marithops
 #' @aliases crossprod,madness,madness-method
 setMethod("crossprod", signature(x="madness",y="madness"),
@@ -470,7 +475,6 @@ setMethod("crossprod", signature(x="ANY",y="madness"),
 #' @rdname marithops
 #' @aliases tcrossprod
 #' @exportMethod tcrossprod
-setGeneric('tcrossprod', function(x,y) standardGeneric('tcrossprod'))
 #' @rdname marithops
 #' @aliases crossprod,madness,madness-method
 setMethod("tcrossprod", signature(x="madness",y="madness"),
@@ -530,7 +534,6 @@ NULL
 #' @rdname outer
 #' @aliases outer
 #' @exportMethod outer
-setGeneric('outer', function(X,Y,FUN="*",...) standardGeneric('outer'))
 #' @rdname outer
 #' @aliases outer,ANY,ANY-method
 setMethod("outer", signature(X="ANY",Y="ANY"),

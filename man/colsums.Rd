@@ -2,30 +2,22 @@
 % Please edit documentation in R/sums.r
 \docType{methods}
 \name{colsums}
-\alias{colMeans}
-\alias{colMeans,madness-method}
+\alias{colsums}
 \alias{colSums}
 \alias{colSums,madness-method}
-\alias{colsums}
-\alias{rowMeans}
-\alias{rowMeans,madness-method}
-\alias{rowSums}
+\alias{colMeans,madness-method}
+\alias{colMeans}
 \alias{rowSums,madness-method}
+\alias{rowSums}
+\alias{rowMeans,madness-method}
+\alias{rowMeans}
 \title{Form Row and Column Sums and Means}
 \usage{
-colSums(x, na.rm = FALSE, dims = 1, ...)
-
 \S4method{colSums}{madness}(x, na.rm = FALSE, dims = 1)
-
-colMeans(x, na.rm = FALSE, dims = 1, ...)
 
 \S4method{colMeans}{madness}(x, na.rm = FALSE, dims = 1)
 
-rowSums(x, na.rm = FALSE, dims = 1, ...)
-
 \S4method{rowSums}{madness}(x, na.rm = FALSE, dims = 1)
-
-rowMeans(x, na.rm = FALSE, dims = 1, ...)
 
 \S4method{rowMeans}{madness}(x, na.rm = FALSE, dims = 1)
 }
@@ -52,4 +44,3 @@ Form Row and Column Sums and Means for \code{madness} objects.
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 }
-

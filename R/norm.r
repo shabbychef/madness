@@ -105,16 +105,18 @@ setMethod("maxeig", signature(x="madness"),
 	new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 }
 
+## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
+# setGeneric('norm', function(x,type) standardGeneric('norm'))
+
+
 #' @name norm
 #' @rdname norm
-#' @aliases norm
+#' @aliases norm norm,madness-method norm,madness,missing-method
 #' @exportMethod norm
-setGeneric('norm', function(x,type) standardGeneric('norm'))
 #' @rdname norm
-#' @aliases maxeig,madness-method
 setMethod("norm", signature(x="madness",type='missing'), function(x) .normit(x))
 #' @rdname norm
-#' @aliases maxeig,madness-method
+#' @aliases norm,madness-method
 setMethod("norm", signature(x="madness",type='ANY'), .normit)
 
 #for vim modeline: (do not edit)

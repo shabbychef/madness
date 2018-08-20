@@ -2,41 +2,33 @@
 % Please edit documentation in R/reshape.r
 \docType{methods}
 \name{reshapes}
-\alias{aperm}
-\alias{aperm.madness}
-\alias{dim<-,madness,ANY-method}
-\alias{dim<-,madness-method}
 \alias{reshapes}
-\alias{t}
 \alias{t,madness-method}
-\alias{tril}
+\alias{t}
 \alias{tril,madness-method}
-\alias{triu}
+\alias{tril}
 \alias{triu,madness-method}
+\alias{triu}
+\alias{dim<-,madness-method}
+\alias{dim<-,madness,ANY-method}
+\alias{aperm.madness}
+\alias{aperm}
 \title{Basic Reshape Operations}
 \usage{
-t(x)
-
 \S4method{t}{madness}(x)
 
-tril(x, k = 0, ...)
-
 \S4method{tril}{madness}(x, k = 0)
-
-triu(x, k = 0, ...)
 
 \S4method{triu}{madness}(x, k = 0)
 
 \S4method{dim}{madness}(x) <- value
 
-aperm(a, perm=NULL, resize=TRUE, ...)
+\method{aperm}{madness}(a, perm = NULL, resize = TRUE, ...)
 }
 \arguments{
 \item{x}{\code{madness} object.}
 
 \item{k}{the index of the diagonal number from which to extract.\code{madness} object.}
-
-\item{...}{Optional arguments used by specific methods. (None used at present.)}
 
 \item{value}{an array of the new dimensions of the object value.}
 
@@ -51,14 +43,15 @@ aperm(a, perm=NULL, resize=TRUE, ...)
 
 \item{resize}{a flag indicating whether the vector should be
     resized as well as having its elements reordered (default \code{TRUE}).}
+
+\item{...}{Optional arguments used by specific methods. (None used at present.)}
 }
 \description{
 Basic Reshape Operations
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{vec}}, \code{\link{todiag}}
 }
-
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
