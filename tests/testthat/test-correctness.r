@@ -310,12 +310,14 @@ test_that("reshape functions",{#FOLDUP
 
 	expect_small_err(xval,function(x) { tril(x) }, function(x) { x[row(x) < col(x)] <- 0; x },errtol=1e-6)
 	expect_small_err(xval,function(x) { triu(x) }, function(x) { x[row(x) > col(x)] <- 0; x },errtol=1e-6)
-	
 
 	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))
 	expect_small_err(xval,function(x) { aperm(x) },errtol=1e-6)
 	expect_small_err(xval,function(x) { aperm(x,c(2,1,3,4)) },errtol=1e-6)
 	expect_small_err(xval,function(x) { aperm(x,c(4,3,2,1)) },errtol=1e-6)
+
+	# fixing #19
+	print(aperm(madness(xval),c(2,1,3,4)))
 
 	# need better tests of these!
 	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))
