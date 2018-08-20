@@ -169,9 +169,7 @@ setMethod("[", signature(x="madness",i="ANY",j="missing"),
 
 #UNFOLD
 
-.int2string <- function(xi) {
-	paste0('c(',paste0(xi,collapse=','),')')
-}
+#.int2string <- function(xi) { paste0('c(',paste0(xi,collapse=','),')') }
 
 #' @rdname reshapes
 #' @export 
@@ -184,7 +182,7 @@ aperm.madness <- function(a, perm=NULL, resize=TRUE, ...) {
 	oldids <- array(1:length(a@val),dim=dim(a@val))
 	prmids <- aperm(oldids,perm=perm,resize=resize)
 	dvdx <- a@dvdx[as.numeric(prmids),,drop=FALSE]
-	vtag <- paste0('aperm(',a@vtag,', ',.int2string(perm),')')
+	vtag <- paste0('aperm(',a@vtag,', ',.as.character(enquote(perm))[2],')')
 	varx <- a@varx
 
 	new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
