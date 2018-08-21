@@ -145,29 +145,23 @@ test_that("basic indexing getters",{#FOLDUP
 	xmad <- madness(xval)
 
 	# make sure these run:
-	xmad[1,2]
-	xmad[1,c(2,3)]
-	xmad[c(1,2,3)]
+	expect_error(xmad[1,2],NA)
+	expect_error(xmad[1,c(2,3)],NA)
+	expect_error(xmad[c(1,2,3)],NA)
 
 	expect_equal(as.numeric(val(rev(xmad))),as.numeric(rev(val(xmad))))
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("scalar to array promotion",{#FOLDUP
 	set.char.seed("8d40c3b6-67b7-4640-a710-168b09a09732")
 	xmad <- madness(array(runif(1)))
-	yscl <- 1:5
-
-	# make sure these run:
-	expect_error(xmad + yscl,NA)
-	expect_error(xmad - yscl,NA)
-	expect_error(xmad * yscl,NA)
-	expect_error(xmad / yscl,NA)
-	expect_error(xmad ^ yscl,NA)
-	
-	# sentinel:
-	expect_true(TRUE)
+	for (yscl in list(1,1:5,array(1:5),matrix(1:5))) {
+		# make sure these run:
+		expect_error(xmad + yscl,NA)
+		expect_error(xmad - yscl,NA)
+		expect_error(xmad * yscl,NA)
+		expect_error(xmad / yscl,NA)
+		expect_error(xmad ^ yscl,NA)
+	}
 })#UNFOLD
 test_that("just vcov",{#FOLDUP
 	yt <- 'any'
@@ -181,9 +175,6 @@ test_that("just vcov",{#FOLDUP
 		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 		expect_error(vcov(xmad),NA)
 	}
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("just blockrep",{#FOLDUP
 	yt <- 'any'
@@ -221,9 +212,6 @@ test_that("just blockrep",{#FOLDUP
 			expect_error(dumb <- repto(xmad,c(1,1,1)))
 		}
 	}
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("sumprodmaxmin?",{#FOLDUP
 	yt <- 'any'
@@ -272,9 +260,6 @@ test_that("sumprodmaxmin?",{#FOLDUP
 			}
 		}
 	}
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("outer?",{#FOLDUP
 	yt <- 'any'
@@ -363,9 +348,6 @@ test_that("vech",{#FOLDUP
 		expect_error(dumb <- ivech(xmad,0))
 		expect_error(dumb <- ivech(xmad,-1))
 	}
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("eigen?",{#FOLDUP
 	yt <- 'any'
@@ -377,30 +359,24 @@ test_that("eigen?",{#FOLDUP
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
 		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
-		foo <- eigen(xmad + t(xmad))
+		expect_error(foo <- eigen(xmad + t(xmad)),NA)
 	}
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("theta",{#FOLDUP
 	# first on arrays...
 	set.char.seed('d8ccbb36-1002-4c9e-81d9-0ee6b173047a')
 	MV <- array(rnorm(100*3),dim=c(100,3))
-	th <- theta(MV)
+	expect_error(th <- theta(MV),NA)
 	MV <- array(rnorm(100*3*3),dim=c(100,3,3))
-	th <- theta(MV)
+	expect_error(th <- theta(MV),NA)
 	MV <- array(rnorm(100*3*3*3),dim=c(100,3,3,3))
-	th <- theta(MV)
-	th <- theta(MV,xtag='FOO')
+	expect_error(th <- theta(MV),NA)
+	expect_error(th <- theta(MV,xtag='FOO'),NA)
 
 	# and as data frame.
 	MV <- data.frame(a=runif(100),b=rnorm(100),c=exp(runif(100)))
-	th <- theta(MV)
-	th <- theta(MV,xtag='FOO')
-
-	# sentinel:
-	expect_true(TRUE)
+	expect_error(th <- theta(MV),NA)
+	expect_error(th <- theta(MV,xtag='FOO'),NA)
 })#UNFOLD
 test_that("twomoments",{#FOLDUP
 	# first on arrays...
@@ -412,22 +388,19 @@ test_that("twomoments",{#FOLDUP
 
 	for (ccc in seq_along(checkem)) {
 		MV <- checkem[[ccc]]
-		th <- twomoments(MV)
-		th <- twomoments(MV,xtag='FOO')
-		th <- twomoments(MV,xtag='FOO',df=0)
-		th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE)
-		th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE,vcov.func=vcov)
+		expect_error(th <- twomoments(MV),NA)
+		expect_error(th <- twomoments(MV,xtag='FOO'),NA)
+		expect_error(th <- twomoments(MV,xtag='FOO',df=0),NA)
+		expect_error(th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE),NA)
+		expect_error(th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE,vcov.func=vcov),NA)
 	}
 
 	# and as data frame.
 	MV <- data.frame(a=runif(100),b=rnorm(100),c=exp(runif(100)))
-	th <- twomoments(MV)
-	th <- twomoments(MV,xtag='FOO')
-	th <- twomoments(MV,xtag='FOO',df=0)
-	th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE)
-
-	# sentinel:
-	expect_true(TRUE)
+	expect_error(th <- twomoments(MV),NA)
+	expect_error(th <- twomoments(MV,xtag='FOO'),NA)
+	expect_error(th <- twomoments(MV,xtag='FOO',df=0),NA)
+	expect_error(th <- twomoments(MV,xtag='FOO',df=0,diag.only=TRUE),NA)
 })#UNFOLD
 test_that("to_objective",{#FOLDUP
 	set.char.seed('1407dc0a-ca1b-4620-b436-e13df111b6ab')
@@ -435,11 +408,9 @@ test_that("to_objective",{#FOLDUP
 	MV <- array(rnorm(100*3),dim=c(100,3))
 	madM <- madness(MV)
 	Mnorm <- norm(madM)
-	to_objective(Mnorm)
-	expect_error(dumb <- to_objective(madM))
+	expect_error(to_objective(Mnorm),NA)
 
-	# sentinel:
-	expect_true(TRUE)
+	expect_error(dumb <- to_objective(madM))
 })#UNFOLD
 test_that("numerical derivative",{#FOLDUP
 	# first on arrays...
