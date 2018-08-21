@@ -179,7 +179,7 @@ test_that("just vcov",{#FOLDUP
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
 		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
-		blah <- vcov(xmad)
+		expect_error(vcov(xmad),NA)
 	}
 
 	# sentinel:
@@ -195,21 +195,26 @@ test_that("just blockrep",{#FOLDUP
 		ddd <- matrix(rnorm(length(xval)*5),ncol=5)
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
 		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
-		blah <- blockrep(xmad,c(1))
-		blah <- blockrep(xmad,c(1,1,1))
-		blah <- blockrep(xmad,c(1,2,1))
-		blah <- blockrep(xmad,c(2,1))
-		blah <- blockrep(xmad,c(2,2,2))
-		blah <- blockrep(xmad,c(2,2,1,2,3))
+		expect_error(blockrep(xmad,c(1)),NA)
+		expect_error(blockrep(xmad,c(1,1,1)),NA)
+		expect_error(blockrep(xmad,c(1,2,1)),NA)
+		expect_error(blockrep(xmad,c(2,1)),NA)
+		expect_error(blockrep(xmad,c(2,2,2)),NA)
+		expect_error(blockrep(xmad,c(2,2,1,2,3)),NA)
+
+		# do error:
 		expect_error(dumb <- blockrep(xmad,c(-1,1,1)))
 		expect_error(dumb <- blockrep(xmad,c(1.5,1,1)))
+
 		# xmad is nr x nr
-		blah <- repto(xmad,c(nr,nr))
-		blah <- repto(xmad,c(nr,nr,nr))
-		blah <- repto(xmad,c(nr,2*nr))
-		blah <- repto(xmad,c(nr,nr,3))
-		blah <- repto(xmad,c(2*nr,3*nr,1,1,3))
-		blah <- repto(xmad,c(4*nr,2*nr,1,3))
+		expect_error(repto(xmad,c(nr,nr)),NA)
+		expect_error(repto(xmad,c(nr,nr,nr)),NA)
+		expect_error(repto(xmad,c(nr,2*nr)),NA)
+		expect_error(repto(xmad,c(nr,nr,3)),NA)
+		expect_error(repto(xmad,c(2*nr,3*nr,1,1,3)),NA)
+		expect_error(repto(xmad,c(4*nr,2*nr,1,3)),NA)
+
+		# do error:
 		expect_error(dumb <- repto(xmad,c(0.5*nr,-1,0)))
 		expect_error(dumb <- repto(xmad,c(nr,0.5,1)))
 		if (nr > 1) {
@@ -240,30 +245,30 @@ test_that("sumprodmaxmin?",{#FOLDUP
 			ymad <- madness(yval,yddd,vtag=yt,xtag=xt)
 
 			for (narm in c(FALSE,TRUE)) {
-				blah <- sum(xmad,na.rm=narm)
-				blah <- sum(xmad,ymad,na.rm=narm)
-				blah <- sum(xmad,ymad,xval,na.rm=narm)
-				blah <- prod(xmad,na.rm=narm)
-				blah <- prod(xmad,ymad,na.rm=narm)
-				blah <- prod(xmad,ymad,xval,na.rm=narm)
+				expect_error(sum(xmad,na.rm=narm),NA)
+				expect_error(sum(xmad,ymad,na.rm=narm),NA)
+				expect_error(sum(xmad,ymad,xval,na.rm=narm),NA)
+				expect_error(prod(xmad,na.rm=narm),NA)
+				expect_error(prod(xmad,ymad,na.rm=narm),NA)
+				expect_error(prod(xmad,ymad,xval,na.rm=narm),NA)
 
-				blah <- max(xmad,na.rm=narm)
-				blah <- max(xmad,ymad,na.rm=narm)
-				blah <- max(ymad,xmad,na.rm=narm)
-				blah <- max(xmad,ymad,xval,na.rm=narm)
-				blah <- max(xmad,ymad,xval,yval,na.rm=narm)
+				expect_error(max(xmad,na.rm=narm),NA)
+				expect_error(max(xmad,ymad,na.rm=narm),NA)
+				expect_error(max(ymad,xmad,na.rm=narm),NA)
+				expect_error(max(xmad,ymad,xval,na.rm=narm),NA)
+				expect_error(max(xmad,ymad,xval,yval,na.rm=narm),NA)
 				# these are *not* supported yet. bleah.
-				#blah <- max(xmad,xval,ymad,na.rm=narm)
-				#blah <- max(xval,xmad,ymad,na.rm=narm)
+				#expect_error(max(xmad,xval,ymad,na.rm=narm),NA)
+				#expect_error(max(xval,xmad,ymad,na.rm=narm),NA)
 
-				blah <- min(xmad,na.rm=narm)
-				blah <- min(xmad,ymad,na.rm=narm)
-				blah <- min(ymad,xmad,na.rm=narm)
-				blah <- min(xmad,ymad,xval,na.rm=narm)
-				blah <- min(xmad,ymad,xval,yval,na.rm=narm)
+				expect_error(min(xmad,na.rm=narm),NA)
+				expect_error(min(xmad,ymad,na.rm=narm),NA)
+				expect_error(min(ymad,xmad,na.rm=narm),NA)
+				expect_error(min(xmad,ymad,xval,na.rm=narm),NA)
+				expect_error(min(xmad,ymad,xval,yval,na.rm=narm),NA)
 				# these are *not* supported yet. bleah.
-				#blah <- min(xmad,xval,ymad,na.rm=narm)
-				#blah <- min(xval,xmad,ymad,na.rm=narm)
+				#expect_error(min(xmad,xval,ymad,na.rm=narm),NA)
+				#expect_error(min(xval,xmad,ymad,na.rm=narm),NA)
 			}
 		}
 	}
@@ -287,12 +292,12 @@ test_that("outer?",{#FOLDUP
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
 		ymad <- madness(yval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
-		blah <- outer(xmad,ymad,'*')
-		blah <- outer(xmad,ymad,'+')
-		blah <- outer(xmad,ymad,'-')
+		expect_error(outer(xmad,ymad,'*'),NA)
+		expect_error(outer(xmad,ymad,'+'),NA)
+		expect_error(outer(xmad,ymad,'-'),NA)
 
 		# kronecker should just call outer?
-		blah <- xmad %o% ymad
+		expect_error(xmad %o% ymad,NA)
 	}
 
 	# sentinel:
@@ -327,9 +332,9 @@ test_that("vech",{#FOLDUP
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
 		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
-		blah <- ivech(xmad)
-		blah <- ivech(xmad,-1)
-		blah <- ivech(xmad,-1,symmetric=TRUE)
+		expect_error(ivech(xmad),NA)
+		expect_error(ivech(xmad,-1),NA)
+		expect_error(ivech(xmad,-1,symmetric=TRUE),NA)
 	}
 
 	for (nr in c(8,13)) {
@@ -340,8 +345,8 @@ test_that("vech",{#FOLDUP
 		vvv <- crossprod(matrix(rnorm(100*ncol(ddd)),ncol=ncol(ddd)))
 		xmad <- madness(xval,ddd,vtag=yt,xtag=xt,varx=vvv)
 
-		blah <- ivech(xmad,1)
-		blah <- ivech(xmad,1,symmetric=FALSE)
+		expect_error(ivech(xmad,1),NA)
+		expect_error(ivech(xmad,1,symmetric=FALSE),NA)
 		# cannot symmetric when k > 0
 		expect_error(blah <- ivech(xmad,1,symmetric=TRUE))
 	}
