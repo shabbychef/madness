@@ -63,7 +63,7 @@ expect_small_err <- function(xval,thefun,scalfun=thefun,eps=1e-8,errtol=1e-6) {
 	expect_lt(comp_err(xval,thefun=thefun,scalfun=scalfun,eps=eps),errtol)
 }
 
-context("Basic Operations")#FOLDUP
+context("Correctness of Basic Operations")#FOLDUP
 
 test_that("arith functions",{#FOLDUP
 	set.char.seed("dee9af9b-cb59-474f-ac3b-acd60faa8ba2")
@@ -317,7 +317,8 @@ test_that("reshape functions",{#FOLDUP
 	expect_small_err(xval,function(x) { aperm(x,c(4,3,2,1)) },errtol=1e-6)
 
 	# fixing #19
-	print(aperm(madness(xval),c(2,1,3,4)))
+	# n.b. expect_error(foo,NA) means expect no error.
+	expect_error(print(aperm(madness(xval),c(2,1,3,4))),NA)
 
 	# need better tests of these!
 	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))

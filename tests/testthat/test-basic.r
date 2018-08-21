@@ -83,8 +83,6 @@ test_that("initialize errors",{#FOLDUP
 	expect_warning(dumb <- madness(xval,ddd,vtag=yt))
 	expect_warning(dumb <- madness(xval,ddd,varx=diag(nover)))
 	expect_error(dumb <- madness(xval,ddd,varx=diag(nover+1)))
-
-
 	
 	# sentinel:
 	expect_true(TRUE)
@@ -99,7 +97,7 @@ test_that("basic getters and setters",{#FOLDUP
 	expect_equal(length(xval),length(xmad))
 
 	# do not error out
-	show(xmad)
+	expect_error(show(xmad),NA)
 
 	set.char.seed("d35d4e4a-af3a-4491-a759-377fca599ec5")
 	ddd <- matrix(rnorm(length(xval)*5),ncol=5)
