@@ -135,7 +135,7 @@ setMethod("+", signature(e1="madness",e2="madness"),
 mplusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val + e2
-						dvdx <- .crep(e1@dvdx,length(e2))
+						dvdx <- t(.crep(e1@dvdx,length(e2)))
 						vtag <- paste0('(',e1@vtag,' + numeric)')
 						varx <- e1@varx
 
@@ -151,7 +151,7 @@ setMethod("+", signature(e1="madness",e2="array"),mplusn)
 nplusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 + e2@val
-						dvdx <- .crep(e2@dvdx,length(e1))
+						dvdx <- t(.crep(e2@dvdx,length(e1)))
 						vtag <- paste0('(numeric + ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -183,7 +183,7 @@ setMethod("-", signature(e1="madness",e2="madness"),
 mminusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val - e2
-						dvdx <- e1@dvdx 
+						dvdx <- t(.crep(e1@dvdx,length(e2)))
 						vtag <- paste0('(',e1@vtag,' - numeric)')
 						varx <- e1@varx
 
@@ -200,7 +200,7 @@ setMethod("-", signature(e1="madness",e2="array"), mminusn)
 nminusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 - e2@val
-						dvdx <- - e2@dvdx 
+						dvdx <- t(.crep(-e2@dvdx,length(e1)))
 						vtag <- paste0('(numeric - ',e2@vtag,')')
 						varx <- e2@varx
 

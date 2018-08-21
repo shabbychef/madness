@@ -160,11 +160,11 @@ test_that("scalar to array promotion",{#FOLDUP
 	yscl <- 1:5
 
 	# make sure these run:
-	xmad + yscl
-	xmad - yscl
-	xmad * yscl
-	xmad / yscl
-	xmad ^ yscl
+	expect_error(xmad + yscl,NA)
+	expect_error(xmad - yscl,NA)
+	expect_error(xmad * yscl,NA)
+	expect_error(xmad / yscl,NA)
+	expect_error(xmad ^ yscl,NA)
 	
 	# sentinel:
 	expect_true(TRUE)
