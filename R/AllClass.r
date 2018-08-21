@@ -93,7 +93,6 @@
 #'
 #' Magnus, Jan R. and Neudecker, H. "Matrix Differential Calculus with Applications in Statistics and Econometrics."
 #' 3rd Edition. Wiley Series in Probability and Statistics: Texts and References Section (2007).
-#' \url{http://www.janmagnus.nl/misc/mdc2007-3rdedition}
 #'
 #' @examples 
 #' obj <- new("madness", val=matrix(rnorm(10*10),nrow=10), dvdx=diag(100), xtag="foo", vtag="foo")

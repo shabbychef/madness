@@ -30,7 +30,6 @@ Technical University of Denmark (2012).
 
 Magnus, Jan R. and Neudecker, H. "Matrix Differential Calculus with Applications in Statistics and Econometrics."
 3rd Edition. Wiley Series in Probability and Statistics: Texts and References Section (2007).
-\url{http://www.janmagnus.nl/misc/mdc2007-3rdedition}
 
 Magnus, Jan R. and Neudecker, H. "The elimination matrix: some lemmas and applications," 
 SIAM Journal on Algebraic Discrete Methods 1, no. 4 (1980): 422-449.
