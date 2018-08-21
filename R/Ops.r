@@ -117,6 +117,10 @@ setMethod("-", signature(e1="madness",e2="missing"),
 	retv
 }
 
+.derivrep <- function(dvdx,len) {
+	t(.crep(dvdx,len))
+}
+
 # addition#FOLDUP
 #' @rdname arithops
 #' @aliases +,madness,madness-class
@@ -135,7 +139,7 @@ setMethod("+", signature(e1="madness",e2="madness"),
 mplusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val + e2
-						dvdx <- t(.crep(e1@dvdx,length(e2)))
+						dvdx <- .derivrep(e1@dvdx,length(e2))
 						vtag <- paste0('(',e1@vtag,' + numeric)')
 						varx <- e1@varx
 
@@ -151,7 +155,7 @@ setMethod("+", signature(e1="madness",e2="array"),mplusn)
 nplusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 + e2@val
-						dvdx <- t(.crep(e2@dvdx,length(e1)))
+						dvdx <- .derivrep(e2@dvdx,length(e1))
 						vtag <- paste0('(numeric + ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -183,7 +187,7 @@ setMethod("-", signature(e1="madness",e2="madness"),
 mminusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val - e2
-						dvdx <- t(.crep(e1@dvdx,length(e2)))
+						dvdx <- .derivrep(e1@dvdx,length(e2))
 						vtag <- paste0('(',e1@vtag,' - numeric)')
 						varx <- e1@varx
 
@@ -200,7 +204,7 @@ setMethod("-", signature(e1="madness",e2="array"), mminusn)
 nminusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 - e2@val
-						dvdx <- t(.crep(-e2@dvdx,length(e1)))
+						dvdx <- .derivrep(-e2@dvdx,length(e1))
 						vtag <- paste0('(numeric - ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -232,7 +236,7 @@ setMethod("*", signature(e1="madness",e2="madness"),
 mtimesn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val * e2
-						dvdx <- e1@dvdx * as.numeric(e2)
+						dvdx <- .derivrep(e1@dvdx,length(e2)) * as.numeric(e2)
 						vtag <- paste0('(',e1@vtag,' * numeric)')
 						varx <- e1@varx
 
@@ -249,7 +253,7 @@ setMethod("*", signature(e1="madness",e2="array"), mtimesn)
 ntimesm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 * e2@val
-						dvdx <- as.numeric(e1) * e2@dvdx 
+						dvdx <- .derivrep(e2@dvdx,length(e1)) * as.numeric(e1)
 						vtag <- paste0('(numeric * ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -283,7 +287,7 @@ setMethod("/", signature(e1="madness",e2="madness"),
 mbyn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val / e2
-						dvdx <- e1@dvdx / as.numeric(e2)
+						dvdx <- .derivrep(e1@dvdx,length(e2)) / as.numeric(e2)
 						vtag <- paste0('(',e1@vtag,' / numeric)')
 						varx <- e1@varx
 
@@ -300,7 +304,7 @@ setMethod("/", signature(e1="madness",e2="array"), mbyn)
 nbym <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 / e2@val
-						dvdx <- - as.numeric((val / e2@val)) * e2@dvdx 
+						dvdx <- - as.numeric((val / e2@val)) * .derivrep(e2@dvdx,length(e1))
 						vtag <- paste0('(numeric / ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -333,7 +337,7 @@ setMethod("^", signature(e1="madness",e2="madness"),
 mtothen <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val ^ e2
-						dvdx <- as.numeric(as.numeric(e2) * (e1@val ^ (e2-1))) * e1@dvdx 
+						dvdx <- as.numeric(as.numeric(e2) * (e1@val ^ (e2-1))) * .derivrep(e1@dvdx,length(e2))
 						vtag <- paste0('(',e1@vtag,' ^ numeric)')
 						varx <- e1@varx
 
@@ -350,7 +354,7 @@ setMethod("^", signature(e1="madness",e2="array"),mtothen)
 ntothem <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 ^ e2@val
-						dvdx <- as.numeric(val * log(e1)) * e2@dvdx
+						dvdx <- as.numeric(val * log(e1)) * .derivrep(e2@dvdx,length(e1))
 						vtag <- paste0('(numeric ^ ',e2@vtag,')')
 						varx <- e2@varx
 

@@ -318,7 +318,7 @@ test_that("reshape functions",{#FOLDUP
 
 	# fixing #19
 	# n.b. expect_error(foo,NA) means expect no error.
-	expect_error(print(aperm(madness(xval),c(2,1,3,4))),NA)
+	expect_error(capture.output(print(aperm(madness(xval),c(2,1,3,4)))),NA)
 
 	# need better tests of these!
 	xval <- array(1 + runif(2*3*4*5),dim=c(2,3,4,5))

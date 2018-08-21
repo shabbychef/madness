@@ -97,7 +97,7 @@ test_that("basic getters and setters",{#FOLDUP
 	expect_equal(length(xval),length(xmad))
 
 	# do not error out
-	expect_error(show(xmad),NA)
+	expect_error(capture.output(show(xmad)),NA)
 
 	set.char.seed("d35d4e4a-af3a-4491-a759-377fca599ec5")
 	ddd <- matrix(rnorm(length(xval)*5),ncol=5)
