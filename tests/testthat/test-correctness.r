@@ -60,7 +60,7 @@ comp_err <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 }
 
 expect_small_err <- function(xval,thefun,scalfun=thefun,eps=1e-8,errtol=1e-6) {
-	expect_less_than(comp_err(xval,thefun=thefun,scalfun=scalfun,eps=eps),errtol)
+	expect_lt(comp_err(xval,thefun=thefun,scalfun=scalfun,eps=eps),errtol)
 }
 
 context("Basic Operations")#FOLDUP
@@ -472,12 +472,12 @@ test_that("vech",{#FOLDUP
 	xival <- ivech(yval,0)
 	yival <- vech(xival,0)
 
-	expect_less_than(max(errit(yval,yival)),1e-12)
+	expect_lt(max(errit(yval,yival)),1e-12)
 
 	xsym <- xval + t(xval)
 	yval <- vech(xsym,0)
 	xsval <- ivech(yval,0,symmetric=TRUE)
-	expect_less_than(max(errit(xsym,xsval)),1e-12)
+	expect_lt(max(errit(xsym,xsval)),1e-12)
 
 	# sentinel:
 	expect_true(TRUE)
