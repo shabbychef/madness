@@ -412,55 +412,55 @@ set.seed(2015)
 
 xval <- matrix(1 + runif(4*4),nrow=4)
 yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
-expect_less_than(test_harness(xval,function(x) { x + x }),1e-6)
-expect_less_than(test_harness(xval,function(x) { x * yval }),1e-6)
-expect_less_than(test_harness(xval,function(x) { yval / x }),1e-6)
-expect_less_than(test_harness(xval,function(x) { x ^ x }),1e-6)
-expect_less_than(test_harness(xval,function(x) { x %*% x }),1e-6)
-expect_less_than(test_harness(xval,function(x) { x %*% yval }),1e-6)
+expect_lt(test_harness(xval,function(x) { x + x }),1e-6)
+expect_lt(test_harness(xval,function(x) { x * yval }),1e-6)
+expect_lt(test_harness(xval,function(x) { yval / x }),1e-6)
+expect_lt(test_harness(xval,function(x) { x ^ x }),1e-6)
+expect_lt(test_harness(xval,function(x) { x %*% x }),1e-6)
+expect_lt(test_harness(xval,function(x) { x %*% yval }),1e-6)
 
-expect_less_than(test_harness(abs(xval),function(x) { log(x) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { exp(x) }),1e-6)
-expect_less_than(test_harness(abs(xval),function(x) { log10(x) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { sqrt(x) }),1e-6)
+expect_lt(test_harness(abs(xval),function(x) { log(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { exp(x) }),1e-6)
+expect_lt(test_harness(abs(xval),function(x) { log10(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { sqrt(x) }),1e-6)
 
-expect_less_than(test_harness(xval,function(x) { matrix.trace(x) },function(matx) { sum(diag(matx)) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { colSums(x) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { colMeans(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { matrix.trace(x) },function(matx) { sum(diag(matx)) }),1e-6)
+expect_lt(test_harness(xval,function(x) { colSums(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { colMeans(x) }),1e-6)
 
-expect_less_than(test_harness(xval,function(x) { vec(x) },function(x) { dim(x) <- c(length(x),1); x }),1e-6)
-expect_less_than(test_harness(xval,function(x) { vech(x) },
+expect_lt(test_harness(xval,function(x) { vec(x) },function(x) { dim(x) <- c(length(x),1); x }),1e-6)
+expect_lt(test_harness(xval,function(x) { vech(x) },
 															function(x) { x <- x[row(x) >= col(x)]; 
 															dim(x) <- c(length(x),1) 
 															x }),1e-6)
 
-expect_less_than(test_harness(xval,function(x) { tril(x) },
+expect_lt(test_harness(xval,function(x) { tril(x) },
 															function(x) { x[row(x) < col(x)] <- 0; x }),1e-6)
-expect_less_than(test_harness(xval,function(x) { triu(x) },
+expect_lt(test_harness(xval,function(x) { triu(x) },
 															function(x) { x[row(x) > col(x)] <- 0; x }),1e-6)
 
-expect_less_than(test_harness(xval,function(x) { det(x) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { determinant(x,logarithm=TRUE)$modulus }),1e-6)
-expect_less_than(test_harness(xval,function(x) { determinant(x,logarithm=FALSE)$modulus }),1e-6)
+expect_lt(test_harness(xval,function(x) { det(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { determinant(x,logarithm=TRUE)$modulus }),1e-6)
+expect_lt(test_harness(xval,function(x) { determinant(x,logarithm=FALSE)$modulus }),1e-6)
 
-expect_less_than(test_harness(xval,function(x) { colSums(x) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { colMeans(x) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { rowSums(x) }),1e-6)
-expect_less_than(test_harness(xval,function(x) { rowMeans(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { colSums(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { colMeans(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { rowSums(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { rowMeans(x) }),1e-6)
 
 set.seed(2015)
 zval <- matrix(0.01 + runif(4*100,min=0,max=0.05),nrow=4)
 xval <- tcrossprod(zval)
 
-expect_less_than(test_harness(xval,function(x) { norm(x,'O') }),1e-6)
-expect_less_than(test_harness(xval,function(x) { norm(x,'I') }),1e-6)
+expect_lt(test_harness(xval,function(x) { norm(x,'O') }),1e-6)
+expect_lt(test_harness(xval,function(x) { norm(x,'I') }),1e-6)
 # Matrix::norm does not support type '2'
-expect_less_than(test_harness(xval,function(x) { norm(x,'2') },
+expect_lt(test_harness(xval,function(x) { norm(x,'2') },
 	function(x) { base::norm(x,'2') }),1e-6)
-expect_less_than(test_harness(xval,function(x) { norm(x,'M') }),1e-6)
-expect_less_than(test_harness(xval,function(x) { norm(x,'F') }),1e-6)
+expect_lt(test_harness(xval,function(x) { norm(x,'M') }),1e-6)
+expect_lt(test_harness(xval,function(x) { norm(x,'F') }),1e-6)
 
-expect_less_than(test_harness(xval,function(x) { sqrtm(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { sqrtm(x) }),1e-6)
 
 ```
 
@@ -481,9 +481,9 @@ xval <- tcrossprod(zval)
 
 fsym <- function(x) { 0.5 * (x + t(x)) }
 # this will fail:
-expect_less_than(test_harness(xval,function(x) { chol(x) }),1e-6)
+expect_lt(test_harness(xval,function(x) { chol(x) }),1e-6)
 # this will not:
-expect_less_than(test_harness(xval,function(x) { chol(fsym(x)) }),1e-6)
+expect_lt(test_harness(xval,function(x) { chol(fsym(x)) }),1e-6)
 ```
 
 The functions `twomoments` and `theta` respect the symmetry of the quantities
