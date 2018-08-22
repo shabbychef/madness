@@ -26,8 +26,10 @@ Suggests:
     knitr
 URL: https://github.com/shabbychef/madness
 VignetteBuilder: R.rsp
-Collate:
+Collate: 
     'AllClass.r'
+    'utils.r'
+    'Ops.r'
     'bind.r'
     'blockrep.r'
     'coerce.r'
@@ -40,7 +42,6 @@ Collate:
     'max.r'
     'norm.r'
     'numderiv.r'
-    'Ops.r'
     'reshape.r'
     'solve.r'
     'sum.r'
@@ -49,6 +50,6 @@ Collate:
     'to_objective.r'
     'trace.r'
     'twomoments.r'
-    'utils.r'
     'vcov.r'
     'vec.r'
+RoxygenNote: 6.0.1

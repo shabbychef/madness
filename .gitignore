@@ -36,3 +36,4 @@ madness.log
 cache/
 .RData
 .Rhistory
+.docker_img

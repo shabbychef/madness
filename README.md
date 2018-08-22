@@ -180,22 +180,26 @@ print(vcov(mynorm))
 
 There are two utilities for easily computing `madness` objects representing the first two moments of an object.
 Here we use these to compute the Markowitz portfolio of some assets, along with the estimated variance-covariance
-of the same. Here I first download the weekly simple returns of the Fama French three factors. (Note that you cannot
+of the same. Here I first download the monthly simple returns of the Fama French three factors. (Note that you cannot
 directly invest in these, except arguably 'the market'. The point of the example is to use realistic returns, not provide
 investing advice.)
 
 
 ```r
-# the Quandl package is better, but dealing with
-# the auth is a PITA:
-library(curl)
-ffweekly <- read.csv(curl("https://www.quandl.com/api/v3/datasets/KFRENCH/FACTORS_W.csv"))
-ffrets <- 0.01 * ffweekly[, c("Mkt.RF", "SMB", "HML")]
+# Fama French Data are no longer on Quandl, use my
+# homebrew package instead:
+if (!require(aqfb.data) && require(devtools)) {
+    devtools::install_github("shabbychef/aqfb_data")
+}
+require(aqfb.data)
+data(mff4)
+ffrets <- 0.01 * as.matrix(mff4[, c("Mkt", "SMB", "HML")])
 ```
 
 Now compute the first two moments via `twomoments` and compute the Markowitz portfolio
 
 ```r
+# compute first two moments
 twom <- twomoments(ffrets)
 markowitz <- solve(twom$Sigma, twom$mu)
 print(val(markowitz))
@@ -203,9 +207,9 @@ print(val(markowitz))
 
 ```
 ##      [,1]
-## [1,]  1.3
-## [2,]  1.3
-## [3,]  2.2
+## [1,] 2.80
+## [2,] 0.33
+## [3,] 2.19
 ```
 
 ```r
@@ -213,10 +217,10 @@ print(vcov(markowitz))
 ```
 
 ```
-##        [,1]    [,2]    [,3]
-## [1,]  0.304 -0.0444 -0.1507
-## [2,] -0.044  0.9790  0.0046
-## [3,] -0.151  0.0046  0.7499
+##       [,1]  [,2]  [,3]
+## [1,]  0.47 -0.18 -0.13
+## [2,] -0.18  0.87 -0.14
+## [3,] -0.13 -0.14  0.76
 ```
 
 ```r
@@ -226,9 +230,9 @@ print(wald)
 
 ```
 ##      [,1]
-## [1,]  2.4
-## [2,]  1.3
-## [3,]  2.6
+## [1,] 4.07
+## [2,] 0.35
+## [3,] 2.51
 ```
 
 ## Does that really work?
@@ -280,7 +284,7 @@ ph <- qplot(sample = retv[1, , 1], stat = "qq") + geom_abline(intercept = 0,
 print(ph)
 ```
 
-<img src="tools/figure/marksym_check-1.png" title="plot of chunk marksym_check" alt="plot of chunk marksym_check" width="600px" height="500px" />
+<img src="man/figures/marksym-check-1.png" title="plot of chunk marksym-check" alt="plot of chunk marksym-check" width="600px" height="500px" />
 
 # Trace of the covariance matrix
 
@@ -329,7 +333,7 @@ ph <- qplot(sample = as.numeric(retv), stat = "qq") +
 print(ph)
 ```
 
-<img src="tools/figure/matracer-1.png" title="plot of chunk matracer" alt="plot of chunk matracer" width="600px" height="500px" />
+<img src="man/figures/matracer-1.png" title="plot of chunk matracer" alt="plot of chunk matracer" width="600px" height="500px" />
 
 # Maximum eigenvalue of the covariance matrix
 
@@ -372,7 +376,7 @@ print(maxe)
 ##               d X
 ##   val: 18 ...
 ##  dvdx: 0 1.6 0.0068 -0.16 0.05 -0.0065 0.051 -0.0024 0.032 -0.035 -0.049 0.99 0.0086 -0.2 0.063 -0.0081 0.064 -0.003 0.04 -0.044 -0.062 1.9e-05 -0.00087 0.00028 -3.5e-05 0.00028 -1.3e-05 0.00018 -0.00019 -0.00027 0.01 -0.0064 0.00082 -0.0065 0.00031 -0.0041 0.0045 0.0063 0.001 -0.00026 0.0021 -9.6e-05 0.0013 -0.0014 -0.002 1.7e-05 -0.00026 1.2e-05 -0.00017 0.00018 0.00025 0.001 -9.8e-05 0.0013 -0.0014 -0.002 2.3e-06 -6.1e-05 6.7e-05 9.4e-05 0.00041 -9e-04 -0.0013 0.00049 0.0014 0.00097 ...
-##  varx: 2.3e-32 9.1e-20 4.1e-19 1.7e-19 1.5e-19 -1.1e-19 -1.1e-19 2.5e-19 -7.2e-20 -4.1e-19 -1.6e-19 1.9e-18 -5.8e-19 -2.9e-19 -1.9e-19 2.2e-19 2e-19 -3.8e-19 1.6e-19 6.2e-19 1.4e-19 5.6e-19 -2.5e-19 -4.2e-19 6.2e-19 5.2e-19 -8.5e-19 3.1e-19 1.4e-18 3.4e-19 1.3e-18 -7.9e-20 2.2e-19 6.3e-20 -1.7e-19 1.4e-19 3.6e-19 6.5e-20 1.5e-18 2.2e-19 1.8e-19 -2.7e-19 7.1e-20 5.7e-19 1e-19 5.8e-20 -2e-19 4.2e-19 -1.5e-19 -7.3e-19 -2.3e-19 1.4e-18 2.5e-19 -1e-19 -4.8e-19 -1.7e-19 4.1e-19 1.8e-19 9.9e-19 2.7e-19 8.6e-19 -3.8e-19 -1.1e-19 -4.3e-19 -4.2e-19 1.4e-19 ...
+##  varx: 2.4e-34 9.4e-21 4.2e-20 1.8e-20 1.5e-20 -1.1e-20 -1.1e-20 2.6e-20 -7.5e-21 -4.2e-20 -1.6e-20 2e-19 -6e-20 -3e-20 -2e-20 2.3e-20 2.1e-20 -3.9e-20 1.6e-20 6.4e-20 1.5e-20 5.8e-20 -2.5e-20 -4.4e-20 6.4e-20 5.4e-20 -8.8e-20 3.2e-20 1.4e-19 3.5e-20 1.3e-19 -8.1e-21 2.3e-20 6.6e-21 -1.7e-20 1.5e-20 3.8e-20 6.7e-21 1.6e-19 2.3e-20 1.9e-20 -2.8e-20 7.3e-21 5.9e-20 1e-20 6e-21 -2.1e-20 4.3e-20 -1.5e-20 -7.6e-20 -2.3e-20 1.4e-19 2.6e-20 -1.1e-20 -5e-20 -1.7e-20 4.3e-20 1.8e-20 1e-19 2.8e-20 8.9e-20 -3.9e-20 -1.1e-20 -4.4e-20 -4.4e-20 1.4e-20 ...
 ```
 
 ```r
@@ -402,7 +406,7 @@ ph <- qplot(sample = as.numeric(retv), stat = "qq") +
 print(ph)
 ```
 
-<img src="tools/figure/cosym_mo-1.png" title="plot of chunk cosym_mo" alt="plot of chunk cosym_mo" width="600px" height="500px" />
+<img src="man/figures/cosym-mo-1.png" title="plot of chunk cosym-mo" alt="plot of chunk cosym-mo" width="600px" height="500px" />
 
 Why the bias? There are a number of possibilities:
 
@@ -564,57 +568,57 @@ set.seed(2015)
 
 xval <- matrix(1 + runif(4 * 4), nrow = 4)
 yval <- matrix(1 + runif(length(xval)), nrow = nrow(xval))
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     x + x
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     x * yval
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     yval/x
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     x^x
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     x %*% x
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     x %*% yval
 }), 1e-06)
 
-expect_less_than(test_harness(abs(xval), function(x) {
+expect_lt(test_harness(abs(xval), function(x) {
     log(x)
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     exp(x)
 }), 1e-06)
-expect_less_than(test_harness(abs(xval), function(x) {
+expect_lt(test_harness(abs(xval), function(x) {
     log10(x)
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     sqrt(x)
 }), 1e-06)
 
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     matrix.trace(x)
 }, function(matx) {
     sum(diag(matx))
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     colSums(x)
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     colMeans(x)
 }), 1e-06)
 
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     vec(x)
 }, function(x) {
     dim(x) <- c(length(x), 1)
     x
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     vech(x)
 }, function(x) {
     x <- x[row(x) >= col(x)]
@@ -622,39 +626,39 @@ expect_less_than(test_harness(xval, function(x) {
     x
 }), 1e-06)
 
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     tril(x)
 }, function(x) {
     x[row(x) < col(x)] <- 0
     x
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     triu(x)
 }, function(x) {
     x[row(x) > col(x)] <- 0
     x
 }), 1e-06)
 
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     det(x)
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     determinant(x, logarithm = TRUE)$modulus
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     determinant(x, logarithm = FALSE)$modulus
 }), 1e-06)
 
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     colSums(x)
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     colMeans(x)
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     rowSums(x)
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     rowMeans(x)
 }), 1e-06)
 
@@ -663,26 +667,26 @@ zval <- matrix(0.01 + runif(4 * 100, min = 0, max = 0.05),
     nrow = 4)
 xval <- tcrossprod(zval)
 
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     norm(x, "O")
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     norm(x, "I")
 }), 1e-06)
 # Matrix::norm does not support type '2'
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     norm(x, "2")
 }, function(x) {
     base::norm(x, "2")
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     norm(x, "M")
 }), 1e-06)
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     norm(x, "F")
 }), 1e-06)
 
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     sqrtm(x)
 }), 1e-06)
 ```
@@ -707,20 +711,13 @@ fsym <- function(x) {
     0.5 * (x + t(x))
 }
 # this will fail:
-expect_less_than(test_harness(xval, function(x) {
+# expect_lt(test_harness(xval,function(x) { chol(x)
+# }),1e-6)
+expect_gte(test_harness(xval, function(x) {
     chol(x)
-}), 1e-06)
-```
-
-```
-## Error: test_harness(xval, function(x) {
-##     chol(x)
-## }) not less than 1e-06. Difference: -2
-```
-
-```r
+}), 1.99)
 # this will not:
-expect_less_than(test_harness(xval, function(x) {
+expect_lt(test_harness(xval, function(x) {
     chol(fsym(x))
 }), 1e-06)
 ```

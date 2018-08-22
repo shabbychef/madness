@@ -12,7 +12,7 @@ opts_chunk$set(cache=TRUE,cache.path="cache/")
 #opts_chunk$set(fig.path="github_extra/figure/",dev=c("pdf","cairo_ps"))
 #opts_chunk$set(fig.path="github_extra/figure/",dev=c("png","pdf"))
 #opts_chunk$set(fig.path="github_extra/figure/",dev=c("png"))
-opts_chunk$set(fig.path="tools/figure/",dev=c("png"))
+opts_chunk$set(fig.path="man/figures/",dev=c("png"))
 opts_chunk$set(fig.width=6,fig.height=5,dpi=256)
 
 # doing this means that png files are made of figures;
@@ -132,19 +132,23 @@ print(vcov(mynorm))
 
 There are two utilities for easily computing `madness` objects representing the first two moments of an object.
 Here we use these to compute the Markowitz portfolio of some assets, along with the estimated variance-covariance
-of the same. Here I first download the weekly simple returns of the Fama French three factors. (Note that you cannot
+of the same. Here I first download the monthly simple returns of the Fama French three factors. (Note that you cannot
 directly invest in these, except arguably 'the market'. The point of the example is to use realistic returns, not provide
 investing advice.)
 
 ```{r quandl,cache=TRUE,eval=TRUE,echo=TRUE}
-# the Quandl package is better, but dealing with the auth is a PITA:
-library(curl)
-ffweekly <- read.csv(curl('https://www.quandl.com/api/v3/datasets/KFRENCH/FACTORS_W.csv'))
-ffrets <- 1e-2 * ffweekly[,c('Mkt.RF','SMB','HML')]
+# Fama French Data are no longer on Quandl, use my homebrew package instead:
+if (!require(aqfb.data) && require(devtools)) {
+	devtools::install_github('shabbychef/aqfb_data')
+}
+require(aqfb.data)
+data(mff4)
+ffrets <- 1e-2 * as.matrix(mff4[,c('Mkt','SMB','HML')])
 ```
 
 Now compute the first two moments via `twomoments` and compute the Markowitz portfolio
 ```{r markowitz,cache=TRUE,eval=TRUE,echo=TRUE}
+# compute first two moments
 twom <- twomoments(ffrets)
 markowitz <- solve(twom$Sigma,twom$mu)
 print(val(markowitz))
@@ -191,7 +195,7 @@ retv <- aperm(retv,c(1,3,2))
 This should be approximately normal, so we Q-Q plot against
 normality. LGTM.
 
-```{r marksym_check,cache=TRUE,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
+```{r marksym-check,cache=TRUE,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
 require(ggplot2)
 ph <- qplot(sample=retv[1,,1],stat='qq') + geom_abline(intercept=0,slope=1,colour='red')
 print(ph)
@@ -274,7 +278,7 @@ print(vcov(maxe))
 
 Now perform some simulations to see if these are accurate:
 
-```{r cosym_mo,cache=TRUE,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
+```{r cosym-mo,cache=TRUE,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
 nsim <- 1000
 set.seed(23401)
 retv <- replicate(nsim,{
@@ -481,7 +485,8 @@ xval <- tcrossprod(zval)
 
 fsym <- function(x) { 0.5 * (x + t(x)) }
 # this will fail:
-expect_lt(test_harness(xval,function(x) { chol(x) }),1e-6)
+#expect_lt(test_harness(xval,function(x) { chol(x) }),1e-6)
+expect_gte(test_harness(xval,function(x) { chol(x) }),1.99)
 # this will not:
 expect_lt(test_harness(xval,function(x) { chol(fsym(x)) }),1e-6)
 ```

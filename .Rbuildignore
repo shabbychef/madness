@@ -17,7 +17,8 @@ man-roxygen
 .roxygen2
 nodist
 rebuildTags.sh
-madness_\d.\d+.tar.gz$
+madness_\d.+tar.gz$
+madness_\d.+crancheck$
 madness.Rcheck
 ^github_extra
 unit_test.log
