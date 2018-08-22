@@ -96,25 +96,36 @@ setMethod("-", signature(e1="madness",e2="missing"),
 					})
 #UNFOLD
 
-.isscalar <- function(x) { length(x) == 1 }
+# 2FIX: what dis?
+#.isscalar <- function(x) { length(x) == 1 }
 
 # replicate columns into a matrix
 .crep <- function(x,nrep) {
 	if (nrep == 1) {
-		retv <- x
-	} else {
-		retv <- do.call(cbind,rep(list(x),nrep))
-	}
-	retv
+		return(x)
+	} 
+	do.call(cbind,rep(list(x),nrep))
 }
-# replicate columns into a matrix
-.crepto <- function(X,nco) {
-	if (ncol(X) == nco) {
-		retv <- X
-	} else {
-		retv <- .crep(X,nco)
+# replicate rows into a matrix
+.rrep <- function(x,nrep) {
+	if (nrep == 1) {
+		return(x)
 	}
-	retv
+	do.call(rbind,rep(list(x),nrep))
+}
+# optionally replicate columns into a matrix;
+.crepto <- function(X,tgt_nco) {
+	if (ncol(X) == tgt_nco) {
+		return(X)
+	}
+	.crep(X,tgt_nco)
+}
+# optionally replicate columns into a matrix;
+.rrepto <- function(X,tgt_nro) {
+	if (nrow(X) == tgt_nro) {
+		return(X)
+	}
+	.rrep(X,tgt_nro)
 }
 
 .derivrep <- function(dvdx,len) {
@@ -127,24 +138,64 @@ setMethod("-", signature(e1="madness",e2="missing"),
 setMethod("+", signature(e1="madness",e2="madness"),
 					function(e1,e2) {
 						xtag <- .check_common_xtag(e1,e2)
+						# 2FIX: check for compatibility of values, and do not overpromote?
 						val <- e1@val + e2@val
 						# rigamarole if one is a scalar...
-						dvdx <- .crepto(e1@dvdx,length(val)) + .crepto(e2@dvdx,length(val))
+						dvdx <- .rrepto(e1@dvdx,length(val)) + .rrepto(e2@dvdx,length(val))
 						vtag <- paste0('(',e1@vtag,' + ',e2@vtag,')')
 						varx <- .get_a_varx(e1,e2)
 
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
+
 mplusn <- function(e1,e2) {
 						xtag <- e1@xtag
+						# 2FIX: check for compatibility of values, and do not overpromote?
 						val <- e1@val + e2
-						dvdx <- .derivrep(e1@dvdx,length(e2))
+						dvdx <- .rrepto(e1@dvdx,length(e2))
 						vtag <- paste0('(',e1@vtag,' + numeric)')
 						varx <- e1@varx
 
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					}
+
+#xmad <- madness(c(1,2,3,4))
+#yval <- 23
+#zv <- mplusn(xmad,yval)
+
+#xmad <- madness(c(1))
+#yval <- 23
+#zv <- mplusn(xmad,yval)
+
+## btw, can we do this?
+##xxx <- matrix(1,nrow=1,ncol=1)
+##yyy <- array(1:3)
+### this is an error. so ... 
+##xxx + yyy
+
+
+#xmad <- madness(c(1))
+#yval <- c(5,6,7)
+#zv <- mplusn(xmad,yval)
+
+#xmad <- madness(c(1))
+#yval <- array(c(5,6,7))
+#zv <- mplusn(xmad,yval)
+
+#xmad <- madness(c(1))
+#yval <- matrix(c(5,6,7),nrow=1)
+#zv <- mplusn(xmad,yval)
+
+#xmad <- madness(c(1))
+#yval <- matrix(c(5,6,7),nrow=3)
+#zv <- mplusn(xmad,yval)
+
+## should error:
+#xmad <- madness(c(1,2))
+#yval <- c(5,6,7)
+#zv <- mplusn(xmad,yval)
+
 #' @rdname arithops
 #' @aliases +,madness,numeric-class
 setMethod("+", signature(e1="madness",e2="numeric"),mplusn)
@@ -154,8 +205,9 @@ setMethod("+", signature(e1="madness",e2="array"),mplusn)
 
 nplusm <- function(e1,e2) {
 						xtag <- e2@xtag
+						# 2FIX: check for compatibility of values, and do not overpromote?
 						val <- e1 + e2@val
-						dvdx <- .derivrep(e2@dvdx,length(e1))
+						dvdx <- .rrepto(e2@dvdx,length(e1))
 						vtag <- paste0('(numeric + ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -187,7 +239,7 @@ setMethod("-", signature(e1="madness",e2="madness"),
 mminusn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val - e2
-						dvdx <- .derivrep(e1@dvdx,length(e2))
+						dvdx <- .rrepto(e1@dvdx,length(e2))
 						vtag <- paste0('(',e1@vtag,' - numeric)')
 						varx <- e1@varx
 
@@ -204,7 +256,7 @@ setMethod("-", signature(e1="madness",e2="array"), mminusn)
 nminusm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 - e2@val
-						dvdx <- .derivrep(-e2@dvdx,length(e1))
+						dvdx <- .rrepto(-e2@dvdx,length(e1))
 						vtag <- paste0('(numeric - ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -236,7 +288,7 @@ setMethod("*", signature(e1="madness",e2="madness"),
 mtimesn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val * e2
-						dvdx <- .derivrep(e1@dvdx,length(e2)) * as.numeric(e2)
+						dvdx <- .rrepto(e1@dvdx,length(e2)) * as.numeric(e2)
 						vtag <- paste0('(',e1@vtag,' * numeric)')
 						varx <- e1@varx
 
@@ -253,7 +305,7 @@ setMethod("*", signature(e1="madness",e2="array"), mtimesn)
 ntimesm <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 * e2@val
-						dvdx <- .derivrep(e2@dvdx,length(e1)) * as.numeric(e1)
+						dvdx <- .rrepto(e2@dvdx,length(e1)) * as.numeric(e1)
 						vtag <- paste0('(numeric * ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -287,7 +339,7 @@ setMethod("/", signature(e1="madness",e2="madness"),
 mbyn <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val / e2
-						dvdx <- .derivrep(e1@dvdx,length(e2)) / as.numeric(e2)
+						dvdx <- .rrepto(e1@dvdx,length(e2)) / as.numeric(e2)
 						vtag <- paste0('(',e1@vtag,' / numeric)')
 						varx <- e1@varx
 
@@ -304,7 +356,7 @@ setMethod("/", signature(e1="madness",e2="array"), mbyn)
 nbym <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 / e2@val
-						dvdx <- - as.numeric((val / e2@val)) * .derivrep(e2@dvdx,length(e1))
+						dvdx <- - as.numeric((val / e2@val)) * .rrepto(e2@dvdx,length(e1))
 						vtag <- paste0('(numeric / ',e2@vtag,')')
 						varx <- e2@varx
 
@@ -337,7 +389,7 @@ setMethod("^", signature(e1="madness",e2="madness"),
 mtothen <- function(e1,e2) {
 						xtag <- e1@xtag
 						val <- e1@val ^ e2
-						dvdx <- as.numeric(as.numeric(e2) * (e1@val ^ (e2-1))) * .derivrep(e1@dvdx,length(e2))
+						dvdx <- as.numeric(as.numeric(e2) * (e1@val ^ (e2-1))) * .rrepto(e1@dvdx,length(e2))
 						vtag <- paste0('(',e1@vtag,' ^ numeric)')
 						varx <- e1@varx
 
@@ -354,7 +406,7 @@ setMethod("^", signature(e1="madness",e2="array"),mtothen)
 ntothem <- function(e1,e2) {
 						xtag <- e2@xtag
 						val <- e1 ^ e2@val
-						dvdx <- as.numeric(val * log(e1)) * .derivrep(e2@dvdx,length(e1))
+						dvdx <- as.numeric(val * log(e1)) * .rrepto(e2@dvdx,length(e1))
 						vtag <- paste0('(numeric ^ ',e2@vtag,')')
 						varx <- e2@varx
 

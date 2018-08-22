@@ -151,16 +151,50 @@ test_that("basic indexing getters",{#FOLDUP
 
 	expect_equal(as.numeric(val(rev(xmad))),as.numeric(rev(val(xmad))))
 })#UNFOLD
+test_that("xtag enforcement?",{#FOLDUP
+	set.char.seed("e78607e6-725f-4782-8371-89b09f1e3ae0")
+	xmad <- madness(matrix(runif(5),nrow=5),xtag='x')
+	ymad <- madness(matrix(runif(5),nrow=5),xtag='not x')
+	expect_error(xmad + ymad)
+	expect_error(xmad - ymad)
+	expect_error(xmad * ymad)
+	expect_error(xmad / ymad)
+	expect_error(xmad ^ ymad)
+})#UNFOLD
+test_that("size errors?",{#FOLDUP
+	set.char.seed("495afa7d-b0ec-4e8e-8710-2c97e8ea0fd5")
+	xmad <- madness(matrix(runif(15),nrow=5),xtag='x')
+	ymad <- madness(matrix(runif(15),ncol=5),xtag='x')
+	expect_error(xmad + ymad)
+	expect_error(xmad - ymad)
+	expect_error(xmad * ymad)
+	expect_error(xmad / ymad)
+	expect_error(xmad ^ ymad)
+# no error
+	expect_error(xmad %*% ymad,NA)
+	expect_error(ymad %*% xmad,NA)
+})#UNFOLD
 test_that("scalar to array promotion",{#FOLDUP
 	set.char.seed("8d40c3b6-67b7-4640-a710-168b09a09732")
 	xmad <- madness(array(runif(1)))
-	for (yscl in list(1,1:5,array(1:5),matrix(1:5))) {
+	for (yscl in list(1,1:5)) {
 		# make sure these run:
 		expect_error(xmad + yscl,NA)
 		expect_error(xmad - yscl,NA)
 		expect_error(xmad * yscl,NA)
 		expect_error(xmad / yscl,NA)
 		expect_error(xmad ^ yscl,NA)
+	}
+	# these should error, since 
+	# array(1) + array(5) is an error in R, 
+	# as is array(1) + matrix(1:5)
+	for (yscl in list(array(1:5),matrix(1:5))) {
+		# make sure these error:
+		expect_error(xmad + yscl)
+		expect_error(xmad - yscl)
+		expect_error(xmad * yscl)
+		expect_error(xmad / yscl)
+		expect_error(xmad ^ yscl)
 	}
 })#UNFOLD
 test_that("just vcov",{#FOLDUP
