@@ -45,6 +45,18 @@ NULL
 #' @usage \\method{c}{madness}(...)
 c.madness <- function(...) { rbind(...) }  # nocov
 
+# is this how I do this? I have no idea...
+#' @rdname bind
+#' @aliases c,ANY,madness,ANY-method
+#' @exportMethod c
+setMethod("c", "madness", function(x,...,recursive=FALSE)rbind(x,c(...,recursive=recursive)))
+
+# not sure about either of these ? 
+#' @rdname bind
+#' @aliases c,madness,ANY,ANY-method
+#' @exportMethod c
+setMethod("c", signature(x="madness"), function(x,...,recursive=FALSE)rbind(x,c(...,recursive=recursive)))
+
 # c.f. http://stackoverflow.com/a/28126631/164611
 
 #' @rdname bind

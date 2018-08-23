@@ -151,6 +151,18 @@ test_that("basic indexing getters",{#FOLDUP
 
 	expect_equal(as.numeric(val(rev(xmad))),as.numeric(rev(val(xmad))))
 })#UNFOLD
+test_that("bind operations",{#FOLDUP
+	set.char.seed("52987ade-b81f-43bf-8c0b-4e51dc3124b6")
+	xval <- matrix(1 + runif(3*4),nrow=3)
+	xmad <- madness(xval)
+
+	# make sure these run:
+	expect_error(c(xmad,xmad),NA)
+	expect_error(rbind(xmad,xmad),NA)
+	expect_error(cbind(xmad,xmad),NA)
+
+
+})#UNFOLD
 test_that("xtag enforcement?",{#FOLDUP
 	set.char.seed("e78607e6-725f-4782-8371-89b09f1e3ae0")
 	xmad <- madness(matrix(runif(5),nrow=5),xtag='x')

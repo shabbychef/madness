@@ -59,6 +59,10 @@ comp_err <- function(xval,thefun,scalfun=thefun,eps=1e-8) {
 	retv <- max(max(abs(d_err)),max(abs(f_err)))
 }
 
+expect_near_equal <- function(xmad,ymad,errtol=1e-8) {
+	expect_lt(max(abs(xmad@val - ymad@val)),errtol)
+}
+
 expect_small_err <- function(xval,thefun,scalfun=thefun,eps=1e-8,errtol=1e-6) {
 	expect_lt(comp_err(xval,thefun=thefun,scalfun=scalfun,eps=eps),errtol)
 }
@@ -109,9 +113,30 @@ test_that("arith functions",{#FOLDUP
 	expect_small_err(xval,function(x) { tcrossprod(x,x) })
 	expect_small_err(xval,function(x) { tcrossprod(x,yval) })
 	expect_small_err(xval,function(x) { tcrossprod(yval,x) })
+})#UNFOLD
+test_that("concat functions",{#FOLDUP
+	set.char.seed("8f09504e-8d6c-464e-b8cf-c05492159a4e")
+	xval <- matrix(1 + runif(4*4),nrow=4)
+	yval <- matrix(1 + runif(length(xval)),nrow=nrow(xval))
 	
-	# sentinel:
-	expect_true(TRUE)
+	acol <- matrix(1 + runif(nrow(xval)),ncol=1)
+	arow <- matrix(1 + runif(ncol(xval)),nrow=1)
+
+	x <- madness(xval)
+
+	expect_near_equal(c(x),rbind(x))
+	expect_near_equal(c(x,x),rbind(x,x))
+	expect_near_equal(c(x,x,x),rbind(x,x,x))
+	expect_near_equal(c(x,x,x,x),rbind(x,x,x,x))
+	expect_near_equal(c(x,yval),rbind(x,yval))
+	expect_near_equal(c(x,arow),rbind(x,arow))
+
+	# this will fail, but should pass:
+	expect_near_equal(c(yval,x),rbind(yval,x))
+
+	# these will not run tho:
+	#expect_near_equal(c(x,arow,x),rbind(x,arow,x))
+	#expect_near_equal(c(yval,x,yval),rbind(yval,x,yval))
 })#UNFOLD
 test_that("bind functions",{#FOLDUP
 	set.char.seed("f459e4a4-2b1f-4902-9f5c-a78ee3302e96")
@@ -142,9 +167,6 @@ test_that("bind functions",{#FOLDUP
 	expect_small_err(xval,function(x) { rbind(yval,x) })
 	expect_small_err(xval,function(x) { rbind(x,yval,x) })
 	expect_small_err(xval,function(x) { rbind(yval,x,yval) })
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("elwise functions",{#FOLDUP
 	set.char.seed("05ffaa40-902d-430a-a47f-63938b921306")
@@ -159,9 +181,6 @@ test_that("elwise functions",{#FOLDUP
 	expect_small_err(xval,function(x) { sin(x) })
 	expect_small_err(xval,function(x) { cos(x) })
 	expect_small_err(xval,function(x) { tan(x) },eps=1e-10)
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("matwise functions",{#FOLDUP
 	set.char.seed("1860a172-ba3e-4873-950a-75c9b771134d")
@@ -178,9 +197,6 @@ test_that("matwise functions",{#FOLDUP
 	# chol has hidden symmetry:
 	fsym <- function(x) { 0.5 * (x + t(x)) }
 	expect_small_err(xval,function(x) { chol(fsym(x)) })
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("sum functions",{#FOLDUP
 	set.char.seed("25e43832-3030-40cf-acf8-fa43bd56dc09")
@@ -202,9 +218,6 @@ test_that("sum functions",{#FOLDUP
 	expect_small_err(xval,function(x) { colMeans(x,na.rm=na.rm) })
 	expect_small_err(xval,function(x) { rowSums(x,na.rm=na.rm) })
 	expect_small_err(xval,function(x) { rowMeans(x,na.rm=na.rm) })
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("sumprod functions",{#FOLDUP
 	set.char.seed("a5392bf9-9b9b-4411-87f5-9e40365c73d9")
@@ -225,9 +238,6 @@ test_that("sumprod functions",{#FOLDUP
 	na.rm <- TRUE
 	expect_small_err(xval,function(x) { sum(x,na.rm=na.rm) })
 	expect_small_err(xval,function(x) { prod(x,na.rm=na.rm) })
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("maxmin functions",{#FOLDUP
 	set.char.seed("c52e167b-14ea-4827-ad47-5ee165929ed7")
@@ -248,9 +258,6 @@ test_that("maxmin functions",{#FOLDUP
 	na.rm <- TRUE
 	expect_small_err(xval,function(x) { max(x,na.rm=na.rm) })
 	expect_small_err(xval,function(x) { min(x,na.rm=na.rm) })
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("outer functions",{#FOLDUP
 	set.char.seed("354455b9-2b3f-40fb-b8e7-21a1302b48de")
@@ -271,9 +278,6 @@ test_that("outer functions",{#FOLDUP
 	expect_small_err(xval,function(x) { outer(yval,x,FUN='+') })
 	expect_small_err(xval,function(x) { outer(yval,x,FUN='-') })
 	expect_small_err(xval,function(x) { outer(yval,x,FUN='/') })
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("determinants",{#FOLDUP
 	set.char.seed("081849a0-ab28-42ac-8d18-1963cb8a9a0a")
@@ -283,9 +287,6 @@ test_that("determinants",{#FOLDUP
 	#expect_small_err(xval,function(x) { det(x) })
 	expect_small_err(xval,function(x) { dt <- determinant(x,logarithm=FALSE) ; dt$modulus },errtol=1e-6)
 	expect_small_err(xval,function(x) { dt <- determinant(x,logarithm=TRUE)  ; dt$modulus },errtol=1e-6)
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("reshape functions",{#FOLDUP
 	set.char.seed("3d06aea4-c339-4630-a8db-3d56d6b6b687")
@@ -336,9 +337,6 @@ test_that("reshape functions",{#FOLDUP
 	expect_small_err(xval,function(x) { blockrep(x,c(2,3)) },function(x) { x2 <- rbind(x,x) ; cbind(x2,x2,x2) },errtol=1e-6)
 	expect_small_err(xval,function(x) { blockrep(x,c(5,2)) },function(x) { x5 <- rbind(x,x,x,x,x) ; cbind(x5,x5) },errtol=1e-6)
 	# now alternate dimensions?
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("vech/ivech functions",{#FOLDUP
 	set.char.seed("a61a011f-d13c-4a70-8ab7-7003edbf65a0")
@@ -371,8 +369,6 @@ test_that("vech/ivech functions",{#FOLDUP
 		expect_small_err(xval,function(x) { ivech(x,2,symmetric=FALSE) },errtol=1e-6)
 		expect_small_err(xval,function(x) { ivech(x,2,symmetric=FALSE) },errtol=1e-6)
 	}
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("solve functions",{#FOLDUP
 	set.char.seed("232ba1a1-7751-40be-866f-a8e2122c2ace")
@@ -390,9 +386,6 @@ test_that("solve functions",{#FOLDUP
 	xval <- array(rnorm(1),dim=c(1,1))
 	yval <- runif(1)
 	expect_small_err(xval,function(x) { solve(yval,x) },eps=1e-6,errtol=1e-6)
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("eigen functions",{#FOLDUP
 	set.char.seed("c0529b18-8873-4353-9c41-b4c8bc24d319")
@@ -411,9 +404,6 @@ test_that("eigen functions",{#FOLDUP
 										 ev$vectors %*% diag(sign(ev$vectors[1,,drop=TRUE]))
 									 }, eps=1e-6,errtol=1e-6)
 
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 test_that("norm functions",{#FOLDUP
 	set.char.seed("e74da7ce-92f1-41ee-96cd-fe8201da753f")
@@ -438,9 +428,6 @@ test_that("norm functions",{#FOLDUP
 																	usv <- svd(x,1,1)
 																	as.numeric(usv$d[1])
 																},errtol=1e-5)
-	
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 
 #UNFOLD
@@ -457,9 +444,6 @@ test_that("round one",{#FOLDUP
 
 	expect_small_err(xval,function(x) { tcrossprod(sin(x)) },eps=1e-07,errtol=1e-5)
 	expect_small_err(xval,function(x) { cos(crossprod(sin(x))) },eps=1e-07,errtol=1e-5)
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 
 #UNFOLD
@@ -479,9 +463,6 @@ test_that("vech",{#FOLDUP
 	yval <- vech(xsym,0)
 	xsval <- ivech(yval,0,symmetric=TRUE)
 	expect_lt(max(errit(xsym,xsval)),1e-12)
-
-	# sentinel:
-	expect_true(TRUE)
 })#UNFOLD
 
 #UNFOLD
