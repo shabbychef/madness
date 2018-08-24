@@ -90,6 +90,13 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
+#' @section \madness{} Version 0.2.4 (2018-08-23) :
+#' \itemize{
+#' \item adding to unit tests.
+#' \item fix scalar to array promotion.
+#' \item fix broken vtag in aperm.
+#' }
+#'
 #' @section \madness{} Version 0.2.3 (2018-02-14) :
 #' \itemize{
 #' \item emergency CRAN release to deal with failing tests

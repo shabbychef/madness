@@ -1,5 +1,5 @@
 
-2018-08-30 Steven E. Pav <shabbychef@gmail.com>
+2018-08-23 Steven E. Pav <shabbychef@gmail.com>
 * CRAN release, version 0.2.4
 * adding to tests.
 * fix scalar to array promotion.

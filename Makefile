@@ -9,9 +9,9 @@
 
 VMAJOR 						 = 0
 VMINOR 						 = 2
-VPATCH  					 = 3
-#VDEV 							 = 
-VDEV 							 = .003
+VPATCH  					 = 4
+VDEV 							 = 
+#VDEV 							 = .003
 PKG_NAME 					:= madness
 
 RPKG_USES_RCPP 		:= 0

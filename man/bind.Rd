@@ -4,8 +4,6 @@
 \name{bind}
 \alias{bind}
 \alias{c.madness}
-\alias{c,madness-method}
-\alias{c,ANY,madness,ANY-method}
 \alias{cbind2,madness,missing-method}
 \alias{cbind2,madness,madness-method}
 \alias{cbind2,madness,ANY-method}
@@ -17,8 +15,6 @@
 \title{Row and Column Bind}
 \usage{
 \\method{c}{madness}(...)
-
-\S4method{c}{madness}(x, ..., recursive = FALSE)
 
 \S4method{cbind2}{madness,missing}(x, y, ...)
 
