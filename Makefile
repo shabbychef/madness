@@ -35,5 +35,18 @@ stock_returns_data : data/stock_returns.rda  ## make the aggregate raw stocks da
 data/stock_returns.rda  : nodist/make_stocks.r $(STOCK_CSV)  
 	r $(filter %.r,$^) $(filter-out %.r,$^)
 
+wff3_data :  data/wff3.rda ## make the weekly FF4 returns data
+
+data-raw/F-F_Research_Data_Factors_weekly_CSV.zip :
+	wget -O $@ 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_weekly_CSV.zip'
+
+data-raw/F-F_Research_Data_Factors_weekly.CSV : data-raw/F-F_Research_Data_Factors_weekly_CSV.zip 
+	cd data-raw && unzip $^ && cd -
+
+data/wff3.rda : nodist/make_wff3.r data-raw/F-F_Research_Data_Factors_weekly.CSV
+	r $(filter %.r,$^) --infile=$(filter-out %.r,$^)
+
+all_data : data/stock_returns.rda data/wff3.rda ## make all package data
+
 #for vim modeline: (do not edit)
 # vim:ts=2:sw=2:tw=129:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:tags=.tags;:syn=make:ft=make:ai:si:cin:nu:fo=croqt:cino=p0t0c5(0:
