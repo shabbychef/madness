@@ -622,7 +622,8 @@ We further illustrate the use of the \madobj class with real examples.
 \subsection{The \txtSR}%FOLDUP
 
 <<'quandl_data',echo=FALSE,cache=TRUE>>=
-load('weeklyret.RData')
+data(wff3)
+data(stock_returns)
 @
 
 The \txtSR is arguably the most popular metric for comparing the 
@@ -634,12 +635,14 @@ and others.  \cite{Johnson:1940,jobsonkorkie1981,lo2002} This statistic, and
 its approximate standard error, can easily be computed with a \madobj object,
 here applied to the Fama-French 3 factors weekly returns.
 \cite{Fama_French_1992} The data were downloaded from Quandl, and
-represent \Sexpr{nrow(ffret)} weeks of data, from 
-\Sexpr{ffret[1,]$Date} to 
-\Sexpr{ffret[nrow(ffret),]$Date}. \cite{Quandl}
+represent \Sexpr{nrow(wff3)} weeks of data, from 
+\Sexpr{wff3$Date[1]} to
+\Sexpr{wff3$Date[nrow(wff3)]}. \cite{Quandl}
 
 <<'sr_demo_1',echo=TRUE,cache=TRUE>>=
-ff3 <- ffret[,c('Mkt.RF','SMB','HML')]
+data(wff3)
+wff3$Mkt_RF <- wff3$Mkt - wff3$RF
+ff3 <- wff3[,c('Mkt_RF','SMB','HML')]
 # compute first and second moments:
 # (beware: this method will not scale to larges numbers of assets!)
 two <- twomoments(ff3,diag.only=TRUE)
@@ -872,22 +875,30 @@ that the hard work is in gathering the data together, putting them in the right
 form, and sanely computing the estimate. The \madobj class automatically computes the
 derivatives and the marginal Wald statistics are trivial to compute. 
 Here we apply this analysis to the weekly returns of
-\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)-1]}} and of
-\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)]}}, collected over
-\Sexpr{nrow(allweekly)} weeks from 
-\Sexpr{allweekly[1,]$Date} to 
-\Sexpr{allweekly[nrow(allweekly),]$Date}, as downloaded from Quandl. \cite{Quandl}
+\StockTicker{\Sexpr{colnames(stock_returns)[2]}} and of
+\StockTicker{\Sexpr{colnames(stock_returns)[3]}}, collected over
+\Sexpr{nrow(stock_returns)} weeks from 
+\Sexpr{stock_returns[1,]$Date} to 
+\Sexpr{stock_returns[nrow(stock_returns),]$Date}, as downloaded from Quandl. \cite{Quandl}
 We will perform attribution against the Fama-French factor weekly returns
 considered earlier. The tail of the data looks as follows:
 
 <<'fsr_show',echo=TRUE,cache=TRUE>>=
+data(wff3)
+data(stock_returns)
+allweekly <- stock_returns %>%   
+	mutate(AAPL=100*AAPL,IBM=100*IBM) %>%  # make them percents...
+	left_join(wff3,by='Date') %>%
+	mutate(Mkt_RF=Mkt - RF) %>% 
+	dplyr::select(-Mkt)
+
 tail(allweekly,6) %>% select(-RF) %>% kable(row.names=FALSE)
 @
 
 \hfill\break
 We now perform the attributions and test them for significance:
 <<'fsr_demo_1',echo=TRUE,cache=TRUE>>=
-tht <- theta(allweekly %>% select(AAPL,IBM,Mkt.RF,SMB,HML) %>% mutate(one=1.0),xtag='stocks')
+tht <- theta(allweekly %>% select(AAPL,IBM,Mkt_RF,SMB,HML) %>% mutate(one=1.0),xtag='stocks')
 
 thinv_aapl <- chol(solve(tht[c(1,3,4,5,6),c(1,3,4,5,6)]))
 thinv_ibm <- chol(solve(tht[c(2,3,4,5,6),c(2,3,4,5,6)]))
@@ -943,15 +954,15 @@ Here we compute the \txtMP on the
 \Sexpr{allweekly[1,]$Date} to 
 \Sexpr{allweekly[nrow(allweekly),]$Date}, of 
 the Fama-French three factor data and of
-\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)-1]}} and 
-\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)]}} discussed above\footnote{It should be
+\StockTicker{\Sexpr{colnames(allweekly)[2]}} and 
+\StockTicker{\Sexpr{colnames(allweekly)[3]}} discussed above\footnote{It should be
 recognized that one can \emph{not} trade on the Fama French factors directly,
 that there is a selection bias in our choice of stocks, and so on. This is just
 an example.}.
 
 <<'the_mp_1',echo=TRUE,cache=TRUE>>=
 library(sandwich)
-twom <- twomoments(allweekly %>% select(AAPL,IBM,Mkt.RF,SMB,HML),vcov=sandwich::vcovHAC,diag.only=FALSE)
+twom <- twomoments(allweekly %>% select(AAPL,IBM,Mkt_RF,SMB,HML),vcov=sandwich::vcovHAC,diag.only=FALSE)
 the_mp <- solve(twom$Sigma,twom$mu)
 show(val(t(the_mp)))
 show(vcov(the_mp))
@@ -973,7 +984,7 @@ weekly returns.
 
 <<'the_mp_2',echo=TRUE,cache=TRUE>>=
 library(sandwich)
-tht <- theta(allweekly %>% mutate(one=1.0) %>% select(one,AAPL,IBM,Mkt.RF,SMB,HML),
+tht <- theta(allweekly %>% mutate(one=1.0) %>% select(one,AAPL,IBM,Mkt_RF,SMB,HML),
 	xtag='all5',vcov=sandwich::vcovHAC)
 @
 
@@ -1007,7 +1018,9 @@ the weight for \StockTicker{AAPL} is relatively unchanged.
 \subsection{Correlation matrix}%FOLDUP
 
 <<'correlation_show_0',echo=FALSE,cache=TRUE>>=
-ff3 <- ffret[,c('Mkt.RF','SMB','HML')]
+data(wff3)
+wff3$Mkt_RF <- wff3$Mkt - wff3$RF
+ff3 <- wff3[,c('Mkt_RF','SMB','HML')]
 @
 
 We can trivially use the covariance computed by \Rfunction{twomoments} to
@@ -1023,10 +1036,11 @@ while the correlation between
 \StockTicker{\Sexpr{colnames(ff3)[3]}} is apparently very close to zero:
 
 
-
 <<'correlation_show_1',echo=TRUE,cache=TRUE>>=
 library(sandwich)
-ff3 <- ffret[,c('Mkt.RF','SMB','HML')]
+data(wff3)
+wff3$Mkt_RF <- wff3$Mkt - wff3$RF
+ff3 <- wff3[,c('Mkt_RF','SMB','HML')]
 # compute first and second moments:
 two <- twomoments(ff3,vcov=sandwich::vcovHAC)
 # basically cov2cor:
