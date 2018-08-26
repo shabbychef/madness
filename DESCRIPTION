@@ -33,6 +33,7 @@ Collate:
     'bind.r'
     'blockrep.r'
     'coerce.r'
+    'data.r'
     'det.r'
     'diag.r'
     'eigen.r'
