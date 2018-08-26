@@ -1,0 +1,1184 @@
+\documentclass[10pt,a4paper,english]{article}
+
+% now ignored, I think:
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Asymptotic Distribution of the Markowitz Portfolio}
+%\VignetteKeyword{Finance}
+%\VignetteKeyword{Markowitz}
+%\VignettePackage{MarkowitzR}
+
+% front matter%FOLDUP
+\usepackage[hyphens]{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+% for therefore
+\usepackage{amssymb}
+% for theorems?
+\usepackage{amsthm}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{caution}{Caution}
+\newtheorem*{note}{Note}
+
+% see http://tex.stackexchange.com/a/3034/2530
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{hyperref}
+\usepackage[square,numbers]{natbib}
+%\usepackage[authoryear]{natbib}
+%\usepackage[iso]{datetime}
+%\usepackage{datetime}
+
+%%http://choorucode.com/2010/05/05/how-to-add-draft-watermark-in-latex/
+%\usepackage{draftwatermark}
+%% V1 sent to Mortada.
+%% V2 on paper to JHZD.
+%% V3 sent to s.lee@BR 140826
+%\providecommand{\versnum}{V4}
+%\SetWatermarkText{DRAFT \versnum}
+%\SetWatermarkLightness{0.87}
+%\SetWatermarkScale{4.5}
+
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%\chead{}
+%\rhead{}
+%\lhead{}
+%\rhead{\sc draft \versnum; do not distribute}
+%\rfoot{}
+
+%compactitem and such:
+\usepackage[newitem,newenum,increaseonly]{paralist}
+
+\makeatletter
+\makeatother
+
+%\input{sr_defs.tex}
+\usepackage[notheorems]{SharpeR}
+
+\providecommand{\sideWarning}[1][0.5]{\marginpar{\hfill\includegraphics[width=#1\marginparwidth]{warning}}}
+
+% knitr setup%FOLDUP
+
+<<'preamble', include=FALSE, warning=FALSE, message=FALSE>>=
+library(knitr)
+
+# set the knitr options ... for everyone!
+# if you unset this, then vignette build bonks. oh, joy.
+#opts_knit$set(progress=TRUE)
+opts_knit$set(eval.after='fig.cap')
+# for a package vignette, you do want to echo.
+# opts_chunk$set(echo=FALSE,warning=FALSE,message=FALSE)
+opts_chunk$set(warning=FALSE,message=FALSE)
+#opts_chunk$set(results="asis")
+opts_chunk$set(cache=TRUE,cache.path="cache/rfin2016_")
+
+#opts_chunk$set(fig.path="figure/",dev=c("pdf","cairo_ps"))
+opts_chunk$set(fig.path="figure/rfin2016_",dev=c("pdf"))
+opts_chunk$set(fig.width=5,fig.height=4,dpi=64)
+
+# doing this means that png files are made of figures;
+# the savings is small, and it looks like shit:
+#opts_chunk$set(fig.path="figure/",dev=c("png","pdf","cairo_ps"))
+#opts_chunk$set(fig.width=4,fig.height=4)
+# for figures? this is sweave-specific?
+#opts_knit$set(eps=TRUE)
+
+# this would be for figures:
+#opts_chunk$set(out.width='.8\\textwidth')
+# for text wrapping:
+options(width=64,digits=2)
+opts_chunk$set(size="small")
+opts_chunk$set(tidy=TRUE,tidy.opts=list(width.cutoff=50,keep.blank.line=TRUE))
+
+compile.time <- Sys.time()
+
+# from the environment
+
+# only recompute if FORCE_RECOMPUTE=True w/out case match.
+FORCE_RECOMPUTE <- 
+	(toupper(Sys.getenv('FORCE_RECOMPUTE',unset='False')) == "TRUE")
+
+# compiler flags!
+
+# not used yet
+LONG.FORM <- FALSE
+
+mc.resolution <- ifelse(LONG.FORM,1000,200)
+mc.resolution <- max(mc.resolution,100)
+
+library(quantmod)
+options("getSymbols.warning4.0"=FALSE)
+
+library(SharpeR)
+library(madness)
+
+library(curl)
+library(dplyr)
+library(lubridate)
+
+gen_norm <- rnorm
+lseq <- function(from,to,length.out) { 
+	exp(seq(log(from),log(to),length.out = length.out))
+}
+
+ipdf <- data.frame(installed.packages(),stringsAsFactors=FALSE) 
+madness_version <- ipdf[ipdf$Package=='madness','Version']
+@
+%UNFOLD
+    
+% SYMPY preamble%FOLDUP
+    
+    %\usepackage{graphicx} % Used to insert images
+    %\usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{color} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    %\usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    %\usepackage[utf8]{inputenc} % Allow utf-8 characters in the tex document
+    %\usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+		\usepackage{fancyvrb} % verbatim replacement that allows latex
+    %\usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    %\usepackage{longtable} % longtable support required by pandoc >1.10
+    
+
+    
+    
+    \definecolor{orange}{cmyk}{0,0.4,0.8,0.2}
+    \definecolor{darkorange}{rgb}{.71,0.21,0.01}
+    \definecolor{darkgreen}{rgb}{.12,.54,.11}
+    \definecolor{myteal}{rgb}{.26, .44, .56}
+    \definecolor{gray}{gray}{0.45}
+    \definecolor{lightgray}{gray}{.95}
+    \definecolor{mediumgray}{gray}{.8}
+    \definecolor{inputbackground}{rgb}{.95, .95, .85}
+    \definecolor{outputbackground}{rgb}{.95, .95, .95}
+    \definecolor{traceback}{rgb}{1, .95, .95}
+    % ansi colors
+    \definecolor{red}{rgb}{.6,0,0}
+    \definecolor{green}{rgb}{0,.65,0}
+    \definecolor{brown}{rgb}{0.6,0.6,0}
+    \definecolor{blue}{rgb}{0,.145,.698}
+    \definecolor{purple}{rgb}{.698,.145,.698}
+    \definecolor{cyan}{rgb}{0,.698,.698}
+    \definecolor{lightgray}{gray}{0.5}
+    
+    % bright ansi colors
+    \definecolor{darkgray}{gray}{0.25}
+    \definecolor{lightred}{rgb}{1.0,0.39,0.28}
+    \definecolor{lightgreen}{rgb}{0.48,0.99,0.0}
+    \definecolor{lightblue}{rgb}{0.53,0.81,0.92}
+    \definecolor{lightpurple}{rgb}{0.87,0.63,0.87}
+    \definecolor{lightcyan}{rgb}{0.5,1.0,0.83}
+    
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    
+    %\DefineShortVerb[commandchars=\\\{\}]{\|}
+    %\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    %% Add ',fontsize=\small' for more characters per line
+    %\newenvironment{Shaded}{}{}
+    %\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    %\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    %\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    %\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    %\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    %\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    %\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    %\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    %\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    %\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    %\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    %\newcommand{\RegionMarkerTok}[1]{{#1}}
+    %\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    %\newcommand{\NormalTok}[1]{{#1}}
+    
+    %% Define a nice break command that doesn't care if a line doesn't already
+    %% exist.
+    %\def\br{\hspace*{\fill} \\* }
+    %% Math Jax compatability definitions
+    %\def\gt{>}
+    %\def\lt{<}
+    
+
+    %% Pygments definitions
+    
+%\makeatletter
+%\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    %\let\PY@ul=\relax \let\PY@tc=\relax%
+    %\let\PY@bc=\relax \let\PY@ff=\relax}
+%\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+%\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    %\PY@tok{#1}\expandafter\PY@toks\fi}
+%\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    %\PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+%\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+%\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+%\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+%\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+%\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+%\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+%\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+%\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+%\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+%\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+%\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+%\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+%\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+%\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+%\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+%\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+%\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+%\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+%\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+%\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+%\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+%\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+%\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+%\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+%\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+%\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+%\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+%\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+%\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+%\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+%\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+%\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+%\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+%\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+%\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+%\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+%\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+%\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+%\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+%\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+%\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+%\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+%\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+%\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+%\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+%\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+%\def\PYZbs{\char`\\}
+%\def\PYZus{\char`\_}
+%\def\PYZob{\char`\{}
+%\def\PYZcb{\char`\}}
+%\def\PYZca{\char`\^}
+%\def\PYZam{\char`\&}
+%\def\PYZlt{\char`\<}
+%\def\PYZgt{\char`\>}
+%\def\PYZsh{\char`\#}
+%\def\PYZpc{\char`\%}
+%\def\PYZdl{\char`\$}
+%\def\PYZhy{\char`\-}
+%\def\PYZsq{\char`\'}
+%\def\PYZdq{\char`\"}
+%\def\PYZti{\char`\~}
+%% for compatibility with earlier versions
+%\def\PYZat{@}
+%\def\PYZlb{[}
+%\def\PYZrb{]}
+%\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=blue,
+      linkcolor=darkorange,
+      citecolor=darkgreen,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    %\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    %UNFOLD
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% commands specific to this paper:%FOLDUP
+\newcommand{\madnesspack}{\CRANpkg{madness}\xspace}
+\newcommand{\madness}{\Robject{madness}\xspace}
+\newcommand{\madobj}{\Robject{madness}\xspace}
+
+\newcommand{\feetv}[1][]{\vectUL{f}{}{#1}}
+\newcommand{\feetm}[1][]{\mtxUL{F}{}{#1}}
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% document incantations%FOLDUP
+\begin{document}
+
+%\title{Portfolio \txtCR bounds}
+%\subtitle{Why bad things happen to good quants}
+\title{Madness: a package for Multivariate Automatic Differentiation}
+\author{Steven E. Pav \thanks{\email{shabbychef@gmail.com}}}
+%\date{\today, \currenttime}
+
+\maketitle
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}%FOLDUP
+The \madnesspack package provides a class for automatic differentiation of 
+`multivariate' operations via forward accumulation. By `multivariate,'
+we mean the class computes the derivative of a vector or matrix or
+multidimensional array (or scalar) with respect to a scalar, vector, matrix,
+or multidimensional array. The primary intended use of this class is to support
+the multivariate delta method for performing inference on multidimensional
+quantities. Another use case is the automatic computation of the gradient
+in parameter optimization (\eg in the computation of an MLE). Examples
+of the use of this package are given in the realm of quantitative
+finance.
+\end{abstract}%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}%FOLDUP
+
+The \madnesspack package \cite{madnessmadness-Manual} provides the ability to
+automatically compute and accumulate the derivative of numerical quantities
+on concrete data via 
+forward accumulation. \cite{rall1981automatic,griewank2008evaluating} It can
+compute the derivatives of multivariate functions--those producing multivariate
+output--with respect to a multivarite independent variable. While the
+derivatives are essentially computed symbolically, they are applied immediately
+to concrete data. Unlike previous attempts at automatic differentiation in
+\Rlang, \madness takes a `high level' approach.  \cite{tada_package,radx_package}
+That is, rather than provide methods for computing the derivatives of a few
+basic operators like sum, product, exponent and some trigonometrics, which
+would be applied at the lowest level of more complicated functions, the 
+eponymous \madobj class supports functions like the Cholesky factor, 
+the matrix square root, matrix inversion, computing eigenvalues
+and so on. Because many of these linear algebra operations are typically computed at 
+the lowest level in C code, a `low level' approach which infects basic
+operations like sum and product could not be easily applied.
+
+The target application is the multivariate delta method. Informally, the
+multivariate delta method claims that a function commutes with a consistent
+estimator of some population quantity, while the covariance gets `wrapped' with
+the derivative of the applied function. That is, if $\beta$ is some population
+quantity, and $B$ is some consistent estimator of $\beta$ with
+$$
+\sqrt{\ssiz}\wrapParens{B - \beta} \xrightarrow{D} \normlaw{\vzero,\Omega},
+$$
+based on $\ssiz$ independent observations, and $\funcit{f}{\cdot}$ is some function
+which is continuous and non-zero at $\beta$, then
+$$
+\sqrt{\ssiz}\wrapParens{\funcit{f}{B} - \funcit{f}{\beta}} \xrightarrow{D}
+\normlaw{\vzero,\evalat{\qform{\Omega}{\dbyd{\funcit{f}{x}}{x}}}{x=\beta}}.
+$$
+Practically speaking, this means that if you can compute a consistent estimator
+(\eg by taking a simple mean and relying on the central limit theorem),
+\emph{and you can compute derivatives}, you can estimate the
+variance-covariance of some really weird estimators. The \madness package
+aims to compute those derivatives for you.
+% need ref for multivariate delta method.
+
+\emph{Nota bene} The \madnesspack package is in a state of flux. This 
+document describes version \Sexpr{madness_version} of the package, but
+should be applicable for more recent versions.
+
+\nocite{magnus1999matrix}
+
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Basic usage}%FOLDUP
+
+The \madobj class is an \Robject{S4} class with the following slots:
+\begin{compactitem}
+\item The dependent variable, \Robject{val}, a multidimensional numeric.
+\item The derivative of the dependent variable with respect to some implicit
+independent variable, \Robject{dvdx}, a matrix. The matrix is stored in 
+`numerator layout,' where the derivative of a scalar with respect to a 
+vector is a \emph{row} vector. This is inconsistent with traditional 
+representation of a gradient as a column, but notationally more convenient.
+\item Optionally the `tag' of the value, \Robject{vtag} is stored. This
+keeps track of the operations applied to the value, and is useful for
+debugging.
+\item Optionally the `tag' of the independent variable, \Robject{xtag} is
+stored. While this tag is optional, it is important to note that two 
+\madobj objects with \emph{different} \Robject{xtag} values cannot be used 
+in the same computation. For example, attempting to add them results in an
+error, since they are considered to track the derivatives with respect to
+different independent variables.
+\item Optionally the variance-covariance of the independent variable is stored
+in \Robject{varx}. This is convenient for the multivariate delta method. One
+can call the \Rfunction{vcov} method on a \madobj object with a non-null
+\Robject{varx}, and the delta method will be applied.
+\end{compactitem}
+
+\subsection{Object construction}
+
+One can get data into a \madobj object by calling the \Rfunction{madness}
+function. The derivative \Robject{dvdx} will default to the identity matrix.
+That is, the constructor assumes that the dependent variable \emph{is} the
+independent variable. The constructor also guesses the tags for the independent
+and dependent variables by the name of the input variable. The \Rfunction{show}
+method shows a \madobj object, just showing the head of the value and
+derivative:
+
+<<'demo_1',echo=TRUE,cache=TRUE>>=
+require(madness)
+set.seed(1234)
+X_NAMED <- array(rnorm(3),dim=c(3,1))
+Xmad <- madness(X_NAMED)
+show(Xmad)
+@
+
+One can get the value, the derivative, tags, and so on with eponymous getter
+methods, \Rfunction{val}, \Rfunction{dvdx}, \Rfunction{xtag}, \Rfunction{vtag},
+\Rfunction{varx}:
+
+<<'demo_1more',echo=TRUE,cache=TRUE>>=
+show(val(Xmad))
+show(dvdx(Xmad))
+@
+
+One can also construct a \madobj object via the \Rfunction{as.madness} function
+which calls the \Rfunction{coef} method and the \Rfunction{vcov} method on the
+input. So, for example, one can easily convert an object of class
+\Rfunction{lm} to a \madobj:
+
+<<'demo_convert',echo=TRUE,cache=TRUE>>=
+set.seed(456)
+a_df <- data.frame(x=rnorm(1000),y=runif(1000),z=runif(1000))
+a_df$v <- rowSums(a_df) + rnorm(nrow(a_df))
+beta <- lm(v ~ x + y + z,data=a_df)
+bmad <- as.madness(beta,vtag='beta')
+show(bmad)
+@
+
+There are also two functions which construct a \madobj object from data: 
+\begin{compactitem}
+\item \Rfunction{twomoments}, which computes the sample mean and covariance
+of \ssiz independent observations of a \nlatf vector given in a 
+\bby{\ssiz}{\nlatf} matrix.
+\item \Rfunction{theta}, which computes the uncentered second moment matrix
+of \ssiz independent observations of a \nlatf vector given in a 
+\bby{\ssiz}{\nlatf} matrix.
+\end{compactitem}
+Both methods allow one to feed in a more `exotic' variance-covariance estimator
+than the default \Rfunction{stats::vcov}. More importantly, both methods
+properly take into account the symmetry of the output. If one blindly stuffed a 
+\eg covariance matrix into a \madobj object, one could easily overestimate the
+variance of ones estimate by effectively ignoring that any estimate has to be
+symmetric, and thus diagonal-mirrored elements do not vary independently.
+
+<<'demo_theta',echo=TRUE,cache=TRUE>>=
+set.seed(789)
+X <- matrix(rnorm(1000*3),ncol=3)
+Xmad <- theta(X)
+show(Xmad)
+
+# more 'exotic' variance-covariance:
+require(sandwich)
+set.seed(1111)
+X <- matrix(rnorm(100*2),ncol=2)
+twom <- twomoments(X,vcov=sandwich::vcovHAC)
+show(twom)
+@
+
+\subsection{Methods}
+
+Obviously, to be of maximal use, the \madobj class should support any
+method a reasonable user throws at it. Setting aside the definition of
+`reasonable,' many methods have been implemented for the \madobj class:
+unary minus; 
+element-wise binary sum, product, difference, ratio, power; 
+matrix product and Kronecker product; 
+accumulating sum and product;
+element-wise unary exponentiation, logarithm, and trigonometrics; 
+\Rfunction{colSums}, \Rfunction{rowSums}, \Rfunction{colMeans}, \Rfunction{rowMeans}; 
+matrix trace, determinant, matrix inverse, \Rfunction{solve}; 
+Cholesky factor, symmetric square root, and \Rfunction{eigen};
+matrix norms; 
+\Rfunction{outer} with a limited set of functions; 
+reshape operations; 
+extracting lower, upper triangle, or diagonal;
+\Rfunction{cbind}, \Rfunction{rbind} and concatenation; 
+subselecting elements. 
+
+Since not every conceivable function can be implemented, there is a 
+method, \Rfunction{numderiv} which approximates derivatives numerically, 
+producing a \madobj object. While symbolically computed derivatives are 
+typically preferred, numerical approximations are preferred to an unusable
+half-solution. Indeed, the numerical approximations are used in the unit tests
+to ensure the derivatives are correctly computed. Moreover, the goal is to
+simplify the computation and use of derivatives, which is not aided by a
+dogmatic adherence to symbolic derivation.
+
+Some example computations showing methods performed on \madobj objects:
+
+<<'demo_2',echo=TRUE,cache=TRUE>>=
+set.seed(2223)
+X <- matrix(runif(5*3),ncol=3)
+Y <- matrix(rnorm(length(X)),ncol=ncol(X))
+Xmad <- madness(X,xtag='v')
+Ymad <- madness(Y,xtag='v')
+
+Zmad <- Xmad + Ymad
+# hadamard product:
+Zmad <- Xmad * Ymad
+# matrix product:
+Zmad <- t(Xmad) %*% Ymad
+# equivalently
+Zmad <- crossprod(Xmad,Ymad)
+
+# can also interact with a scalar:
+Zmad <- Xmad + Y
+Zmad <- t(Xmad) %*% Y
+# and so on.
+
+# not sure _why_ you want to do these, but they can be done:
+foo <- Xmad ^ Ymad
+foo <- log(Xmad)
+foo <- outer(Xmad,Y,'+')
+
+# some sums and such:
+cboth <- c(colSums(Xmad),colSums(Ymad))
+xsum <- sum(Xmad)
+
+# square matrix operations:
+Zmad <- crossprod(Xmad,Ymad)
+foo <- matrix.trace(Zmad)
+foo <- det(Zmad)
+invZ <- solve(Zmad)
+invZ <- solve(Zmad,crossprod(Y,Y))
+
+# and so on...
+
+@
+
+%require(madness)
+
+%# the 'fit' is the Frobenius norm of Y - L*R
+%# with a penalty for negative R.
+%compute_fit <- function(R,L,Y) {
+	%Rmad <- madness(R)
+	%Err <- Y - L %*% Rmad
+	%penalty <- sum(exp(-0.1 * Rmad))
+	%fit <- norm(Err,'f') + penalty
+%}
+
+%set.seed(1234)
+%R <- array(runif(5*20),dim=c(5,20))
+%L <- array(runif(1000*5),dim=c(1000,5))
+%Y <- array(runif(1000*20),dim=c(1000,20))
+%ftv <- compute_fit(R,L,Y)
+%show(ftv)
+%show(val(ftv))
+%show(dvdx(ftv))
+
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Examples}%FOLDUP
+
+We further illustrate the use of the \madobj class with real examples.
+
+\subsection{The \txtSR}%FOLDUP
+
+<<'quandl_data',echo=FALSE,cache=TRUE>>=
+load('weeklyret.RData')
+@
+
+The \txtSR is arguably the most popular metric for comparing the 
+historical (or backtested) performance of assets. It is, however, a sample
+statistic, and represents a noisy estimate of some population parameter, which
+we will call the \emph{\txtSNR.} The asymptotic standard error of the \txtSR was given by 
+Johnson and Welch, Jobson and Korkie, 
+and others.  \cite{Johnson:1940,jobsonkorkie1981,lo2002} This statistic, and
+its approximate standard error, can easily be computed with a \madobj object,
+here applied to the Fama-French 3 factors weekly returns.
+\cite{Fama_French_1992} The data were downloaded from Quandl, and
+represent \Sexpr{nrow(ffret)} weeks of data, from 
+\Sexpr{ffret[1,]$Date} to 
+\Sexpr{ffret[nrow(ffret),]$Date}. \cite{Quandl}
+
+<<'sr_demo_1',echo=TRUE,cache=TRUE>>=
+ff3 <- ffret[,c('Mkt.RF','SMB','HML')]
+# compute first and second moments:
+# (beware: this method will not scale to larges numbers of assets!)
+two <- twomoments(ff3,diag.only=TRUE)
+# annualization factor:
+ope <- 52
+srs <- sqrt(ope) * two$mu / sqrt(two$sigmasq)
+
+show(val(srs))
+show(vcov(srs))
+
+# for comparison:
+library(SharpeR)
+show(sr_vcov(as.matrix(ff3),ope=ope))
+@
+
+In fact, here we have illustrated the computation of the \txtSR of not a single
+asset, but of three assets. We can perform tests of equality of the \txtSNR
+of different assets. \cite{Leung2008,Wright2014}
+
+<<'sr_demo_2',echo=TRUE,cache=TRUE>>=
+# test whether SMB has same signal-noise as HML:
+testv <- t(srs) %*% array(c(0,-1,1),dim=c(3,1))
+# now the Wald statistic:
+wald <- as.numeric(val(testv)) / sqrt(diag(vcov(testv))) 
+show(wald)
+@
+
+Here we demonstrate the computation of the Wald statistic: a quantity of
+interest, typically assumed to be zero under the null hypothesis, divided by
+its approximate standard error. In this case the Wald statistic is nowhere near
+the `magical' value of 2, and we have little reason to doubt the null
+hypothesis that \StockTicker{SMB} and \StockTicker{HML} have the same \txtSNR.
+
+\subsubsection{Fighting overfit of the \txtSR}
+
+The following recipe for quantitative strategy development is widely followed
+in industry:
+\begin{compactenum}
+\item Write a piece of code which converts historical data to predicted returns
+or target portfolio at point in time.
+\item Backtest the code with all available historical data.
+\item If the \txtSR of the backtested returns is not satisfactory, 
+add more features to the trading strategy code, and repeat the backtest cycle.
+\item When the backtested \txtSR is high enough, productionalize the model.
+\end{compactenum}
+
+When presented in this way, one suspects such a practice would yield
+unsatisfactory results\footnote{Actually, this depends on the background rate
+of profitable trading strategies. If one could randomly stumble upon 
+strategies with high \txtSNR, this recipe might be fruitful. This is not
+commonly experienced, however.}. Numerous tests have been devised to fight this
+kind of `data-snooping' bias.  \cite{White:2000,Hsu2010471,Hansen:2005} 
+
+Here we develop another approach to overfitting which models \txtSNR in terms
+of the various attributes of the trading strategy being tested. Formally,
+suppose that one records \nattf `features' about each strategy which has been
+backtested. Let \feetv[i] be the vector of features pertaining to the \kth{i}
+strategy, for $i=1,2,\ldots,\nstrat$. For example, suppose one is testing a
+moving average crossover strategy. The features vector might be the lengths of
+the two averaging windows. More elaborate strategies might have long feature
+vectors, with information about lookback windows for features, which features
+are included, how the predictive model was constructed, the form of the
+covariance estimator, what instruments are hedged out, how portfolio
+optimization is performed, and so on.
+
+Letting \psnr[i] be the \txtSNR of this strategy, the simplest linear model
+posits that $\psnr[i] = \trAB{\feetv[i]}{\vect{\beta}}.$ When testing this
+model, one should take care to express the features in such a way that would
+allow arbitrarily high \txtSNR by extrapolating away from the tested feature
+set. This may require some imagination.
+
+<<'overfit_0',echo=FALSE,cache=TRUE>>=
+n_features <- 25
+n_backtests <- 400
+n_days <- 253 * 7
+true_beta <- c(c(0.20,-0.10),rep(0,n_features-2))
+set.seed(2356)
+F_matrix <- matrix(runif(n_features*n_backtests),ncol=n_backtests)
+# normalize:
+F_matrix <- t(t(F_matrix) / sqrt(colSums(F_matrix^2)))
+# latent returns, independent, identical variance, different means.
+sigma <- 0.013
+LRets <- matrix(rnorm(n_features*n_days,sd=sigma),nrow=n_days)
+LRets <- t(t(LRets) + true_beta * sigma)
+# manifest returns:
+Rets <- LRets %*% F_matrix
+# suppose only a subset of the features are actually measured though:
+n_latent_feat <- 5
+F_mat <- F_matrix[1:n_latent_feat,]
+sub_beta <- true_beta[1:nrow(F_mat)]
+@
+
+One collects the backtested returns on the \nstrat strategies, then computes
+the \txtSR of these, along with the variance-covariance matrix of these.
+One can then use linear regression to estimate $\vect{\beta}$. By performing
+this calculation with a \madobj object, one can compute the marginal Wald
+statistics associated with each element of the feature vector. Here we present
+a simple example using fake backtested returns. First imagine some 
+process (hidden here) generates the returns on \Sexpr{n_days} of data
+over \Sexpr{n_backtests}. Moreover, the returns are some linear combination of
+\Sexpr{n_features} latent returns. The loadings on \Sexpr{n_latent_feat} of
+these are observed as the features of the different strategies, including all
+those with non-zero \txtSNR. The true \vect{\beta} in this case is
+\asvec{\Sexpr{as.character(sub_beta)}}. Then proceed as follows:
+
+<<'overfit_1',echo=TRUE,cache=TRUE>>=
+show(dim(Rets))
+show(dim(F_mat))
+# use madness.
+two <- twomoments(Rets,diag.only=TRUE)
+srs <- two$mu / sqrt(two$sigmasq)
+
+# the normal equations method. This is typically numerically unstable and
+# not recommended, but I have not implemented QR factorization yet...
+betahat <- solve(tcrossprod(F_mat,F_mat),F_mat %*% srs)
+show(val(t(betahat)))
+marginal_wald <- val(betahat) /sqrt(diag(vcov(betahat)))
+show(t(marginal_wald))
+@
+
+%In this example, we have expressed the returns as the linear combination of
+%\Sexpr{n_features} different returns streams, but only exposed the values of
+%\Sexpr{5} of these features to the strawman quant, including the two which
+%correspond to non-zero expected returns.
+In this case, with \Sexpr{n_backtests} backtests of 
+\Sexpr{n_days} days of returns, the marginal Wald statistics correctly identify
+the first two features as significantly non-zero.
+
+%UNFOLD
+
+\subsection{The \txtFSR}%FOLDUP
+
+Loosely, the \emph{information ratio} is the \txtSR of returns
+\emph{in excess of some non-constant benchmark}. This assumes that
+the proper `beta' of the investment with respect to the benchmark
+is exactly one. A more pessimistic model of the returns of an asset is
+essentially that of Arbitrage Pricing Theory, which expresses the
+returns of an asset as the linear combination of the returns of some common
+risk factors. For the purposes of estimating whether an investment strategy
+has any idiosyncratic `alpha', this is equivalent to regressing the
+historical returns against the historical returns of the risk factors, and
+assessing whether the intercept term is significantly non-zero.
+
+Rather than perform a hypothesis test, we can perform inference on the
+intercept term divided by the volatility, here given the unfortunate name of 
+\emph{\txtFSNR}. The model is as follows:
+\begin{equation}
+\reti[t] = \pregco[0] 1 + \sum_i^{\nattf - 1} \pregco[i] \retk[i,t] + \perr[t],
+\label{eqn:factormodel}
+\end{equation}
+where \reti[t] is the return of the asset at time $t$,
+$\retk[i,t]$ is the value of some \kth{i} `factor' at time
+$t$, and the innovations, \perr, are assumed to be zero mean, and
+have standard deviation \psig. Here we have forced the zeroth factor
+to be the constant one, $\retk[0,t] = 1$.
+\nocite{Ross_APT_1976} 
+
+Given \ssiz observations, let \mretk be the \bby{\ssiz}{\nattf} matrix 
+whose rows are the observations of the factors (including a column that
+is the constant 1), and let \vreti be the \ssiz length column vector
+of returns; then the multiple linear regression estimates are
+\begin{equation}
+\label{eqn:MLS_def}
+\sregvec\defeq\minv{\wrapParens{\gram{\mretk}}}\trAB{\mretk}{\vreti},
+\qquad
+\ssig\defeq\sqrt{\frac{\gram{\wrapParens{\vreti -
+\mretk\sregvec}}}{\ssiz-\nattf}}.
+\end{equation}
+We can then define a \emph{\txtFSR} as follows: let \convec be
+some non-zero vector, and let \rfr be some risk-free, or disastrous,
+rate of return. Then define
+\begin{equation}
+\label{eqn:gensr_def}
+\ssrg \defeq \frac{\trAB{\sregvec}{\convec} -
+\rfr}{\ssig}.
+\end{equation}
+
+The \txtFSNR appears in a transform of the `theta' matrix which 
+encompasses both first and second moments of a 
+distribution.  \cite{pav2013markowitz} Let 
+$$
+\avreti[i] \defeq \asvec{\reti[i],\tr{\vretk[i]}}.
+$$
+Define the second moment of this as
+$$
+\pvsm \defeq \E{\ogram{\avreti}}.
+$$
+
+First note that
+\begin{equation}
+\label{eqn:aug_secmom_isit}
+\pvsm = \twobytwo{\psigsq +
+\qform{\pfacsig}{\pregco}}{\trAB{\pregco}{\pfacsig}}{\pfacsig\pregco}{\pfacsig},
+\end{equation}
+where \pfacsig is the uncentered second moment of $\vretk$.
+Simple matrix multiplication 
+confirms that the inverse of \pvsm is 
+\begin{equation}
+\label{eqn:inv_aug_secmom_isit}
+\minv{\pvsm} = \twobytwo{\psig^{-2}}{-\trAB{\pregco}\psig^{-2}}{%
+-\pregco\psig^{-2}}{\minv{\pfacsig} + \psig^{-2}\ogram{\pregco}},
+\end{equation}
+and the Cholesky factor of that inverse is
+\begin{equation}
+\label{eqn:ichol_aug_secmom_isit}
+\ichol{\pvsm} = \twobytwo{\psig^{-1}}{0}{%
+-\pregco\psig^{-1}}{\ichol{\pfacsig}}.
+\end{equation}
+The \txtFSNR (\cf \eqnref{gensr_def}) can thus be expressed as
+\begin{equation}
+\label{eqn:gensnr_augform}
+\psnrg = \frac{\trAB{\pregvec}{\convec} - \rfr}{\psig} = 
+- {\asrowvec{\rfr,\tr{\convec}}\ichol{\pvsm}\basev[1]}.
+\end{equation}
+Up to scaling by some factor of \ssiz and \nattf, which becomes
+immaterial for large \ssiz, the sample \txtFSR takes
+the same form in the sample analogue.
+%\begin{equation*}
+%- \trace{\basev[1]\asrowvec{\rfr,\tr{\convec}}\ichol{\svsm}}
+%\to \ssrg.
+%\end{equation*}
+
+We demonstrate this computation by grabbing the weekly simple returns of
+\StockTicker{AAPL} and \StockTicker{IBM}, then attributing them to the Fama French three factor weekly returns.
+We compute the \txtFSR to test for idiosyncratic alpha by computing the
+intercept term divided by the volatility. Because we estimate the 
+variance-covariance of the combined vector of returns, we can estimate the 
+variance-covariance of our estimates of the \txtFSNRs together. Again we stress
+that the hard work is in gathering the data together, putting them in the right
+form, and sanely computing the estimate. The \madobj class automatically computes the
+derivatives and the marginal Wald statistics are trivial to compute. 
+Here we apply this analysis to the weekly returns of
+\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)-1]}} and of
+\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)]}}, collected over
+\Sexpr{nrow(allweekly)} weeks from 
+\Sexpr{allweekly[1,]$Date} to 
+\Sexpr{allweekly[nrow(allweekly),]$Date}, as downloaded from Quandl. \cite{Quandl}
+We will perform attribution against the Fama-French factor weekly returns
+considered earlier. The tail of the data looks as follows:
+
+<<'fsr_show',echo=TRUE,cache=TRUE>>=
+tail(allweekly,6) %>% select(-RF) %>% kable(row.names=FALSE)
+@
+
+\hfill\break
+We now perform the attributions and test them for significance:
+<<'fsr_demo_1',echo=TRUE,cache=TRUE>>=
+tht <- theta(allweekly %>% select(AAPL,IBM,Mkt.RF,SMB,HML) %>% mutate(one=1.0),xtag='stocks')
+
+thinv_aapl <- chol(solve(tht[c(1,3,4,5,6),c(1,3,4,5,6)]))
+thinv_ibm <- chol(solve(tht[c(2,3,4,5,6),c(2,3,4,5,6)]))
+r0 <- 1e-4
+v <- c(0,0,0,1)
+r0v <- array(c(r0,v),dim=c(5,1))
+
+exfacsr_aapl <- -(t(r0v) %*% t(thinv_aapl))[1,1] 
+exfacsr_ibm <- -(t(r0v) %*% t(thinv_ibm))[1,1] 
+exfacsr <- c(exfacsr_aapl,exfacsr_ibm)
+
+show(cov2cor(vcov(exfacsr)))
+
+waldboth <- val(exfacsr) / sqrt(diag(vcov(exfacsr)))
+show(waldboth)
+@
+
+Here we conclude that the \txtFSNR of \StockTicker{AAPL} is greater than the hurdle rate of 1
+bp per week, but that of \StockTicker{IBM} is not. The correlation of the errors of our
+estimates is estimated to be fairly small. We can also perform a paired test
+for whether the \txtFSNR of \StockTicker{AAPL} is greater than that of
+\StockTicker{IBM} by taking the
+difference in our estimates, and trivially computing the Wald statistic. In
+this case, the evidence does not strongly support that \StockTicker{AAPL} has higher
+idiosyncratic alpha than \StockTicker{IBM}:
+
+<<'fsr_demo_2',echo=TRUE,cache=TRUE>>=
+isbigger <- array(c(1,-1),dim=c(1,2)) %*% exfacsr 
+show(val(isbigger) / sqrt(diag(vcov(isbigger))))
+@
+%UNFOLD
+
+\subsection{The \txtMP}%FOLDUP
+
+The Markowitz portfolio is the unconstrained portfolio that maximizes the
+\txtSNR. For a vector of returns of \nlatf assets, if the unconditional
+expected return is \pvmu, and the covariance of returns is \pvsig, then
+the \txtMP is
+\begin{equation}
+\pportwopt \defeq \lambda \minvAB{\pvsig}{\pvmu},
+\end{equation}
+where $\lambda$ is some positive constant chosen to respect a cap on 
+portfolio volatility (or leverage).
+
+Since the population parameters \pvmu and \pvsig are unknown, they must be
+estimated from the data. The noisy estimates may be unreliable, and one may
+wish to check the standard error around the portfolio weights. This can be
+found under assumptions of normality, or by using the `theta' matrix, but
+computing directly via a \madobj object.  
+\cite{BrittenJones1999,pav2013markowitz}
+Here we compute the \txtMP on the 
+\Sexpr{nrow(allweekly)} weeks of weekly returns, from
+\Sexpr{allweekly[1,]$Date} to 
+\Sexpr{allweekly[nrow(allweekly),]$Date}, of 
+the Fama-French three factor data and of
+\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)-1]}} and 
+\StockTicker{\Sexpr{colnames(allweekly)[ncol(allweekly)]}} discussed above\footnote{It should be
+recognized that one can \emph{not} trade on the Fama French factors directly,
+that there is a selection bias in our choice of stocks, and so on. This is just
+an example.}.
+
+<<'the_mp_1',echo=TRUE,cache=TRUE>>=
+library(sandwich)
+twom <- twomoments(allweekly %>% select(AAPL,IBM,Mkt.RF,SMB,HML),vcov=sandwich::vcovHAC,diag.only=FALSE)
+the_mp <- solve(twom$Sigma,twom$mu)
+show(val(t(the_mp)))
+show(vcov(the_mp))
+# let's normalize to unit gross leverage:
+mp_norm <- outer(the_mp,norm(the_mp,'1'),'/')
+dim(mp_norm) <- dim(the_mp)
+
+show(val(t(mp_norm)))
+show(cov2cor(vcov(mp_norm)))
+@
+
+More elaborate inference on the \txtMP is possible via the `theta' matrix. 
+Computation of theta requires one to choose `features' for prediction of
+returns--either constant one for the unconditional model, or some time varying 
+state variables for the linear conditional expectation model.  \cite{pav2013markowitz}
+Using the \Rfunction{theta} method requires one to bind the features to the
+returns. Here we perform this computation on the two stocks and the Fama French
+weekly returns.
+
+<<'the_mp_2',echo=TRUE,cache=TRUE>>=
+library(sandwich)
+tht <- theta(allweekly %>% mutate(one=1.0) %>% select(one,AAPL,IBM,Mkt.RF,SMB,HML),
+	xtag='all5',vcov=sandwich::vcovHAC)
+@
+
+%We can then perform inference on the \txtMP subject to hedging constraints. 
+%\cite{pav2013markowitz}
+
+Suppose that \pvsm is somehow known to be reduced rank.  We can perform
+inference on the \txtMP by computing the pseudoinverse of \svsm and computing
+the sample \txtMP, performing inference on its elements.  \cite{pav2013markowitz}
+Here we show this calculation assuming that \pvsm is of rank 2. 
+%\cite{Izenman1975248}
+
+<<'the_mp_3',echo=TRUE,cache=TRUE>>=
+rnk <- 2
+ev <- eigen(tht,symmetric=TRUE)
+evals <- ev$values[,1:rnk]
+evecs <- ev$vectors[,1:rnk]
+thtinv <- evecs %*% todiag(evals^-1) %*% t(evecs)
+
+the_mp2 <- - thtinv[2:nrow(thtinv),1]
+show(val(t(the_mp2)))
+show(vcov(the_mp2))
+@
+
+Comparing the \txtMP computed here to the one computed previously, we see that
+the weights for the Fama French factors are much smaller in magnitude, while
+the weight for \StockTicker{AAPL} is relatively unchanged.
+
+%UNFOLD
+
+\subsection{Correlation matrix}%FOLDUP
+
+<<'correlation_show_0',echo=FALSE,cache=TRUE>>=
+ff3 <- ffret[,c('Mkt.RF','SMB','HML')]
+@
+
+We can trivially use the covariance computed by \Rfunction{twomoments} to
+compute a correlation matrix. Here we demonstrate this use on the Fama
+French three factor weekly returns. We compute the Wald statistics
+of the three off-diagonal correlations, finding that the correlation of weekly
+returns between \StockTicker{\Sexpr{colnames(ff3)[1]}} and 
+\StockTicker{\Sexpr{colnames(ff3)[2]}}, and between
+returns between \StockTicker{\Sexpr{colnames(ff3)[1]}} and 
+\StockTicker{\Sexpr{colnames(ff3)[3]}} is likely to be significantly non-zero,
+while the correlation between 
+\StockTicker{\Sexpr{colnames(ff3)[2]}} and 
+\StockTicker{\Sexpr{colnames(ff3)[3]}} is apparently very close to zero:
+
+
+
+<<'correlation_show_1',echo=TRUE,cache=TRUE>>=
+library(sandwich)
+ff3 <- ffret[,c('Mkt.RF','SMB','HML')]
+# compute first and second moments:
+two <- twomoments(ff3,vcov=sandwich::vcovHAC)
+# basically cov2cor:
+fcorr <- two$Sigma / tcrossprod(sqrt(diag(two$Sigma)))  
+show(val(fcorr))
+# compute the Wald statistic of the off-diagonal correlations:
+odiag <- vech(fcorr,-1)
+wald <- val(odiag) / sqrt(diag(vcov(odiag)))
+show(wald)
+@
+
+%UNFOLD
+
+\subsection{As an objective function}%FOLDUP
+
+The \madobj class can be of some limited use when writing
+objective functions\footnote{Automatic computation of the Hessian matrix
+would improve this area of functionality, but it is not clear how this
+would interoperate with support for computing derivatives of multivariate-valued 
+functions.}. 
+For this purpose,
+the \Rfunction{to\_objective} method converts a \madobj object representing a
+scalar into a numerical value with a \Robject{gradient} attribute. Consider
+this artificial example of a matrix factorization objective with a penalty
+for highly negative elements:
+
+<<'as_objective_1',echo=TRUE,cache=TRUE>>=
+fitfun <- function(R,L,Y,nu=-0.1) {
+	Rmad <- madness(R)
+	dim(Rmad) <- c(ncol(L),ncol(Y))
+	Err <- Y - L %*% Rmad
+	penalty <- sum(exp(nu * Rmad))
+	fit <- norm(Err,'f') + penalty
+	# convert to an objective:
+	to_objective(fit)
+}
+set.seed(1234)
+L <- array(runif(30*5),dim=c(30,5)) 
+Y <- array(runif(nrow(L)*20),dim=c(nrow(L),20))
+R0 <- array(runif(ncol(L)*ncol(Y)),dim=c(ncol(L),ncol(Y)))
+Rk <- nlm(fitfun, R0, L, Y, iterlim=30)
+
+show(c(fitfun(R0,L,Y)))
+show(c(fitfun(Rk$estimate,L,Y)))
+@
+
+%UNFOLD
+
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Future Directions}%FOLDUP
+
+To make this package more useful for the computation of objective functions,
+the second derivative should also be computed and maintained during
+operations. Moreover, use of higher-order derivatives could also be useful for
+application of the delta method when the sample size is so small that
+estimators are seriously biased.
+It is challenging to add this feature while keeping the
+`high-level' approach to automatic differentiation, since the second derivative
+of matrix-to-matrix operations like the Cholesky factorization are hard to
+code. 
+
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% bibliography%FOLDUP
+%\nocite{markowitz1952portfolio,markowitz1999early,markowitz2012foundations}
+%\bibliographystyle{jss}
+%\bibliographystyle{siam}
+%\bibliographystyle{ieeetr}
+\bibliographystyle{plainnat}
+%\bibliographystyle{acm}
+\bibliography{common,rauto,runauto}
+%\bibliography{AsymptoticMarkowitz}
+<<gen_bibliography,echo=FALSE>>=
+# generate the bibliography#FOLDUP
+#see also
+#http://r.789695.n4.nabble.com/Automating-citations-in-Sweave-td872079.html
+
+FID <- file("rauto.bib", "w")  # open an output file connection
+
+cite.by.name <- function(x){ 
+	res <- toBibtex(citation(x)) 
+	if (is.list(res)) res <- res[[1]] 
+	#2FIX: multiple citations; bleah;
+	tofix <- grep("^@.+",res)
+	fidx <- tofix[1]
+	res[fidx] <- sub("{",paste("{",x,sep=''),res[fidx],fixed=TRUE) 
+
+	if (length(tofix) > 1) {
+		for (fidx in tofix[2:length(tofix)]) {
+			res[fidx] <- sub("{",paste("{",x,"_",fidx,sep=''),res[fidx],fixed=TRUE) 
+		}
+	}
+	cat(res,file = FID, sep = "\n")
+	return(NULL)
+} 
+z <- sapply( .packages(TRUE), function(x) try( cite.by.name(x) ) )
+close(FID)
+#UNFOLD
+@
+%UNFOLD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix%FOLDUP
+
+%UNFOLD
+
+%It is trivial to show that for random variable $\vect{y}$,
+%\E{\gram{\wrapParens{\vect{y} - \vect{z}}}} is minimized by
+%$\vect{z} = \E{\vect{y}}$. Moreover, we have
+%\begin{equation*}
+%\begin{split}
+%\E{\gram{\wrapParens{\vect{y} - \E{\vect{y}}}}} 
+%&= \E{\trace{\gram{\wrapParens{\vect{y} - \E{\vect{y}}}}}},\\
+%&= \trace{\E{\ogram{\wrapParens{\vect{y} - \E{\vect{y}}}}}},\\
+%&= \trace{\VAR{\vect{y}}}.
+%\end{split}
+%\end{equation*}
+%Thus, if we take the expectation
+%of \eqnref{cos_law_form}, we can then bound the left hand
+%side from below by the trace of the variance:
+%\begin{equation}
+%\begin{split}
+%\trace{\VAR{\fnorm{\trchol{\pvsig}\sportwfnc{\mreti}}}} 
+%&\le 2 - 2 \E{\frac{\pql{\sportwfnc{\mreti}}}{\psnropt}},\\
+%&= 2 \wrapParens{1 -
+%\trAB{{\E{\fnorm{\trchol{\pvsig}\sportwfnc{\mreti}}}}}{%
+%\fnorm{\trchol{\pvsig}\pportwopt}}}.
+%\label{eqn:var_bounds}
+%\end{split}
+%\end{equation}
+%By bounding the variance via a \txtCR bound, we can find an
+%upper bound on the expected value of \pql{\sportw}.
+
+%Using the quadratic formula, we have
+%\begin{equation}
+%\cfnc{\gramprskvec} \le \frac{-\ssiz\gramprskvec +
+%\sqrt{\ssiz^2\wrapParens{\gramprskvec}^2 + 2
+%\ssiz\gramprskvec\wrapParens{\nlatf-1}}}{\nlatf - 1}.
+%\end{equation}
+%For $\ssiz\gramprskvec$ large, we have a cancellation of terms.
+%Because the square root function is concave, it is less than its
+%linear approximation about $\ssiz^2\wrapParens{\gramprskvec}^2$. 
+%That is, we have $\sqrt{x + \epsilon} \le \sqrt{x} +
+%\oneby{2\sqrt{x}}\epsilon$.
+%Thus 
+%\begin{equation}
+%\cfnc{\gramprskvec} \le 1. \mbox{oops: 2FIX}
+%\end{equation}
+
+\end{document}
+%for vim modeline: (do not edit)
+% vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=%%s:syn=rnoweb:ft=rnoweb:nu
