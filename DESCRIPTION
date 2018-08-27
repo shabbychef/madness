@@ -5,7 +5,7 @@ Authors@R: c(person(c("Steven", "E."), "Pav",
     email="shabbychef@gmail.com",
     comment = c(ORCID = "0000-0002-4197-6195")))
 Version: 0.2.4
-Date: 2018-08-23
+Date: 2018-08-26
 License: LGPL-3
 Title: Automatic Differentiation of Multivariate Operations
 BugReports: https://github.com/shabbychef/madness/issues
@@ -22,10 +22,15 @@ Imports:
     methods
 Suggests: 
     testthat, 
-    R.rsp,
+    dplyr,
+    tidyr,
+    lubridate,
+    SharpeR,
+    sandwich,
+    formatR,
     knitr
 URL: https://github.com/shabbychef/madness
-VignetteBuilder: R.rsp
+VignetteBuilder: knitr
 Collate: 
     'AllClass.r'
     'utils.r'

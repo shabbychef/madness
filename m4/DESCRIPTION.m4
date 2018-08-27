@@ -26,11 +26,19 @@ Imports:
     methods
 Suggests: 
     testthat, 
-    R.rsp,
+dnl need these for the vignette:
+    dplyr,
+    tidyr,
+    lubridate,
+    SharpeR,
+    sandwich,
+dnl quantmod,
+dnl R.rsp,
+    formatR,
     knitr
 URL: https://github.com/shabbychef/PKG_NAME()
-dnl VignetteBuilder: knitr
-VignetteBuilder: R.rsp
+VignetteBuilder: knitr
+dnl VignetteBuilder: R.rsp
 Collate:
 m4_R_FILES()
 dnl vim:ts=2:sw=2:tw=79:syn=m4:ft=m4:et

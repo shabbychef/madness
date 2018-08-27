@@ -3,4 +3,9 @@ expm
 methods
 testthat
 knitr
-R.rsp
+formatR
+SharpeR
+dplyr
+tidyr
+lubridate
+sandwich

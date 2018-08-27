@@ -30,7 +30,6 @@ LICENSE
 rpkg_make
 libs
 nohup.out
-vignettes
 Rd2.pdf
 fooz
 .Rd2pdf*

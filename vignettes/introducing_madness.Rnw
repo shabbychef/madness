@@ -65,7 +65,1080 @@
 \makeatother
 
 %\input{sr_defs.tex}
-\usepackage[notheorems]{SharpeR}
+%\usepackage[notheorems]{SharpeR}
+
+%FOLDUP
+
+
+% packages%FOLDUP
+\RequirePackage{url}
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{hyperref}
+\RequirePackage{ifthen}
+
+% deal with options to the 'package'. arg.
+% for therefore
+\RequirePackage{amssymb}
+% for theorems?
+\RequirePackage{amsthm}
+
+\RequirePackage{xspace}
+%UNFOLD
+
+\providecommand{\sidenote}[2][{}]{\footnotemark\marginpar[#1]{\footnotesize\thefootnote{}.{} {#2}}}
+
+% macros%FOLDUP
+
+% ack.
+%\providecommand{\figref}[1]{Figure~\ref{fig:#1}}
+\providecommand{\figref}[1]{Figure\nobreakspace\ref{fig:#1}}
+\providecommand{\eqnref}[1]{Equation\nobreakspace\ref{eqn:#1}}
+\providecommand{\secref}[1]{Section\nobreakspace\ref{sec:#1}}
+\providecommand{\subsecref}[1]{Section\nobreakspace\ref{subsec:#1}}
+\providecommand{\tabref}[1]{Table\nobreakspace\ref{tab:#1}}
+\providecommand{\lemmaref}[1]{Lemma\nobreakspace\ref{lemma:#1}}
+\providecommand{\theoremref}[1]{Theorem\nobreakspace\ref{theorem:#1}}
+\providecommand{\definitionref}[1]{Definition\nobreakspace\ref{definition:#1}}
+\providecommand{\corollaryref}[1]{Corollary\nobreakspace\ref{corollary:#1}}
+\providecommand{\conjectureref}[1]{Conjecture\nobreakspace\ref{conjecture:#1}}
+\providecommand{\apxref}[1]{Approximation\nobreakspace\ref{apx:#1}}
+\providecommand{\exampleref}[1]{Example\nobreakspace\ref{example:#1}}
+\providecommand{\exerciseref}[1]{Exercise\nobreakspace\ref{exercise:#1}}
+\providecommand{\chapterref}[1]{Chapter\nobreakspace\ref{chapter:#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% meta meta commands
+% emptyP if 1 is empty give 2 else give 3
+%\providecommand{\mtP}[3]{\ifx\@empty#1\@empty#2\else#3\fi}
+%\def\mtP#1#2#3{\ifx\@empty#1\@empty#2\else#3\fi}
+%\def\mtP#1#2#3{\ifx\@empty\detokenize{#1}\@empty#2\else#3\fi}
+\def\mtP#1#2#3{\if\relax\detokenize{#1}\relax#2\else#3\fi}
+% listmore if 1 is empty give 1 else give `,1'
+%\def\lMr#1{\ifx\@empty#1\@empty\relax\else{,#1}\fi}
+\def\lMr#1{\ifx\@empty\detokenize{#1}\@empty\relax\else{,#1}\fi}
+
+\providecommand{\MATHIT}[1]{\ensuremath{#1}\xspace}
+\providecommand{\neUL}[3]{\mtP{#2}{\mtP{#3}{#1}{{#1}_{#3}}}{\mtP{#3}{{#1}^{#2}}{{#1}^{#2}_{#3}}}}
+\providecommand{\neSUP}[2]{\mtP{#2}{#1}{{{#1}^{#2}}}}
+\providecommand{\neSUB}[2]{\mtP{#2}{#1}{{{#1}_{#2}}}}
+\providecommand{\mathSUB}[2]{\MATHIT{\neSUB{#1}{#2}}}
+
+\providecommand{\wrapParens}[1]{\left(#1\right)}
+\providecommand{\wrapBraces}[1]{\left\{#1\right\}}
+\providecommand{\wrapBracks}[1]{\left[#1\right]}
+
+%\providecommand{\wrapNeParens}[1]{\if\relax\detokenize{#1}\relax\else\wrapParens{#1}\fi}
+
+\providecommand{\wrapNeParens}[1]{\mtP{#1}{}{\wrapParens{#1}}}
+\providecommand{\wrapNeBraces}[1]{\mtP{#1}{}{\wrapBraces{#1}}}
+\providecommand{\wrapNeBracks}[1]{\mtP{#1}{}{\wrapBracks{#1}}}
+
+\providecommand{\abs}[1]{\MATHIT{\left| #1 \right|}}
+\providecommand{\ceil}[1]{\MATHIT{\left\lceil #1 \right\rceil}}
+\providecommand{\floor}[1]{\MATHIT{\left\lfloor #1 \right\rfloor}}
+
+\providecommand{\mathSUB}[2]{\MATHIT{\neSUB{#1}{#2}}}
+\renewcommand{\Pr}[1]{\MATHIT{\operatorname{Pr}\left\{#1\right\}}}
+\providecommand{\vect}[1]{\MATHIT{\boldsymbol{#1}}}
+%\providecommand{\eye}{\MATHIT{I}}
+\providecommand{\Mtx}[1]{\MATHIT{\mathsf{#1}}}
+\providecommand{\MtxUL}[3]{\mathUL{\Mtx{#1}}{#2}{#3}}
+\providecommand{\nePAIR}[2]{#1\lMr{#2}}
+\providecommand{\mathUL}[3]{\MATHIT{\neUL{#1}{#2}{#3}}}
+\providecommand{\mathSUP}[2]{\MATHIT{\neSUP{#1}{#2}}}
+\providecommand{\vectUL}[3]{\mathUL{\vect{#1}}{#2}{#3}}
+\providecommand{\SEPbbb}[1]{\mathbb{#1}}
+\providecommand{\reals}[1]{\MATHIT{\SEPbbb{R}^{#1}}}
+
+\providecommand{\oneby}[1]{\MATHIT{\frac{1}{#1}}}
+
+% yes, I am lazy.
+\providecommand{\txtSR}{Sharpe ratio\xspace}
+\providecommand{\txtSRs}{Sharpe ratios\xspace}
+\providecommand{\txtSNR}{signal-noise ratio\xspace}
+\providecommand{\txtSNRs}{signal-noise ratios\xspace}
+
+\providecommand{\txtFSR}{ex-factor Sharpe ratio\xspace}
+\providecommand{\txtFSNR}{ex-factor signal-noise ratio\xspace}
+\providecommand{\txtFSNRs}{ex-factor signal-noise ratios\xspace}
+
+\providecommand{\txtMwtz}{Markowitz\xspace}
+\providecommand{\txtMP}{Markowitz portfolio\xspace}
+\providecommand{\txtCR}{Cram\'{e}r-Rao\xspace}
+% I have yet to decide:
+\providecommand{\txtLP}{lambda prime\xspace}
+\providecommand{\txtMLP}{multiple \txtLP}
+\providecommand{\txtUPD}{upsilon\xspace}
+
+% abbreviations
+\providecommand{\myabrvc}[1]{\emph{#1},\xspace}
+\providecommand{\myabrv}[1]{\emph{#1}\xspace}
+
+\providecommand{\eg}{\myabrvc{e.g.}}
+\providecommand{\ie}{\myabrvc{i.e.}}
+\providecommand{\nb}{\myabrvc{n.b.}}
+
+\providecommand{\iid}{\myabrv{i.i.d.}}
+\providecommand{\viz}{\myabrv{viz.}}
+\providecommand{\etc}{\myabrv{etc.}}
+\providecommand{\etal}{\myabrv{et al.}}
+\providecommand{\cf}{\myabrv{cf.}}
+\providecommand{\WLOG}{without loss of generality, }
+\providecommand{\cetpar}{\myabrv{ceterus paribus}}
+
+
+\providecommand{\setwo}[2]{\MATHIT{\left\{ #1 \left|\; {#2} \right.\right\}}}
+
+\providecommand{\defeq}{=_{\operatorname{df}}}
+\providecommand{\eqdef}{=:}
+\providecommand{\kth}[1]{\MATHIT{#1^{\text{th}}}}
+
+% convergence limits, etc.
+% convergence in distribution
+\providecommand{\convd}{\MATHIT{\overset{d}{\rightarrow}}}
+% convergence in probability
+\providecommand{\convp}{\MATHIT{\overset{p}{\rightarrow}}}
+% convergence almost surely
+\providecommand{\convas}{\MATHIT{\overset{a.s.}{\rightarrow}}}
+
+
+% utilities%FOLDUP
+% convert something into a function
+\providecommand{\funcitUL}[4]{\MATHIT{\mathUL{#1}{#2}{#3}\wrapNeParens{#4}}}
+\providecommand{\funcitL}[3]{\funcitUL{#1}{}{#2}{#3}}
+\providecommand{\funcit}[2]{\funcitUL{#1}{}{}{#2}}
+%compact fraction;
+\providecommand{\fracc}[2]{\MATHIT{#1 / #2}}
+% with paren wrap
+\providecommand{\fraccp}[2]{\MATHIT{\wrapNeParens{#1}/\wrapNeParens{#2}}}
+%small 'mbox'
+%http://stackoverflow.com/questions/1239786/latex-math-mode-and-mbox-mode
+\providecommand{\smbox}[1]{\mbox{\scriptsize #1}}
+
+%\providecommand{\argmax}{\MATHIT{\mbox{argmax}}}
+\providecommand{\argmax}{\MATHIT{\mathop{\mathrm{argmax}}}}
+\providecommand{\argmin}{\MATHIT{\mathop{\mathrm{argmin}}}}
+
+
+%UNFOLD
+
+% all commands%FOLDUP
+% vector operator
+\providecommand{\vecop}[1]{\funcit{\operatorname{vec}}{#1}}
+%\providecommand{\vec}[1]{\funcit{\mbox{vec}}{#1}}
+\providecommand{\vech}[1]{\funcit{\operatorname{vech}}{#1}}  % Magnus writes as v( )
+\providecommand{\tril}[1]{\funcit{\operatorname{tril}}{#1}}  
+
+\providecommand{\fvec}[1]{\vecop{#1}}
+\providecommand{\fvech}[1]{\vech{#1}}
+\providecommand{\ftril}[1]{\tril{#1}}
+% inverses of these
+\providecommand{\fivec}[1]{\funcitUL{{\operatorname{vec}}}{-1}{}{#1}}
+\providecommand{\fivech}[1]{\funcitUL{{\operatorname{vech}}}{-1}{}{#1}}
+\providecommand{\fitril}[1]{\funcitUL{{\operatorname{tril}}}{-1}{}{#1}}
+
+\providecommand{\Elim}[1][{}]{\MtxUL{L}{}{#1}}
+\providecommand{\Dupp}[1][{}]{\MtxUL{D}{}{#1}}
+\providecommand{\Unun}[1][{-1}]{\MtxUL{U}{}{#1}}
+\providecommand{\Komm}[1][{}]{\MtxUL{K}{}{#1}}
+\providecommand{\kron}{\MATHIT{\otimes}}
+\providecommand{\krov}{\MATHIT{\oslash}}
+
+\providecommand{\qfElim}[1]{\qform{#1}{\Elim}}
+\providecommand{\qoElim}[1]{\qoform{#1}{\Elim}}
+\providecommand{\EXD}[1]{\MATHIT{\Elim {#1} \Dupp}}
+
+
+% binary by: a x b
+\providecommand{\bby}[2]{\MATHIT{{#1}\times{#2}}}
+% k x k 
+\providecommand{\sbby}[1]{\bby{#1}{#1}}
+
+\providecommand{\AkronA}[1]{\MATHIT{{#1} \kron {#1}}}
+\providecommand{\AtkronA}[1]{\MATHIT{\tr{#1} \kron {#1}}}
+\providecommand{\AkronAt}[1]{\MATHIT{{#1} \kron \tr{#1}}}
+
+%\providecommand{\trace}[1]{\funcit{\mbox{tr}}{#1}}
+\providecommand{\trace}[1]{\funcit{\operatorname{tr}}{#1}}
+% is this replicated elsewhere?
+\providecommand{\det}[1]{\abs{#1}}
+\renewcommand{\det}[1]{\abs{#1}}
+\providecommand{\detpow}[2]{\neUL{\det{#1}}{#2}{}}
+% functional det
+\providecommand{\fdet}[1]{\funcit{\operatorname{det}}{#1}}
+\renewcommand{\fdet}[1]{\funcit{\operatorname{det}}{#1}}
+\providecommand{\logdet}[1]{\MATHIT{\log\det{#1}}}
+\providecommand{\sign}[1]{\funcit{\operatorname{sign}}{#1}}
+
+
+\providecommand{\ccinterval}[2]{\wrapBracks{#1,#2}}
+% as vector, a column.
+\providecommand{\asrowvec}[1]{\wrapBracks{#1}}
+\providecommand{\asvec}[1]{\tr{\asrowvec{#1}}}
+\providecommand{\vcat}[2]{\asvec{\tr{#1},\tr{#2}}}
+
+\providecommand{\diag}[1]{\funcit{\operatorname{diag}}{#1}}
+\providecommand{\fsymd}[1]{\funcit{f_{\mbox{sym}}}{#1}}
+
+\providecommand{\threebythree}[9]{\wrapBracks{\begin{array}{ccc}{#1}&{#2}&{#3}\\{#4}&{#5}&{#6}\\{#7}&{#8}&{#9}\end{array}}}
+\providecommand{\twotwosys}[6]{\wrapBracks{\begin{array}{cc|c}{#1}&{#2}&{#3}\\{#4}&{#5}&{#6}\end{array}}}
+\providecommand{\twobytwo}[4]{\wrapBracks{\begin{array}{cc}{#1}&{#2}\\{#3}&{#4}\end{array}}}
+\providecommand{\twobytwosym}[3]{\twobytwo{#1}{#2}{\tr{#2}}{#3}}
+\providecommand{\twobytwossym}[3]{\twobytwo{#1}{#2}{#2}{#3}}
+\providecommand{\twobyone}[2]{\wrapBracks{\begin{array}{r}{#1}\\{#2}\end{array}}}
+\providecommand{\twobythree}[6]{\wrapBracks{\begin{array}{ccc}{#1}&{#2}&{#3}\\{#4}&{#5}&{#6}\end{array}}}
+\providecommand{\threebytwo}[6]{\wrapBracks{\begin{array}{cc}{#1}&{#2}\\{#3}&{#4}\\{#5}&{#6}\end{array}}}
+\providecommand{\threebyone}[3]{\wrapBracks{\begin{array}{r}{#1}\\{#2}\\{#3}\end{array}}}
+\providecommand{\onebytwo}[2]{\wrapBracks{\begin{array}{rr}{#1}&{#2}\end{array}}}
+
+\providecommand{\threebythreesym}[6]{\threebythree{#1}{#2}{#3}{\tr{#2}}{#4}{#5}{\tr{#3}}{\tr{#5}}{#6}}
+\providecommand{\threebythreessym}[6]{\threebythree{#1}{#2}{#3}{#2}{#4}{#5}{#3}{#5}{#6}}
+
+
+% idealized and conditional SNR functions
+\providecommand{\pSNRfoo}[2]{\funcit{\mathSUB{\mbox{SNR}}{#1}}{#2}}
+\providecommand{\sSNRfoo}[2]{\funcit{\mathSUB{\hat{\mbox{SNR}}}{#1}}{#2}}
+
+\providecommand{\pSNR}[1]{\pSNRfoo{}{#1}}
+\providecommand{\sSNR}[1]{\sSNRfoo{}{#1}}
+
+\providecommand{\SNRfunc}[1]{\pSNRfoo{}{#1}}
+\providecommand{\SNRfunci}[1]{\pSNRfoo{i}{#1}}
+\providecommand{\SNRfuncu}[1]{\pSNRfoo{u}{#1}}
+\providecommand{\SNRfuncc}[1]{\pSNRfoo{c}{#1}}
+
+% transpose and inverse
+\providecommand{\trsym}[0]{\top}
+\providecommand{\tr}[1]{\mathSUP{#1}{\trsym}}
+\providecommand{\minv}[1]{\mathSUP{#1}{-1}}
+\providecommand{\trminv}[1]{\mathSUP{#1}{-\trsym}}
+\providecommand{\minvAB}[2]{\MATHIT{\minv{#1}{#2}}}
+\providecommand{\minvParens}[1]{\minv{\wrapParens{#1}}}
+
+% for scalars:
+\providecommand{\sinv}[1]{\mathSUP{#1}{-1}}
+\providecommand{\sinvParens}[1]{\sinv{\wrapParens{#1}}}
+
+% Hermitian and pseudoinverse
+\providecommand{\htr}[1]{\mathSUP{#1}{*}}
+\providecommand{\pinvsym}[0]{+}
+\providecommand{\pinv}[1]{\mathSUP{#1}{\pinvsym}}
+
+% He and such
+\providecommand{\He}[2][{}]{\funcit{\mathSUB{H\!e}{#1}}{#2}}
+\providecommand{\Hh}[2][{}]{\funcit{\mathSUB{H\!h}{#1}}{#2}}
+
+\providecommand{\bottom}{\bot}
+
+% Complement
+%\providecommand{\cmpl}[1]{\mathSUP{#1}{\mathcal{C}}}
+\providecommand{\cmpl}[1]{\mathSUP{#1}{\bot}}
+
+% cholesky 
+\providecommand{\chol}[1]{\mathSUP{#1}{1/2}}
+\providecommand{\trchol}[1]{\mathSUP{#1}{\trsym/2}}
+\providecommand{\ichol}[1]{\mathSUP{#1}{-1/2}}
+\providecommand{\trichol}[1]{\mathSUP{#1}{-\trsym/2}}
+% null space
+\providecommand{\mnull}[1]{\mathSUP{#1}{C}}
+
+% singleentry matrix; see matrix cookbook 9.7.1
+\providecommand{\Jsing}[2]{\MtxUL{J}{#1#2}{}}
+
+% these are private to this file%FOLDUP
+\providecommand{\prvsymi}{x}
+\providecommand{\prvsymj}{y}
+\providecommand{\prvsymk}{f}
+\providecommand{\prvsyml}{z}
+\providecommand{\prvsyme}{v}
+\providecommand{\prvsymf}{f}
+\providecommand{\prvsymv}{v}
+\providecommand{\prvsymu}{u}
+% prices:
+\providecommand{\prvsymp}{p}
+% arithmetic and geometric:
+\providecommand{\prvsyma}{r}
+\providecommand{\prvsymg}{l}
+
+\providecommand{\prvsymPortfolio}{w}
+\providecommand{\prvsymPASSTHROUGH}{W}
+
+\providecommand{\prvsymWilk}{U}
+\providecommand{\prvsymHLT}{T}
+\providecommand{\prvsymPBT}{P}
+\providecommand{\prvsymRLR}{R}
+%UNFOLD
+
+% prices/mtm
+%\providecommand{\pryt}[1][t]{\mathSUB{p}{#1}}
+\providecommand{\pryp}[1][]{\mathSUB{\prvsymp}{#1}}
+%\providecommand{\grett}[1][t]{\mathSUB{l}{#1}}
+%\providecommand{\arett}[1][t]{\mathSUB{r}{#1}}
+
+\renewcommand{\exp}[1]{\MATHIT{e^{#1}}}
+\providecommand{\longexp}[1]{\funcit{\operatorname{exp}}{#1}}
+
+%scalar returns:
+\providecommand{\reti}[1][]{\mathSUB{\prvsymi}{#1}}
+\providecommand{\retj}[1][]{\mathSUB{\prvsymj}{#1}}
+\providecommand{\retk}[1][]{\mathSUB{\prvsymk}{#1}}
+\providecommand{\retl}[1][]{\mathSUB{\prvsyml}{#1}}
+\providecommand{\retf}[1][]{\mathSUB{\prvsymf}{#1}}
+\providecommand{\retv}[1][]{\mathSUB{\prvsymv}{#1}}
+\providecommand{\reta}[1][]{\mathSUB{\prvsyma}{#1}}
+\providecommand{\retg}[1][]{\mathSUB{\prvsymg}{#1}}
+
+%vector returns:
+\providecommand{\vreti}[1][]{\vectUL{\prvsymi}{}{#1}}
+\providecommand{\vretj}[1][]{\vectUL{\prvsymj}{}{#1}}
+\providecommand{\vretk}[1][]{\vectUL{\prvsymk}{}{#1}}
+\providecommand{\vretl}[1][]{\vectUL{\prvsyml}{}{#1}}
+\providecommand{\vretf}[1][]{\vectUL{\prvsymf}{}{#1}}
+\providecommand{\vretv}[1][]{\vectUL{\prvsymv}{}{#1}}
+\providecommand{\vreta}[1][]{\vectUL{\prvsyma}{}{#1}}
+\providecommand{\vretg}[1][]{\vectUL{\prvsymg}{}{#1}}
+
+% heteroskedasticity
+\providecommand{\prvsymVOLA}{s}
+\providecommand{\fvola}[1][]{\mathSUB{\prvsymVOLA}{#1}}
+\providecommand{\fvvola}[1][t]{\vectUL{\prvsymVOLA}{}{#1}}
+\providecommand{\volafoo}[2]{\mathUL{\gamma}{#1}{#2}}
+\providecommand{\volavar}[1][]{\volafoo{2}{#1}}
+\providecommand{\volaivar}[1][]{\volafoo{-2}{#1}}
+% sked
+\providecommand{\prvsymSKED}{s}
+\providecommand{\fsked}[1][]{\mathSUB{\prvsymSKED}{#1}}
+\providecommand{\fvsked}[1][t]{\vectUL{\prvsymSKED}{}{#1}}
+
+
+% augmented
+\providecommand{\avreti}[1][]{\vectUL{\tilde{\prvsymi}}{}{#1}}
+\providecommand{\amreti}[1][]{\MtxUL{\tilde{\MakeUppercase{\prvsymi}}}{}{#1}}
+\providecommand{\aavreti}[1][]{\vectUL{\tilde{\tilde{\prvsymi}}}{}{#1}}
+
+% transpose of same
+\providecommand{\trvreti}[1][]{\vectUL{\prvsymi}{\trsym}{#1}}
+\providecommand{\trvretj}[1][]{\vectUL{\prvsymj}{\trsym}{#1}}
+\providecommand{\trvretk}[1][]{\vectUL{\prvsymk}{\trsym}{#1}}
+\providecommand{\trvretl}[1][]{\vectUL{\prvsyml}{\trsym}{#1}}
+\providecommand{\trvretf}[1][]{\vectUL{\prvsymf}{\trsym}{#1}}
+\providecommand{\trvretv}[1][]{\vectUL{\prvsymv}{\trsym}{#1}}
+\providecommand{\trvreta}[1][]{\vectUL{\prvsyma}{\trsym}{#1}}
+\providecommand{\trvretg}[1][]{\vectUL{\prvsymg}{\trsym}{#1}}
+
+%matrix returns:
+\providecommand{\mreti}[1][]{\MtxUL{\MakeUppercase{\prvsymi}}{}{#1}}
+\providecommand{\mretj}[1][]{\MtxUL{\MakeUppercase{\prvsymj}}{}{#1}}
+\providecommand{\mretk}[1][]{\MtxUL{\MakeUppercase{\prvsymk}}{}{#1}}
+\providecommand{\mretl}[1][]{\MtxUL{\MakeUppercase{\prvsyml}}{}{#1}}
+\providecommand{\mretf}[1][]{\MtxUL{\MakeUppercase{\prvsymf}}{}{#1}}
+\providecommand{\mretv}[1][]{\MtxUL{\MakeUppercase{\prvsymv}}{}{#1}}
+\providecommand{\mreta}[1][]{\MtxUL{\MakeUppercase{\prvsyma}}{}{#1}}
+\providecommand{\mretg}[1][]{\MtxUL{\MakeUppercase{\prvsymg}}{}{#1}}
+
+% the factor or signal
+\providecommand{\sfactsym}[0]{\MATHIT{\prvsymf}}
+\providecommand{\sfact}[1][t]{\mathSUB{\prvsymf}{#1}}
+\providecommand{\vfact}[1][t]{\vectUL{\prvsymf}{}{#1}}
+\providecommand{\trvfact}[1][t]{\vectUL{\prvsymf}{\trsym}{#1}}
+\providecommand{\mfact}[1][]{\MtxUL{\MakeUppercase{\prvsymf}}{}{#1}}
+
+% index. i or t?
+\providecommand{\idx}{\MATHIT{t}}
+
+
+% distribution of factor
+\providecommand{\pfacmu}{\vectUL{\prvMean}{}{f}}
+\providecommand{\trpfacmu}{\vectUL{\prvMean}{\trsym}{f}}
+\providecommand{\pfacsig}{\MtxUL{\Gamma}{}{f}}
+\providecommand{\pfacgram}[1][]{\MATHIT{\pfacsig + #1\pfacmu\trpfacmu}}
+\providecommand{\pfaccov}{\MtxUL{\prvCov}{}{f}}
+
+\providecommand{\sfacmu}{\vectUL{\hat{\prvMean}}{}{f}}
+\providecommand{\trsfacmu}{\vectUL{\hat{\prvMean}}{\trsym}{f}}
+\providecommand{\sfacsig}{\MtxUL{\hat{\Gamma}}{}{f}}
+
+% the error or residual
+\providecommand{\serrt}[1][t]{\mathSUB{\prvsymu}{#1}}
+\providecommand{\verrt}[1][t]{\vect{\mathSUB{\prvsymu}{#1}}}
+\providecommand{\merrt}[1][]{\MtxUL{\MakeUppercase{\prvsymu}}{}{#1}}
+
+% population and sample versions
+\providecommand{\pserrt}[1][t]{\mathSUB{\epsilon}{#1}}
+\providecommand{\pverrt}[1][t]{\vect{\mathSUB{\epsilon}{#1}}}
+\providecommand{\pmerrt}[1][]{\MtxUL{E}{}{#1}}
+\providecommand{\sserrt}[1][t]{\mathSUB{\hat{\epsilon}}{#1}}
+\providecommand{\sverrt}[1][t]{\vect{\mathSUB{\hat{\epsilon}}{#1}}}
+\providecommand{\smerrt}[1][]{\MtxUL{\hat{E}}{}{#1}}
+
+% population and sample (conditional) markowitz weights and passthrough
+\providecommand{\pmarkow}[1][]{\mathSUB{w}{#1}}
+\providecommand{\smarkow}[1][]{\mathSUB{\hat{w}}{#1}}
+\providecommand{\ppasthru}[1][]{\mathSUB{\prvsymPASSTHROUGH}{#1}}
+\providecommand{\spasthru}[1][]{\mathSUB{\hat{\prvsymPASSTHROUGH}}{#1}}
+\providecommand{\trppasthru}[1][]{\mathUL{\prvsymPASSTHROUGH}{\trsym}{#1}}
+\providecommand{\trspasthru}[1][]{\mathUL{\hat{\prvsymPASSTHROUGH}}{\trsym}{#1}}
+
+\providecommand{\apasthru}[1][a]{\ppasthru[#1]}
+\providecommand{\trapasthru}[1][a]{\trppasthru[#1]}
+
+\providecommand{\ppasopt}[1][]{\ppasthru[\nePAIR{*}{#1}]}
+\providecommand{\spasopt}[1][]{\spasthru[\nePAIR{*}{#1}]}
+
+% just some eigenvalue, eigenvec
+\providecommand{\eigval}[1][]{\mathUL{\lambda}{}{#1}}
+\providecommand{\eigvec}[1][]{\vectUL{\nu}{}{#1}}
+
+% HE eigenvalues, eigenvects
+\providecommand{\pheeig}[1][]{\mathUL{\lambda}{}{#1}}
+\providecommand{\sheeig}[1][]{\mathUL{\hat{\lambda}}{}{#1}}
+\providecommand{\pheevc}[1][]{\vectUL{\nu}{}{#1}}
+\providecommand{\sheevc}[1][]{\vectUL{\hat{\nu}}{}{#1}}
+
+% some functions
+\providecommand{\fmax}[1]{\funcit{max}{#1}}
+\providecommand{\fmin}[1]{\funcit{min}{#1}}
+\providecommand{\feig}[1]{\funcit{eig}{#1}}
+
+% MGLH
+\providecommand{\pWILK}[1][]{\mathUL{\prvsymWilk}{}{#1}}
+\providecommand{\pHLT}[1][]{\mathUL{\prvsymHLT}{}{#1}}
+\providecommand{\pPBT}[1][]{\mathUL{\prvsymPBT}{}{#1}}
+\providecommand{\pRLR}[1][]{\mathUL{\prvsymRLR}{}{#1}}
+\providecommand{\sWILK}[1][]{\mathUL{\hat{\prvsymWilk}}{}{#1}}
+\providecommand{\sHLT}[1][]{\mathUL{\hat{\prvsymHLT}}{}{#1}}
+\providecommand{\sPBT}[1][]{\mathUL{\hat{\prvsymPBT}}{}{#1}}
+\providecommand{\sRLR}[1][]{\mathUL{\hat{\prvsymRLR}}{}{#1}}
+
+\providecommand{\hejG}{\Mtx{G}}
+\providecommand{\hejg}{\vect{g}}
+\providecommand{\hejGt}{\MATHIT{\tilde{\hejG}}}
+\providecommand{\Delhej}{\mathUL{\Delta}{}{\hejG}}
+\providecommand{\Delzh}{\mathUL{\Delta}{}{\zerJ,\hejG}}
+\providecommand{\nstrathej}{\nstrat[g]}
+\providecommand{\nlatfhej}{\nlatf[g]}
+
+
+
+\providecommand{\zerJ}{\Mtx{J}}
+\providecommand{\zerJc}{\cmpl{\zerJ}}
+\providecommand{\zerJt}{\MATHIT{\tilde{\zerJ}}}
+\providecommand{\nlatfzer}{\nlatf[j]}
+
+% unified second moment stuff.
+\providecommand{\pvsm}[1][{}]{\mathSUB{\Mtx{\Theta}}{#1}}
+\providecommand{\svsm}[1][{}]{\mathSUB{\Mtx{\hat{\Theta}}}{#1}}
+% constrained sample version
+\providecommand{\svsmc}[1][{}]{\mathSUB{\Mtx{\tilde{\Theta}}}{#1}}
+
+
+% combinatorics
+\providecommand{\nchoosek}[2]{\MATHIT{{#1 \choose #2}}}
+
+%vector of all ones, zeros
+\providecommand{\vone}[1][]{\vect{1_{#1}}}
+\providecommand{\vzero}{\vect{0}}
+
+% a vector
+\providecommand{\avect}{\vect{v}}
+
+%leverage variable;
+\providecommand{\levi}[1][]{\mathSUB{l}{#1}}
+
+%generic combination of matrices
+\providecommand{\ABA}[2]{#1 #2 #1}
+\providecommand{\ABCBA}[3]{{#1 #2 #3 #2 #1}}
+\providecommand{\trAB}[2]{\MATHIT{\tr{#1}#2}}
+
+%gram matrix
+\providecommand{\gram}[1]{\trAB{#1}{#1}}
+%outer gram
+\providecommand{\ogram}[1]{\MATHIT{#1 \tr{#1}}}
+%quadratic form
+\providecommand{\qform}[2]{\MATHIT{\tr{#2} #1 #2}}
+\providecommand{\qiform}[2]{\qform{\minv{#1}}{#2}}
+%quadratic outer form
+\providecommand{\qoform}[2]{\MATHIT{#2 #1 \tr{#2}}}
+\providecommand{\qoiform}[2]{\qoform{\minv{#1}}{#2}}
+\providecommand{\crossp}[1]{\gram{\wrapNeParens{#1}}}
+
+\providecommand{\qqform}[3]{\qform{\qform{#1}{#2}}{#3}}
+\providecommand{\qqqform}[4]{\qform{\qform{\qform{#1}{#2}}{#3}}{#4}}
+
+% these should have the same semantics WRT which arg comes first;
+% basically it is Sigma then H (or J)
+\providecommand{\wrapProj}[2]{\qiform{\wrapParens{\qoform{#1}{#2}}}{#2}}
+\providecommand{\proj}[2]{\funcitUL{\mathcal{P}}{}{#2}{#1}}
+\providecommand{\fdinvwrap}[2]{\funcitUL{f}{}{\mathcal{P}}{#2;#1}}
+
+% a conditional on b
+%\providecommand{\acondb}[2]{\MATHIT{#1\,\left|\,#2\right.}}
+\providecommand{\acondb}[2]{\MATHIT{#1\left|\,#2\right.}}
+\providecommand{\Econd}[2]{\E{\acondb{#1}{#2}}}
+\providecommand{\Varcond}[2]{\VAR{\acondb{#1}{#2}}}
+
+\providecommand{\evalat}[2]{\MATHIT{\left.#1\right|_{#2}}}
+
+% sample statistics%FOLDUP
+\providecommand{\smean}[1]{\MATHIT{\bar{#1}}}
+\providecommand{\sstd}[1]{\mathSUB{s}{#1}}
+
+%\providecommand{\svmean}[1]{\smean{\vect{#1}}}
+%\providecommand{\svstd}[1]{\MtxUL{S}{}{#1}}
+
+% raw symbols for stuff
+%\providecommand{\prvSNR}[0]{\psi}
+\providecommand{\prvSNR}[0]{\zeta}
+\providecommand{\prvMean}[0]{\mu}
+\providecommand{\prvStd}[0]{\sigma}
+\providecommand{\prvPrec}[0]{\lambda}
+\providecommand{\prvCov}[0]{\Sigma}
+\providecommand{\prviCov}[0]{\Lambda}
+
+
+% moments. what a totaly shit show.
+% we have: raw, 'zero-centered' moments
+% mean-centered moments (the first of which makes no sense)
+% standardized moments
+% cumulants.
+
+% raw, zero-centered moment; mu' is standard here, btw
+\providecommand{\prvRawMom}[0]{\alpha}
+% centered moment.
+\providecommand{\prvCenMom}[0]{\mu}
+% standardized moment.
+\providecommand{\prvStdMom}[0]{\gamma}
+% cumulant
+\providecommand{\prvCumulant}[0]{\kappa}
+% standardized cumulant
+\providecommand{\prvStdCumulant}[0]{\gamma}
+
+
+%sample statistics.
+%\providecommand{\smu}[1][]{\smean{\reti[#1]}}
+%\providecommand{\ssig}[1][]{\MATHIT{s_{#1}}}
+%\providecommand{\smu}[1][]{\smean{\reti[#1]}}
+\providecommand{\smu}[1][]{\mathSUB{\hat{\prvMean}}{#1}}
+\providecommand{\ssig}[1][]{\mathSUB{\hat{\prvStd}}{#1}}
+\providecommand{\ssigsq}[1][]{\mathUL{\hat{\prvStd}}{2}{#1}}
+\providecommand{\ssigu}[1][]{\mathSUB{\tilde{\prvStd}}{#1}}
+\providecommand{\ssds}[1][]{\MATHIT{{s_N}_{#1}}}
+\providecommand{\smom}[1][{}]{\mathSUB{\hat{\prvRawMom}}{#1}}
+
+% risk free
+\providecommand{\rfr}[1][0]{\mathSUB{r}{#1}}
+% risk budget
+\providecommand{\Rbuj}[1][]{\mathSUB{R}{#1}}
+\providecommand{\rdrag}[1][0]{\MATHIT{\frac{\rfr[#1]}{\Rbuj}}}
+
+
+
+% sample sharpe ratio
+\providecommand{\ssrUL}[2]{\mathUL{\hat{\prvSNR}}{#1}{#2}}
+%\providecommand{\ssrUL}[2]{\mathUL{r}{#1}{#2}}
+\providecommand{\ssr}[1][]{\ssrUL{}{#1}}
+\providecommand{\ssrsq}[1][]{\ssrUL{2}{#1}}
+\providecommand{\ssropt}{\ssr[*]}
+\providecommand{\ssroptG}[1]{\ssr[*,#1]}
+\providecommand{\ssrsqopt}{\ssrsq[*]}
+\providecommand{\ssrsqoptG}[1]{\ssrsq[*,#1]}
+
+\providecommand{\ssrg}[1][g]{\ssr[{#1}]}
+
+\providecommand{\svsigma}[1][]{\vectUL{\hat{\prvStd}}{}{#1}}
+\providecommand{\svsr}[1][]{\vectUL{\hat{\prvSNR}}{}{#1}}
+
+% using the unbiased sigma: 
+\providecommand{\ussrUL}[2]{\mathUL{\tilde{\prvSNR}}{#1}{#2}}
+\providecommand{\ussr}[1][]{\ussrUL{}{#1}}
+\providecommand{\ussrsq}[1][]{\ussrUL{2}{#1}}
+\providecommand{\ussropt}{\ussr[*]}
+\providecommand{\ussrsqopt}{\ussrsq[*]}
+
+
+\providecommand{\svmu}[1][]{\vectUL{\hat{\prvMean}}{}{#1}}
+\providecommand{\svsig}[1][]{\MtxUL{\hat{\prvCov}}{}{#1}}
+\providecommand{\svvar}[1][]{\MtxUL{\hat{\Omega}}{}{#1}}
+\providecommand{\svmom}[1][{}]{\vectUL{\hat{\prvRawMom}}{}{#1}}
+
+\providecommand{\usvsig}[1][]{\MtxUL{\tilde{\prvCov}}{}{#1}}
+
+\providecommand{\sfvmu}[1][]{\smean{\vreti[#1]^{*}}}
+\providecommand{\sfse}{\kappa}
+
+%unbiased estimator of Sharpe ratio
+\providecommand{\susr}[1][]{\MATHIT{\tilde{\prvSNR}_{#1}}}
+\providecommand{\sgossz}[1][]{\mathSUB{z}{#1}}
+%UNFOLD
+%population parameters%FOLDUP
+\providecommand{\pmu}[1][]{\mathSUB{\prvMean}{#1}}
+\providecommand{\psig}[1][]{\mathSUB{\prvStd}{#1}}
+\providecommand{\pprec}[1][]{\mathSUB{\prvPrec}{#1}}
+\providecommand{\psigma}[1][]{\mathSUB{\prvStd}{#1}}
+\providecommand{\psigsq}[1][]{\mathUL{\prvStd}{2}{#1}}
+\providecommand{\pmom}[1][{}]{\mathSUB{\prvRawMom}{#1}}
+\providecommand{\pmomx}[2][{}]{\funcit{\pmom[#1]}{#2}}
+\providecommand{\pmomssr}[1][{}]{\pmomx[#1]{\ssr}}
+
+\providecommand{\psrUL}[2]{\mathUL{\prvSNR}{#1}{#2}}
+
+\providecommand{\psr}[1][]{\psrUL{}{#1}}
+\providecommand{\psnr}[1][]{\psrUL{}{#1}}
+\providecommand{\psrsq}[1][]{\psrUL{2}{#1}}
+\providecommand{\psnrsq}[1][]{\psrUL{2}{#1}}
+\providecommand{\psnrg}[1][g]{\psnr[{#1}]}
+\providecommand{\psnrh}[1][h]{\psnr[{#1}]}
+
+% optimum SNR in the population
+\providecommand{\psnropt}{\psnr[*]}
+\providecommand{\psnroptG}[1]{\psnr[*,#1]}
+\providecommand{\psnrpopt}{\psnr[*]}
+\providecommand{\psnrsqopt}{\psnrsq[*]}
+\providecommand{\psnrsqoptG}[1]{\psnrsq[*,#1]}
+\providecommand{\psnrsqpopt}{\psnrsq[*]}
+
+% population SNR of the *sample optimal* portfolio. bleah
+\providecommand{\psnrsopt}{\psnr[s,*]}
+
+% delta SNR squared in the population
+\providecommand{\Delpsnrsqopt}[1]{\mathUL{\Delta}{}{#1}\psnrsqopt}
+
+%population vector mean and covariance
+\providecommand{\pvmu}[1][]{\vectUL{\prvMean}{}{#1}}
+\providecommand{\pvmom}[1][{}]{\vectUL{\prvRawMom}{}{#1}}
+\providecommand{\pvsig}[1][]{\MtxUL{\prvCov}{}{#1}}
+\providecommand{\pvschol}[1][]{\MtxUL{C}{}{#1}}
+
+\providecommand{\pvsigma}[1][]{\vectUL{\prvStd}{}{#1}}
+\providecommand{\pvsnr}[1][]{\vectUL{\prvSNR}{}{#1}}
+\providecommand{\pvvar}[1][]{\MtxUL{\Omega}{}{#1}}
+%UNFOLD
+
+% haircut
+\providecommand{\hcut}[1][]{\mathSUB{h}{#1}}
+\providecommand{\Pmat}{\Mtx{P}}
+
+\providecommand{\smahalo}[1][]{\mathSUB{\hat{d}}{#1}}
+
+
+% positively proportional to
+\providecommand{\ppropto}{\mathSUB{\propto}{+}}
+
+% MGLH
+\providecommand{\MGLHA}[1][]{\MtxUL{A}{}{#1}}
+\providecommand{\MGLHC}[1][]{\MtxUL{C}{}{#1}}
+\providecommand{\MGLHT}[1][]{\MtxUL{\Theta}{}{#1}}
+\providecommand{\MGLHrank}{\MATHIT{r}}
+\providecommand{\MGLHa}{\MATHIT{a}}
+\providecommand{\MGLHc}{\MATHIT{c}}
+
+\providecommand{\MGLHH}[1][]{\MtxUL{H}{}{#1}}
+\providecommand{\MGLHE}[1][]{\MtxUL{E}{}{#1}}
+\providecommand{\pMGLHH}[1][]{\MtxUL{H}{}{#1}}
+\providecommand{\pMGLHE}[1][]{\MtxUL{E}{}{#1}}
+\providecommand{\sMGLHH}[1][]{\MtxUL{\hat{H}}{}{#1}}
+\providecommand{\sMGLHE}[1][]{\MtxUL{\hat{E}}{}{#1}}
+
+\providecommand{\mglhM}{\Mtx{M}}
+
+\providecommand{\eye}[1][]{\MtxUL{I}{}{#1}}
+\providecommand{\mzero}[1][]{\MtxUL{0}{}{#1}}
+
+
+%CDF and quantile%FOLDUP
+
+% make a letter into a distribution 'law'
+\providecommand{\makelaw}[2]{\MATHIT{#1\wrapNeParens{#2}}}
+\providecommand{\FOOpdf}[3]{\funcit{\mathSUB{f}{#1}}{#2;#3}}
+\providecommand{\FOOlik}[3]{\funcit{\mathSUB{\mathcal{L}}{#1}}{\condtwo{#3}{#2}}}
+\providecommand{\FOOcdf}[3]{\funcit{\mathSUB{F}{#1}}{#2;#3}}
+\providecommand{\FOOqnt}[3]{\funcit{\mathSUB{#1}{#2}}{#3}}
+
+% normal
+\providecommand{\normpdf}[2]{\FOOpdf{\mathcal{N}}{#1}{#2}}
+\providecommand{\normcdf}[2]{\FOOcdf{\mathcal{N}}{#1}{#2}}
+\providecommand{\normqnt}[2]{\FOOqnt{\mathcal{N}}{#1}{#2}}
+\providecommand{\normlaw}[1]{\makelaw{\mathcal{N}}{#1}}
+
+% uniform
+\providecommand{\unipdf}[2]{\FOOpdf{\mathcal{U}}{#1}{#2}}
+\providecommand{\unicdf}[2]{\FOOcdf{\mathcal{U}}{#1}{#2}}
+\providecommand{\uniqnt}[2]{\FOOqnt{\mathcal{U}}{#1}{#2}}
+\providecommand{\unilaw}[1]{\makelaw{\mathcal{U}}{#1}}
+
+% AKA:
+%density, distribution, quantile of normal distribution
+\providecommand{\dnorm}[1][x]{\funcit{\phi}{#1}}
+\providecommand{\pnorm}[1][x]{\funcit{\Phi}{#1}}
+\providecommand{\pinorm}[1][x]{\funcit{\mathUL{\Phi}{-1}{}}{#1}}
+\providecommand{\qnorm}[1]{\mathSUB{z}{#1}}
+
+\providecommand{\erf}[1]{\funcit{\mathUL{erf}{}{}}{#1}}
+\providecommand{\erfinv}[1]{\funcit{\mathUL{erf}{-1}{}}{#1}}
+
+%t
+\providecommand{\tcdf}[2]{\FOOcdf{t}{#1}{#2}}
+\providecommand{\tqnt}[2]{\FOOqnt{t}{#1}{#2}}
+\providecommand{\tlaw}[1]{\makelaw{t}{#1}}
+
+% noncentral t
+% changing the cdf, pdf, qnt to be:
+% *, nct param, df
+\providecommand{\nctcdf}[3]{\FOOcdf{t}{#1}{#2,#3}}
+\providecommand{\nctpdf}[3]{\FOOpdf{t}{#1}{#2,#3}}
+\providecommand{\nctlik}[3]{\FOOlik{t}{#2,#3}{#1}}
+\providecommand{\nctqnt}[3]{\FOOqnt{t}{#1}{#2,#3}}
+\providecommand{\nctlaw}[1]{\makelaw{t}{#1}}
+\providecommand{\nctvar}[1][]{\mathSUB{t}{#1}}
+\providecommand{\nctdf}[1][]{\mathSUB{\nu}{#1}}
+
+% SR
+% the order is x, non-centrality, sample size
+\providecommand{\srpdf}[3]{\FOOpdf{SR}{#1}{#2,#3}}
+\providecommand{\srlik}[3]{\FOOlik{SR}{#2,#3}{#1}}
+% the order is x, non-centrality, sample size
+\providecommand{\srcdf}[3]{\FOOcdf{SR}{#1}{#2,#3}}
+% the order is x, non-centrality, sample size
+\providecommand{\srqnt}[3]{\FOOqnt{SR}{#1}{#2,#3}}
+\providecommand{\srlaw}[1]{\makelaw{SR}{#1}}
+
+% cdf of F, and non-central F:
+\providecommand{\fcdf}[2]{\FOOcdf{f}{#1}{#2}}
+\providecommand{\ncfcdf}[3]{\FOOcdf{f}{#1}{#2,#3}}
+% quantiles (inverse cdf) of F, noncentral F
+\providecommand{\fqnt}[2]{\FOOqnt{f}{#1}{#2}}
+\providecommand{\ncfqnt}[3]{\FOOqnt{f}{#1}{#2,#3}}
+% as a 'law'
+\providecommand{\flaw}[1]{\makelaw{F}{#1}}
+\providecommand{\ncflaw}[1]{\makelaw{F}{#1}}
+
+%chisq
+\providecommand{\prvchisq}{\chi^2}
+\providecommand{\chisqpdf}[2]{\FOOpdf{\prvchisq}{#1}{#2}}
+\providecommand{\chisqcdf}[2]{\FOOcdf{\prvchisq}{#1}{#2}}
+\providecommand{\chisqqnt}[2]{\FOOqnt{\prvchisq}{#1}{#2}}
+\providecommand{\chisqlaw}[1]{\makelaw{\prvchisq}{#1}}
+
+% chi
+\providecommand{\prvchi}{\chi}
+\providecommand{\chipdf}[2]{\FOOpdf{\prvchi}{#1}{#2}}
+
+% gamma distribution
+\providecommand{\prvgamma}{\Gamma}
+\providecommand{\gammacdf}[2]{\FOOcdf{\prvgamma}{#1}{#2}}
+\providecommand{\gammaqnt}[2]{\FOOqnt{\prvgamma}{#1}{#2}}
+\providecommand{\gammalaw}[1]{\makelaw{\prvgamma}{#1}}
+
+% inverse gamma distribution
+\providecommand{\igammacdf}[2]{\FOOcdf{\minv{\prvgamma}}{#1}{#2}}
+\providecommand{\igammaqnt}[2]{\FOOqnt{\minv{\prvgamma}}{#1}{#2}}
+\providecommand{\igammalaw}[1]{\makelaw{\minv{\prvgamma}}{#1}}
+
+%beta
+\providecommand{\prvbetacdf}[2]{\FOOcdf{\beta}{#1}{#2}}
+\providecommand{\prvbetapdf}[2]{\FOOpdf{\beta}{#1}{#2}}
+\providecommand{\prvbetaqnt}[2]{\FOOqnt{\beta}{#1}{#2}}
+\providecommand{\prvbetalaw}[1]{\makelaw{\mathcal{B}}{#1}}
+
+\providecommand{\betacdf}[3]{\prvbetacdf{#1}{#2,#3}}
+\providecommand{\betapdf}[3]{\prvbetapdf{#1}{#2,#3}}
+\providecommand{\betaqnt}[3]{\prvbetaqnt{#1}{#2,#3}}
+\providecommand{\betalaw}[2]{\prvbetalaw{#1,#2}}
+
+%non-central beta
+\providecommand{\nctbetacdf}[4]{\prvbetacdf{#1}{#2,#3,#4}}
+\providecommand{\nctbetapdf}[4]{\prvbetapdf{#1}{#2,#3,#4}}
+\providecommand{\nctbetaqnt}[4]{\prvbetaqnt{#1}{#2,#3,#4}}
+\providecommand{\nctbetalaw}[3]{\prvbetalaw{#1,#2,#3}}
+
+% lambdaprime
+\providecommand{\lampcdf}[3]{\FOOcdf{\lambda'}{#1}{#2,#3}}
+\providecommand{\lamppdf}[3]{\FOOpdf{\lambda'}{#1}{#2,#3}}
+\providecommand{\lampqnt}[3]{\FOOqnt{\lambda'}{#1}{#2,#3}}
+\providecommand{\lamplaw}[1]{\makelaw{\lambda'}{#1}}
+\providecommand{\lampdf}[1][]{\mathSUB{\nu}{#1}}
+
+% upsilon
+\providecommand{\upscdf}[3]{\FOOcdf{\Upsilon}{#1}{#2,#3}}
+\providecommand{\upspdf}[3]{\FOOpdf{\Upsilon}{#1}{#2,#3}}
+\providecommand{\upsqnt}[3]{\FOOqnt{\Upsilon}{#1}{#2,#3}}
+\providecommand{\upslaw}[1]{\makelaw{\Upsilon}{#1}}
+
+% wishart
+\providecommand{\wishlaw}[1]{\makelaw{\mathcal{W}}{#1}}
+
+% instantiations of laws with default parameters filled in?
+% overkill?
+\providecommand{\normdist}[1][0,1]{\normlaw{#1}}
+\providecommand{\tdist}[1][n]{\MATHIT{\mathcal{t}\wrapNeParens{#1}}}
+\providecommand{\hotdist}[1][n,p]{\MATHIT{\mathcal{T^2}\wrapNeParens{#1}}}
+
+%UNFOLD
+
+%statistical whatsits%FOLDUP
+\providecommand{\typeI}{\MATHIT{\alpha}}
+\providecommand{\typeII}{\MATHIT{\beta}}
+\providecommand{\powr}{\MATHIT{1 - \typeII}}
+\providecommand{\irate}{\MATHIT{c_0}}
+%UNFOLD
+
+% landau notation:
+\providecommand{\bigo}[1]{\MATHIT{\mathcal{O}\wrapParens{#1}}}
+\providecommand{\bigOmega}[1]{\MATHIT{\Omega\wrapParens{#1}}}
+\providecommand{\half}[1][1]{\MATHIT{\frac{#1}{2}}}
+\providecommand{\halff}[1][1]{\fracc{#1}{2}}
+
+% time commands; change the default!?
+\providecommand{\yrto}[1]{\mathSUP{\mbox{yr}}{#1}}
+\providecommand{\moto}[1]{\mathSUP{\mbox{mo.}}{#1}}
+\providecommand{\qto}[1]{\mathSUP{\mbox{Q}}{#1}}
+\providecommand{\dayto}[1]{\mathSUP{\mbox{day}}{#1}}
+\providecommand{\wkto}[1]{\mathSUP{\mbox{wk.}}{#1}}
+
+\providecommand{\yrtomhalf}{\yrto{-\halff}}
+
+%linear regression: population and sample%FOLDUP
+\providecommand{\pregco}[1][]{\mathSUB{\beta}{#1}}
+\providecommand{\pregvec}[1][]{\vectUL{\beta}{}{#1}}
+\providecommand{\perr}[1][]{\mathSUB{\epsilon}{#1}}
+\providecommand{\sregco}[1][]{\mathSUB{\hat{\beta}}{#1}}
+\providecommand{\sregvec}[1][]{\vectUL{\hat{\beta}}{}{#1}}
+\providecommand{\serr}[1][]{\mathSUB{\hat{\epsilon}}{#1}}
+
+% multivariate regression;
+\providecommand{\prvRegsym}{B}
+\providecommand{\pRegco}[1][]{\MtxUL{\prvRegsym}{}{#1}}
+\providecommand{\sRegco}[1][]{\MtxUL{\hat{\prvRegsym}}{}{#1}}
+
+\providecommand{\pErr}[1][]{\mathSUB{E}{#1}}
+\providecommand{\pErrt}[1][t]{\pErr[#1]}
+\providecommand{\sErr}[1][]{\mathSUB{\hat{E}}{#1}}
+
+%UNFOLD
+%
+%'contrast' vector and target
+\providecommand{\convec}[1][]{\vect{\mathSUB{v}{#1}}}
+\providecommand{\contar}[1][]{\MATHIT{c}}
+
+
+%noncentrality parameters
+\providecommand{\nctp}[1][]{\mathSUB{\delta}{#1}}
+\providecommand{\ncfp}[1][]{\mathSUB{\delta}{#1}}
+
+\providecommand{\tstat}[1][]{\mathSUB{t}{#1}}
+\providecommand{\fstat}[1][]{\mathSUB{f}{#1}}
+\providecommand{\Fstat}[1][]{\mathSUB{F}{#1}}
+\providecommand{\Tstat}[1][]{\mathUL{T}{2}{#1}}
+%\providecommand{\tbias}[1][\ssiz]{\MATHIT{\eta_{#1}}}
+\providecommand{\tbias}[1][\ssiz]{\mathSUB{d}{#1}}
+
+% delta hotelling cf. \Delpsnrsqopt
+\providecommand{\DTstat}[1][]{\MATHIT{\Delta\Tstat[#1]}}
+
+\providecommand{\median}[1]{\funcit{\mbox{median}}{#1}}
+\providecommand{\Pr}[1]{\funcit{\mbox{\large P}}{#1}}
+%\providecommand{\E}[1]{\MATHIT{\mbox{\large E}\wrapNeBracks{#1}}}
+%%\providecommand{\E}[1]{\ensuremath{\operatorname{E}\left[#1\right]}}
+\providecommand{\E}[1]{\MATHIT{\operatorname{E}\wrapNeBracks{#1}}}
+\providecommand{\Eof}[2][{}]{\MATHIT{\mathSUB{\operatorname{E}}{#1}\wrapNeBracks{#2}}}
+\providecommand{\VAR}[1]{\funcit{\operatorname{Var}}{#1}}
+\providecommand{\GAM}[1]{\MATHIT{\Gamma\wrapNeParens{#1}}}
+\providecommand{\skewness}[1]{\funcit{\mbox{skew}}{#1}}
+\providecommand{\exkurt}[1]{\funcit{\mbox{ex\,kurtosis}}{#1}}
+
+% incomplete gamma
+\providecommand{\Incbeta}[3]{\funcit{\mathUL{\operatorname{I}}{}{#1}}{#2, #3}}
+
+% incomplete gamma
+\providecommand{\Incgamma}[2]{\GAM{#1,#2}}
+\providecommand{\GAMrat}[2]{\frac{\GAM{#1}}{\GAM{#2}}}
+\providecommand{\GAMhalfrat}[2]{\GAMrat{\half[{#1}]}{\half[{#2}]}}
+
+\providecommand{\HyperF}[3]{\funcit{{}_{#1}F_{#2}}{#3}}
+\providecommand{\semifact}[1]{\mathit{#1 !!}}
+
+
+% hypotheses
+\providecommand{\Hyp}[1][0]{\mathSUB{H}{#1}}
+
+% population centered moment, adjusted?
+\providecommand{\pcmom}[1][{}]{\mathSUB{\prvCenMom}{#1}}
+\providecommand{\pvcmom}[1][{}]{\vectUL{\prvCenMom}{}{#1}}
+\providecommand{\scmom}[1][{}]{\mathSUB{\hat{\prvCenMom}}{#1}}
+\providecommand{\svcmom}[1][{}]{\vectUL{\hat{\prvCenMom}}{}{#1}}
+
+% crap, I already used pcmom to mean something;
+% use pmmom: 'm' for middle. but really a 'c'-score
+% c-score of moments: E((x-mu)^p)
+\providecommand{\pmmom}[1][{}]{\mathSUB{\prvCenMom}{#1}}
+\providecommand{\pvmmom}[1][{}]{\vectUL{\prvCenMom}{}{#1}}
+\providecommand{\smmom}[1][{}]{\mathSUB{\hat{\prvCenMom}}{#1}}
+\providecommand{\svmmom}[1][{}]{\vectUL{\hat{\prvCenMom}}{}{#1}}
+
+% z-score of moments: E((x-mu)^p) / sigma^p
+\providecommand{\pzmom}[1][{}]{\mathSUB{\prvStdMom}{#1}}
+\providecommand{\pvzmom}[1][{}]{\vectUL{\prvStdMom}{}{#1}}
+\providecommand{\szmom}[1][{}]{\mathSUB{\hat{\prvStdMom}}{#1}}
+\providecommand{\svzmom}[1][{}]{\vectUL{\hat{\prvStdMom}}{}{#1}}
+
+% standardized cumulants
+\providecommand{\pzkuml}[1][{}]{\mathSUB{\prvStdCumulant}{#1}}
+\providecommand{\pvzkuml}[1][{}]{\vectUL{\prvStdCumulant}{}{#1}}
+\providecommand{\szkuml}[1][{}]{\mathSUB{\hat{\prvStdCumulant}}{#1}}
+\providecommand{\svzkuml}[1][{}]{\vectUL{\hat{\prvStdCumulant}}{}{#1}}
+
+% cumulants
+\providecommand{\pkuml}[1][{}]{\mathSUB{\prvCumulant}{#1}}
+\providecommand{\pvkuml}[1][{}]{\vectUL{\prvCumulant}{}{#1}}
+\providecommand{\skuml}[1][{}]{\mathSUB{\hat{\prvCumulant}}{#1}}
+\providecommand{\svkuml}[1][{}]{\vectUL{\hat{\prvCumulant}}{}{#1}}
+
+\providecommand{\sacor}[1][]{\mathSUB{\hat{\nu}}{#1}}
+\providecommand{\pacor}[1][]{\mathSUB{\nu}{#1}}
+\providecommand{\corcor}{\MATHIT{d}}
+
+% sample size, # of strategies, number of 'latent factors', addon factors?
+% bleah. the semantics of this are hosed.
+
+% sample size; for scalar case
+\providecommand{\ssiz}[1][]{\mathSUB{n}{#1}}
+% number of 'strategies'; or returns. assets.
+\providecommand{\nstrat}[1][]{\mathSUB{k}{#1}}
+
+% number of observations. uhoh.
+\providecommand{\nobs}[1][]{\mathSUB{n}{#1}}
+% number of 'signals'. let's stick with that.
+\providecommand{\nfac}[1][]{\mathSUB{f}{#1}}
+\providecommand{\nvol}[1][]{\mathSUB{q}{#1}}
+
+% this should probably change to \nstrat.
+\providecommand{\nlatf}[1][]{\mathSUB{p}{#1}}
+\providecommand{\nlatfmo}[1][]{\mathSUB{q}{#1}}
+\providecommand{\nlatftot}{\MATHIT{\nlatf+\nlatfmo}}
+
+% # of attribution factors
+% this should probably change to \nfac.
+\providecommand{\nattf}[1][]{\mathSUB{l}{#1}}
+
+\providecommand{\df}[1][]{\mathSUB{v}{#1}}
+
+%t-power law numerator constant.
+%2FIX: this is a throwaway constant.
+\providecommand{\tpowc}[1][]{\mathSUB{k}{#1}}
+
+%aspect ratio
+\providecommand{\arat}[1][a]{\mathSUB{c}{#1}}
+
+% portfolios
+\providecommand{\prvPortfolio}[0]{\nu}
+% portfolio coefficient, or passthrough
+\providecommand{\prvPortfolioPass}[0]{N}
+
+\providecommand{\portw}[1][{}]{\vectUL{w}{}{#1}}
+
+\providecommand{\pportw}[1][{}]{\vectUL{\prvPortfolio}{}{#1}}
+\providecommand{\sportw}[1][{}]{\vectUL{\hat{\prvPortfolio}}{}{#1}}
+\providecommand{\sportwoptFoo}[1]{\sportw[{#1}*]}
+\providecommand{\pportwoptFoo}[1]{\pportw[{#1}*]}
+\providecommand{\sportwopt}{\sportwoptFoo{}}
+\providecommand{\pportwopt}{\pportwoptFoo{}}
+\providecommand{\sportwoptR}{\sportwoptFoo{\Rbuj,}}
+\providecommand{\pportwoptR}{\pportwoptFoo{\Rbuj,}}
+
+\providecommand{\sportwoptG}[1]{\sportw[*,#1]}
+\providecommand{\pportwoptG}[1]{\pportw[*,#1]}
+
+\providecommand{\sportv}[1][{}]{\vectUL{\hat{v}}{}{#1}}
+\providecommand{\sportvopt}{\sportv[*]}
+
+\providecommand{\pportx}[1][{}]{\vectUL{\xi}{}{#1}}
+\providecommand{\sportx}[1][{}]{\vectUL{\hat{\xi}}{}{#1}}
+
+% ouch! should these use PASSTHROUGH instead? bleah.
+%\providecommand{\sportW}[1][{}]{\vectUL{\hat{\uppercase{\prvPortfolio}}}{}{#1}}
+\providecommand{\pportW}[1][{}]{\MtxUL{\prvPortfolioPass}{}{#1}}
+\providecommand{\sportW}[1][{}]{\MtxUL{\hat{\prvPortfolioPass}}{}{#1}}
+\providecommand{\sportWoptFoo}[1]{\sportW[{#1}*]}
+\providecommand{\pportWoptFoo}[1]{\pportW[{#1}*]}
+\providecommand{\sportWopt}{\sportWoptFoo{}}
+\providecommand{\pportWopt}{\pportWoptFoo{}}
+
+% basis vectors
+\providecommand{\basev}[1][]{\vectUL{e}{}{#1}}
+
+% functions
+\providecommand{\farcsin}[1]{\funcit{\arcsin}{#1}}
+\providecommand{\farctan}[1]{\funcit{\arctan}{#1}}
+
+\providecommand{\ftan}[2][{}]{\funcitUL{\tan}{#1}{}{#2}}
+\providecommand{\fsin}[2][{}]{\funcitUL{\sin}{#1}{}{#2}}
+\providecommand{\fcos}[2][{}]{\funcitUL{\cos}{#1}{}{#2}}
+\providecommand{\fcot}[2][{}]{\funcitUL{\cot}{#1}{}{#2}}
+
+% named functions
+\providecommand{\fntas}[1]{\funcit{\mathSUB{f}{\mbox{tas}}}{#1}}
+\providecommand{\fnbtas}[1]{\funcit{\mathSUB{\bar{f}}{\mbox{tas}}}{#1}}
+\providecommand{\fngom}[1]{\funcit{\mathSUB{f}{\mbox{log}}}{#1}}
+\providecommand{\fnmog}[1]{\funcit{\mathSUB{f}{\mbox{exp}}}{#1}}
+
+\providecommand{\flog}[1]{\funcit{\operatorname{log}}{#1}}
+
+
+%UNFOLD
+%
+
+\providecommand{\stratrc}[1][]{\mathSUB{\theta}{#1}}
+
+%\providecommand{\rcode}[1]{\texttt{\verb{#1}}}
+\providecommand{\Rcode}[1]{{\texttt{#1}}}
+% stolen from synapter vignette:
+\providecommand{\Rfunction}[1]{{\texttt{#1}}}
+\providecommand{\Robject}[1]{{\texttt{#1}}}
+\providecommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+% http://tex.stackexchange.com/a/105562/2530
+%\providecommand{\Rlang}{\textsf{R}\xspace}
+\providecommand{\Rlang}{\textbf{\textsf{R}}\xspace}
+\providecommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+
+\providecommand{\StockTicker}[1]{{\texttt{#1}}}
+%UNFOLD
+
+\providecommand{\DIFFERENTIAL}[1]{\mathrm{d}{#1}}
+\providecommand{\PARTIAL}[1]{\partial {#1}}
+
+\providecommand{\dx}[1][x]{\MATHIT{\,\DIFFERENTIAL{#1}}}
+\providecommand{\px}[1][x]{\MATHIT{\PARTIAL{#1}}}
+%deprecated:
+\providecommand{\dpx}[1][x]{\MATHIT{\PARTIAL{#1}}}
+
+%with differentials d^1 2 / (d 3)^1
+\providecommand{\dbyd}[3][{}]{\MATHIT{\frac{\neUL{\DIFFERENTIAL{}}{#1}{} {#2}}{\neUL{\DIFFERENTIAL{#3}}{#1}{}}}}
+
+% conditional on
+\providecommand{\condl}[1]{\MATHIT{\left|{#1}\right.}}
+\providecommand{\condtwo}[2]{\MATHIT{{#1}\condl{#2}}}
+
+\providecommand{\NORMM}[2]{\ensuremath{\left\|{#2}\right\|_{#1}}\xspace}
+\providecommand{\norm}[2][2]{\NORMM{#1}{#2}}
+
+
+
+% R packages.
+% see: https://stat.ethz.ch/pipermail/r-help/2007-November/144810.html
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\let\proglang=\textsf
+\let\code=\texttt
+\newcommand{\CRANpkg}[1]{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\newcommand{\SharpeR}{\CRANpkg{SharpeR}\xspace}
+\newcommand{\MarkowitzR}{\CRANpkg{MarkowitzR}\xspace}
+\newcommand{\PDQutils}{\CRANpkg{PDQutils}\xspace}
+\newcommand{\sadists}{\CRANpkg{sadists}\xspace}
+
+%for vim modeline: (do not edit)
+% vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=%%s:syn=latex:ft=latex
+
+%UNFOLD
 
 \providecommand{\sideWarning}[1][0.5]{\marginpar{\hfill\includegraphics[width=#1\marginparwidth]{warning}}}
 
@@ -118,20 +1191,11 @@ LONG.FORM <- FALSE
 mc.resolution <- ifelse(LONG.FORM,1000,200)
 mc.resolution <- max(mc.resolution,100)
 
-library(quantmod)
-options("getSymbols.warning4.0"=FALSE)
-
 library(SharpeR)
 library(madness)
-
-library(curl)
 library(dplyr)
 library(lubridate)
 
-gen_norm <- rnorm
-lseq <- function(from,to,length.out) { 
-	exp(seq(log(from),log(to),length.out = length.out))
-}
 
 ipdf <- data.frame(installed.packages(),stringsAsFactors=FALSE) 
 madness_version <- ipdf[ipdf$Package=='madness','Version']
@@ -660,7 +1724,7 @@ show(sr_vcov(as.matrix(ff3),ope=ope))
 
 In fact, here we have illustrated the computation of the \txtSR of not a single
 asset, but of three assets. We can perform tests of equality of the \txtSNR
-of different assets. \cite{Leung2008,Wright2014}
+of different assets. \cite{Leung2008,wright2014}
 
 <<'sr_demo_2',echo=TRUE,cache=TRUE>>=
 # test whether SMB has same signal-noise as HML:
@@ -887,18 +1951,22 @@ considered earlier. The tail of the data looks as follows:
 data(wff3)
 data(stock_returns)
 allweekly <- stock_returns %>%   
-	mutate(AAPL=100*AAPL,IBM=100*IBM) %>%  # make them percents...
+	mutate(AAPL=100*AAPL,IBM=100*IBM) %>%  
 	left_join(wff3,by='Date') %>%
 	mutate(Mkt_RF=Mkt - RF) %>% 
 	dplyr::select(-Mkt)
 
-tail(allweekly,6) %>% select(-RF) %>% kable(row.names=FALSE)
+tail(allweekly,6) %>% dplyr::select(-RF) %>% knitr::kable(row.names=FALSE)
 @
+<<'fsr_noshow',echo=FALSE,cache=TRUE>>=
+usenames <- gsub('_','\\_',colnames(allweekly))
+@
+
 
 \hfill\break
 We now perform the attributions and test them for significance:
 <<'fsr_demo_1',echo=TRUE,cache=TRUE>>=
-tht <- theta(allweekly %>% select(AAPL,IBM,Mkt_RF,SMB,HML) %>% mutate(one=1.0),xtag='stocks')
+tht <- theta(allweekly %>% dplyr::select(AAPL,IBM,Mkt_RF,SMB,HML) %>% mutate(one=1.0),xtag='stocks')
 
 thinv_aapl <- chol(solve(tht[c(1,3,4,5,6),c(1,3,4,5,6)]))
 thinv_ibm <- chol(solve(tht[c(2,3,4,5,6),c(2,3,4,5,6)]))
@@ -954,8 +2022,8 @@ Here we compute the \txtMP on the
 \Sexpr{allweekly[1,]$Date} to 
 \Sexpr{allweekly[nrow(allweekly),]$Date}, of 
 the Fama-French three factor data and of
-\StockTicker{\Sexpr{colnames(allweekly)[2]}} and 
-\StockTicker{\Sexpr{colnames(allweekly)[3]}} discussed above\footnote{It should be
+\StockTicker{\Sexpr{usenames[2]}} and 
+\StockTicker{\Sexpr{usenames[3]}} discussed above\footnote{It should be
 recognized that one can \emph{not} trade on the Fama French factors directly,
 that there is a selection bias in our choice of stocks, and so on. This is just
 an example.}.
@@ -1021,19 +2089,21 @@ the weight for \StockTicker{AAPL} is relatively unchanged.
 data(wff3)
 wff3$Mkt_RF <- wff3$Mkt - wff3$RF
 ff3 <- wff3[,c('Mkt_RF','SMB','HML')]
+#usenames <- gsub('_','\\_',colnames(ff3))
+usenames <- gsub('_','',colnames(ff3))
 @
 
 We can trivially use the covariance computed by \Rfunction{twomoments} to
 compute a correlation matrix. Here we demonstrate this use on the Fama
 French three factor weekly returns. We compute the Wald statistics
 of the three off-diagonal correlations, finding that the correlation of weekly
-returns between \StockTicker{\Sexpr{colnames(ff3)[1]}} and 
-\StockTicker{\Sexpr{colnames(ff3)[2]}}, and between
-returns between \StockTicker{\Sexpr{colnames(ff3)[1]}} and 
-\StockTicker{\Sexpr{colnames(ff3)[3]}} is likely to be significantly non-zero,
+returns between \StockTicker{\Sexpr{usenames[1]}} and 
+\StockTicker{\Sexpr{usenames[2]}}, and between
+returns between \StockTicker{\Sexpr{usenames[1]}} and 
+\StockTicker{\Sexpr{usenames[3]}} is likely to be significantly non-zero,
 while the correlation between 
-\StockTicker{\Sexpr{colnames(ff3)[2]}} and 
-\StockTicker{\Sexpr{colnames(ff3)[3]}} is apparently very close to zero:
+\StockTicker{\Sexpr{usenames[2]}} and 
+\StockTicker{\Sexpr{usenames[3]}} is apparently very close to zero:
 
 
 <<'correlation_show_1',echo=TRUE,cache=TRUE>>=
@@ -1114,7 +2184,7 @@ code.
 %\bibliographystyle{ieeetr}
 \bibliographystyle{plainnat}
 %\bibliographystyle{acm}
-\bibliography{common,rauto,runauto}
+\bibliography{common,rauto}
 %\bibliography{AsymptoticMarkowitz}
 <<gen_bibliography,echo=FALSE>>=
 # generate the bibliography#FOLDUP
