@@ -1698,10 +1698,10 @@ Johnson and Welch, Jobson and Korkie,
 and others.  \cite{Johnson:1940,jobsonkorkie1981,lo2002} This statistic, and
 its approximate standard error, can easily be computed with a \madobj object,
 here applied to the Fama-French 3 factors weekly returns.
-\cite{Fama_French_1992} The data were downloaded from Quandl, and
-represent \Sexpr{nrow(wff3)} weeks of data, from 
+\cite{Fama_French_1992} The data were downloaded from French's website, and
+comprise \Sexpr{nrow(wff3)} weeks of data, from 
 \Sexpr{wff3$Date[1]} to
-\Sexpr{wff3$Date[nrow(wff3)]}. \cite{Quandl}
+\Sexpr{wff3$Date[nrow(wff3)]}. 
 
 <<'sr_demo_1',echo=TRUE,cache=TRUE>>=
 data(wff3)

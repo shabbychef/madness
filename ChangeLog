@@ -1,9 +1,10 @@
 
-2018-08-23 Steven E. Pav <shabbychef@gmail.com>
+2018-08-26 Steven E. Pav <shabbychef@gmail.com>
 * CRAN release, version 0.2.4
 * adding to tests.
 * fix scalar to array promotion.
 * fix aperm vtag bug.
+* add FF3 and stock returns data to build vignette.
 
 2018-02-14 Steven E. Pav <shabbychef@gmail.com>
 * CRAN emergency release, version 0.2.3
