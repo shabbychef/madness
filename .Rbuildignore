@@ -36,3 +36,4 @@ fooz
 submodule_directions.sh
 ^data-raw$
 Rd2.pdf
+^.R$
