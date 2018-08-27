@@ -3,7 +3,6 @@
 \docType{data}
 \name{stock_returns}
 \alias{stock_returns}
-\alias{stock_returns}
 \title{Stock Returns Data}
 \format{A \code{data.frame} object with 1930 observations and 3 columns
 The columns are defined as follows:
@@ -22,33 +21,19 @@ Data were collated from Quandl on August 25, 2018, from
 \url{https://www.quandl.com/data/EOD/AAPL-Apple-Inc-AAPL-Stock-Prices-Dividends-and-Splits}
 and 
 \url{https://www.quandl.com/data/EOD/IBM-International-Business-Machines-Corporation-IBM-Stock-Prices-Dividends-and-Splits}.
-
-Data were collated from Quandl on August 25, 2018, from
-\url{https://www.quandl.com/data/EOD/AAPL-Apple-Inc-AAPL-Stock-Prices-Dividends-and-Splits}
-and 
-\url{https://www.quandl.com/data/EOD/IBM-International-Business-Machines-Corporation-IBM-Stock-Prices-Dividends-and-Splits}.
 }
 \usage{
 data(stock_returns)
-
-data(stock_returns)
 }
 \description{
-Historical weekly relative returns of common shares of IBM and AAPL, 
-downloaded from Quandl.
-
 Historical weekly relative returns of common shares of IBM and AAPL, 
 downloaded from Quandl.
 }
 \examples{
 data(stock_returns)
 str(stock_returns)
-data(stock_returns)
-str(stock_returns)
 }
 \author{
-Steven E. Pav \email{shabbychef@gmail.com}
-
 Steven E. Pav \email{shabbychef@gmail.com}
 }
 \keyword{data}

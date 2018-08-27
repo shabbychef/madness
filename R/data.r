@@ -54,37 +54,6 @@
 #' str(stock_returns)
 "stock_returns"
 
-#' @title Weekly Fama French Factor Returns Data
-#' @description Historical weekly relative returns of common shares of IBM and AAPL, 
-#' downloaded from Quandl.
-#' @usage data(stock_returns)
-#' @format A \code{data.frame} object with 1930 observations and 3 columns
-#' The columns are defined as follows:
-#' \describe{
-#'  \item{\code{Date}}{The closing date at which the return was observed, as a \code{Date} object.
-#'  These are Friday dates, ranging from January 1981 through December 2017.}
-#'  \item{\code{AAPL}}{The simple returns of AAPL common shares, based on
-#'  weekly (adjusted) close prices.  A value of \code{0.01} corresponds to a one percent return.
-#'  Close prices are adjusted for splits and dividends by Quandl.}
-#'  \item{\code{IBM}}{The simple returns of IBM common shares, based on
-#'  weekly (adjusted) close prices.  A value of \code{0.01} corresponds to a one percent return.
-#'  Close prices are adjusted for splits and dividends by Quandl.}
-#' }
-#' @source 
-#' Data were collated from Quandl on August 25, 2018, from
-#' \url{https://www.quandl.com/data/EOD/AAPL-Apple-Inc-AAPL-Stock-Prices-Dividends-and-Splits}
-#' and 
-#' \url{https://www.quandl.com/data/EOD/IBM-International-Business-Machines-Corporation-IBM-Stock-Prices-Dividends-and-Splits}.
-#' @template etc
-#' @name stock_returns 
-#' @rdname stock_returns 
-#' @docType data
-#' @keywords data
-#' @examples
-#' data(stock_returns)
-#' str(stock_returns)
-"stock_returns"
-
 #' @title Weekly Fama French 3 Factor Returns
 #' @description The weekly returns of the 3 Fama French Factors: Market, the cap factor SMB, 
 #' and the growth factor HML.
