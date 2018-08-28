@@ -2184,14 +2184,14 @@ code.
 %\bibliographystyle{ieeetr}
 \bibliographystyle{plainnat}
 %\bibliographystyle{acm}
-\bibliography{common,rauto}
+\bibliography{common}
 %\bibliography{AsymptoticMarkowitz}
 <<gen_bibliography,echo=FALSE>>=
 # generate the bibliography#FOLDUP
 #see also
 #http://r.789695.n4.nabble.com/Automating-citations-in-Sweave-td872079.html
 
-FID <- file("rauto.bib", "w")  # open an output file connection
+#FID <- file("rauto.bib", "w")  # open an output file connection
 
 cite.by.name <- function(x){ 
 	res <- toBibtex(citation(x)) 
@@ -2209,8 +2209,8 @@ cite.by.name <- function(x){
 	cat(res,file = FID, sep = "\n")
 	return(NULL)
 } 
-z <- sapply( .packages(TRUE), function(x) try( cite.by.name(x) ) )
-close(FID)
+#z <- sapply( .packages(TRUE), function(x) try( cite.by.name(x) ) )
+#close(FID)
 #UNFOLD
 @
 %UNFOLD
