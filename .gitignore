@@ -39,3 +39,5 @@ cache/
 .Rhistory
 .docker_img
 Rd2.pdf
+
+.R/
