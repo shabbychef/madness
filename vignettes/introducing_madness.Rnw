@@ -1578,11 +1578,15 @@ Xmad <- theta(X)
 show(Xmad)
 
 # more 'exotic' variance-covariance:
-require(sandwich)
+library(sandwich)
 set.seed(1111)
 X <- matrix(rnorm(100*2),ncol=2)
-twom <- twomoments(X,vcov=sandwich::vcovHAC)
-show(twom)
+# this apparently does not run under alternative BLAS, and 
+# so CRAN precludes me from executing this code in the vignette,
+# which is absurd.
+
+#twom <- twomoments(X,vcov=sandwich::vcovHAC)
+#show(twom)
 @
 
 \subsection{Methods}
