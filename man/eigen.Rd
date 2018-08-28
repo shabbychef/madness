@@ -16,8 +16,8 @@ whose spectral decomposition is to be computed.}
 
 \item{symmetric}{if \code{TRUE}, the matrix is assumed to be symmetric
     (or Hermitian if complex) and only its lower triangle (diagonal
-    included) is used.  If \code{symmetric} is not specified, the matrix
-    is inspected for symmetry.}
+    included) is used.  If \code{symmetric} is not specified,
+    \code{\link{isSymmetric}(x)} is used.}
 
 \item{only.values}{if \code{TRUE}, only the eigenvalues are computed
     and returned, otherwise both eigenvalues and eigenvectors are

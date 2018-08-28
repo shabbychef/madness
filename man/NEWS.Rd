@@ -10,12 +10,13 @@ News for package \sQuote{madness}.
 \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\madness}{\CRANpkg{madness}}
 }
-\section{\madness{} Version 0.2.4 (2018-08-26) }{
+\section{\madness{} Version 0.2.4 (2018-08-27) }{
 
 \itemize{
 \item adding to unit tests.
 \item fix scalar to array promotion.
 \item fix broken vtag in aperm.
+\item add vignette source and data for same.
 }
 }
 
