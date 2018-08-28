@@ -18,6 +18,9 @@ RPKG_USES_RCPP 		:= 0
 
 include ./rpkg_make/Makefile
 
+# I would try this to use openBLAS, but it does not seem to make any difference.
+# DOCKER_EXTRA_ENV 		= -e LD_LIBRARY_PATH=/usr/lib/openblas-base
+
 rpkg_make :  ## initialize the Makefile in rpkg_make
 	git submodule add https://github.com/shabbychef/rpkg_make.git rpkg_make
 	git submodule init
