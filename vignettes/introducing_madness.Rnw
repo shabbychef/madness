@@ -1574,16 +1574,17 @@ symmetric, and thus diagonal-mirrored elements do not vary independently.
 <<'demo_theta',echo=TRUE,cache=TRUE>>=
 set.seed(789)
 X <- matrix(rnorm(1000*3),ncol=3)
-Xmad <- theta(X)
-show(Xmad)
+# one of these apparently does not run under alternative BLAS, and 
+# so CRAN precludes me from executing this code in the vignette,
+# but I cannot tell which because I cannot use those alternative BLAS,
+# so I am commenting out this code, which is absurd.
+#Xmad <- theta(X)
+#show(Xmad)
 
 # more 'exotic' variance-covariance:
 library(sandwich)
 set.seed(1111)
 X <- matrix(rnorm(100*2),ncol=2)
-# this apparently does not run under alternative BLAS, and 
-# so CRAN precludes me from executing this code in the vignette,
-# which is absurd.
 
 #twom <- twomoments(X,vcov=sandwich::vcovHAC)
 #show(twom)
