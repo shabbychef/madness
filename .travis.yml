@@ -6,6 +6,7 @@ addons:
      packages:
        - libopenblas-dev
        - libatlas-base-dev
+       - liblapack3
        - lsof
 
 env:
@@ -13,9 +14,16 @@ env:
 
 language: r
 
+    # ignore for now:
+    # /usr/lib/libblas/libblas.so.3
+    # /usr/lib/openblas-base/libblas.so.3
+    # /usr/lib/lapack/liblapack.so.3
+    
 before_install: 
   - update-alternatives --list libblas.so.3
   - update-alternatives --list liblapack.so.3
+  - update-alternatives --set libblas.so.3 /usr/lib/atlas-base/atlas/libblas.so.3
+  - update-alternatives --set liblapack.so.3 /usr/lib/atlas-base/atlas/liblapack.so.3
   - Rscript --vanilla -e "grep('blas', system2('lsof', c('-p', Sys.getpid()), stdout=TRUE), value = TRUE)"
 
 sudo: false
