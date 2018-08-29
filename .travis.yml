@@ -7,6 +7,9 @@ addons:
        - libopenblas-dev
        - libatlas-base-dev
 
+env:
+  - LD_LIBRARY_PATH=/usr/lib/openblas-base
+
 language: r
 
 sudo: false
@@ -30,6 +33,7 @@ r_build_args : " --compact-vignettes=gs+qpdf"
 r_check_args : "--as-cran"
 
 after_success:
+  - Rscript -q -e "grep('blas', system2('lsof', c('-p', Sys.getpid()), stdout=TRUE), value = TRUE)"
   - Rscript -e 'library(covr);codecov()'
 
 notifications:
