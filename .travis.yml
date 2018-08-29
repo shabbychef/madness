@@ -22,8 +22,8 @@ language: r
 before_install: 
   - update-alternatives --list libblas.so.3
   - update-alternatives --list liblapack.so.3
-  - update-alternatives --set libblas.so.3 /usr/lib/atlas-base/atlas/libblas.so.3
-  - update-alternatives --set liblapack.so.3 /usr/lib/atlas-base/atlas/liblapack.so.3
+  - sudo update-alternatives --set libblas.so.3 /usr/lib/atlas-base/atlas/libblas.so.3
+  - sudo update-alternatives --set liblapack.so.3 /usr/lib/atlas-base/atlas/liblapack.so.3
   - Rscript --vanilla -e "grep('blas', system2('lsof', c('-p', Sys.getpid()), stdout=TRUE), value = TRUE)"
 
 sudo: false
