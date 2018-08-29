@@ -6,11 +6,15 @@ addons:
      packages:
        - libopenblas-dev
        - libatlas-base-dev
+       - lsof
 
 env:
   - LD_LIBRARY_PATH=/usr/lib/openblas-base
 
 language: r
+
+before_install: 
+  - Rscript -vanilla -e "grep('blas', system2('lsof', c('-p', Sys.getpid()), stdout=TRUE), value = TRUE)"
 
 sudo: false
 
@@ -32,8 +36,8 @@ r_build_args : " --compact-vignettes=gs+qpdf"
 # https://github.com/travis-ci/travis-ci/issues/3697
 r_check_args : "--as-cran"
 
+
 after_success:
-  - Rscript -q -e "grep('blas', system2('lsof', c('-p', Sys.getpid()), stdout=TRUE), value = TRUE)"
   - Rscript -e 'library(covr);codecov()'
 
 notifications:
