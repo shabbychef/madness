@@ -1,6 +1,12 @@
 # see https://docs.travis-ci.com/user/languages/r
 # and http://blog.rstudio.org/2016/03/09/r-on-travis-ci/
 
+addons:
+  apt:
+     packages:
+       - libopenblas-dev
+       - libatlas-base-dev
+
 language: r
 
 sudo: false
