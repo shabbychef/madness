@@ -14,7 +14,7 @@ env:
 language: r
 
 before_install: 
-  - Rscript -vanilla -e "grep('blas', system2('lsof', c('-p', Sys.getpid()), stdout=TRUE), value = TRUE)"
+  - Rscript --vanilla -e "grep('blas', system2('lsof', c('-p', Sys.getpid()), stdout=TRUE), value = TRUE)"
 
 sudo: false
 
