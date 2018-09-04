@@ -1,3 +1,7 @@
 pandoc
 ghostscript
 qpdf
+libopenblas-dev
+libatlas-base-dev
+liblapack3
+lsof

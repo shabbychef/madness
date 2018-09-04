@@ -39,3 +39,4 @@ Rd2.pdf
 ^.R$
 ^.staging$
 ^.local$
+blascheck.sh

@@ -1578,16 +1578,16 @@ X <- matrix(rnorm(1000*3),ncol=3)
 # so CRAN precludes me from executing this code in the vignette,
 # but I cannot tell which because I cannot use those alternative BLAS,
 # so I am commenting out this code, which is absurd.
-#Xmad <- theta(X)
-#show(Xmad)
+Xmad <- theta(X)
+show(Xmad)
 
 # more 'exotic' variance-covariance:
 library(sandwich)
 set.seed(1111)
 X <- matrix(rnorm(100*2),ncol=2)
 
-#twom <- twomoments(X,vcov=sandwich::vcovHAC)
-#show(twom)
+twom <- twomoments(X,vcov=sandwich::vcovHAC)
+show(twom)
 @
 
 \subsection{Methods}
