@@ -4,7 +4,6 @@
 \name{det}
 \alias{det}
 \alias{determinant.madness}
-\alias{det}
 \alias{determinant,madness,ANY-method}
 \alias{determinant}
 \alias{determinant,madness,missing-method}

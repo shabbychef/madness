@@ -4,7 +4,6 @@
 \name{outer}
 \alias{outer}
 \alias{outer,ANY,ANY-method}
-\alias{outer}
 \alias{outer,madness,madness-method}
 \alias{outer,madness,array-method}
 \alias{outer,array,madness-method}

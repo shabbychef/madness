@@ -4,7 +4,6 @@
 \name{max}
 \alias{max}
 \alias{max,madness-method}
-\alias{max}
 \alias{min,madness-method}
 \alias{min}
 \title{Maxima and Minima}

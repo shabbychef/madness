@@ -90,6 +90,13 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
+#' @section \madness{} Version 0.2.6 (2019-04-19) :
+#' \itemize{
+#' \item emergency CRAN release to deal with change in generic
+#' signature for \code{colSums}, \code{colMeans},
+#' \code{rowSums}, \code{rowMeans}.
+#' }
+#'
 #' @section \madness{} Version 0.2.5 (2018-08-27) :
 #' \itemize{
 #' \item emergency CRAN release to deal with failing vignette on alternative

@@ -3,7 +3,6 @@
 \name{as.madness}
 \alias{as.madness}
 \alias{as.madness.default}
-\alias{as.madness}
 \title{Coerce to a madness object.}
 \usage{
 as.madness(x, vtag=NULL, xtag=NULL)

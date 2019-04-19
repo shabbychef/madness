@@ -5,7 +5,6 @@
 \alias{todiag}
 \alias{diag,madness-method}
 \alias{diag}
-\alias{todiag}
 \alias{todiag,madness-method}
 \title{Diagonal Operations}
 \usage{

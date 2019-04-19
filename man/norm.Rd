@@ -3,14 +3,11 @@
 \docType{methods}
 \name{norm}
 \alias{norm}
-\alias{norm}
 \alias{maxeig}
 \alias{maxeig,madness-method}
-\alias{norm}
 \alias{norm,madness-method}
 \alias{norm,madness,missing-method}
 \alias{norm,madness,ANY-method}
-\alias{norm,madness-method}
 \title{Matrix and vector norms.}
 \usage{
 maxeig(x)

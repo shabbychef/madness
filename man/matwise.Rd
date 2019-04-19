@@ -3,7 +3,6 @@
 \docType{methods}
 \name{matwise}
 \alias{matwise}
-\alias{matwise}
 \alias{sqrtm}
 \alias{sqrtm,madness-method}
 \alias{chol.madness}

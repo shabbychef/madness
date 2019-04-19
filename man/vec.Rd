@@ -3,7 +3,6 @@
 \docType{methods}
 \name{vec}
 \alias{vec}
-\alias{vec}
 \alias{vec,madness-method}
 \alias{vec,array-method}
 \alias{vech}

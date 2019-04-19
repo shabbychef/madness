@@ -3,7 +3,6 @@
 \docType{methods}
 \name{eigen}
 \alias{eigen}
-\alias{eigen}
 \alias{eigen,madness-method}
 \title{Spectral Decomposition of a Matrix}
 \usage{
