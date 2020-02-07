@@ -383,7 +383,7 @@ test_that("solve functions",{#FOLDUP
 	expect_small_err(xval,function(x) { solve(x,yval) },eps=1e-6,errtol=1e-6)
 	expect_small_err(xval,function(x) { solve(x,x[,1,drop=FALSE]) },eps=1e-6,errtol=1e-5)
 	expect_small_err(xval,function(x) { solve(xval,x[,1,drop=FALSE]) },eps=1e-6,errtol=1e-5)
-	expect_small_err(xval,function(x) { solve(x,as.numeric(yval)) },eps=1e-6,errtol=1e-6)
+	expect_small_err(xval,function(x) { solve(x,yval) },eps=1e-6,errtol=1e-6)
 
 	# numeric left only works in 1d case. so be degenerate
 	xval <- array(rnorm(1),dim=c(1,1))
