@@ -14,7 +14,7 @@ r:
 r_github_packages :
   - jimhester/covr
 
-warnings_are_errors : true
+warnings_are_errors : false
 
 r_build_args : " --compact-vignettes=gs+qpdf"
 
