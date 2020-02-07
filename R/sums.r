@@ -42,7 +42,6 @@ NULL
 #'
 #' @include AllClass.r
 #' @param x \code{madness} object.
-#' @param ... potentially further arguments, for method \sQuote{<->} generic compatibility.
 #' @inheritParams base::colSums 
 #' @inheritParams base::rowSums 
 #' @inheritParams base::colMeans

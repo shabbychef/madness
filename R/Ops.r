@@ -504,7 +504,6 @@ setMethod("%*%", signature(x="array",y="madness"),
 
 # cross product!#FOLDUP
 
-#' @param ... ignored here.
 #' @rdname marithops
 #' @aliases crossprod
 #' @exportMethod crossprod

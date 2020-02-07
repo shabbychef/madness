@@ -8,8 +8,14 @@
 \alias{madness}
 \title{Madness Class.}
 \usage{
-\S4method{initialize}{madness}(.Object, val, dvdx, xtag = NA_character_,
-  vtag = NA_character_, varx = matrix(nrow = 0, ncol = 0))
+\S4method{initialize}{madness}(
+  .Object,
+  val,
+  dvdx,
+  xtag = NA_character_,
+  vtag = NA_character_,
+  varx = matrix(nrow = 0, ncol = 0)
+)
 
 madness(val, dvdx = NULL, vtag = NULL, xtag = NULL, varx = NULL)
 }

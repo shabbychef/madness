@@ -90,6 +90,11 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
 #'
+#' @section \madness{} Version 0.2.7 (2020-02-07) :
+#' \itemize{
+#' \item emergency CRAN release to deal with ellipsis in documentation.
+#' }
+#'
 #' @section \madness{} Version 0.2.6 (2019-04-19) :
 #' \itemize{
 #' \item emergency CRAN release to deal with change in generic
