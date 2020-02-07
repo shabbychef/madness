@@ -109,7 +109,6 @@ setMethod("maxeig", signature(x="madness"),
 
 
 #' @name norm
-#' @rdname norm
 #' @aliases norm norm,madness-method norm,madness,missing-method
 #' @exportMethod norm
 #' @rdname norm

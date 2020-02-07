@@ -3,7 +3,6 @@
 \name{matrix.trace}
 \alias{matrix.trace}
 \alias{matrix.trace,ANY-method}
-\alias{matrix.trace,matrix-method}
 \alias{matrix.trace,madness-method}
 \title{Matrix Trace}
 \usage{

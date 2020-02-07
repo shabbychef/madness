@@ -47,7 +47,6 @@ NULL
 #' @template etc
 NULL
 
-#' @rdname todiag
 #' @aliases diag
 #' @exportMethod diag
 #' @rdname todiag

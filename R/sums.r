@@ -50,7 +50,6 @@ NULL
 #' @return a \code{madness} object. Note that the sums are flattened to a
 #' column vector.
 #' @name colsums
-#' @rdname colsums
 #' @exportMethod colSums
 #' @aliases colSums colSums,madness-method
 #' @template etc
@@ -75,7 +74,6 @@ setMethod("colSums", signature(x="madness"),
 
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
-#' @rdname colsums
 #' @exportMethod colMeans
 #' @aliases colMeans colMeans,madness-method
 #' @rdname colsums
@@ -102,7 +100,6 @@ setMethod("colMeans", signature(x="madness"),
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
-#' @rdname colsums
 #' @exportMethod rowSums
 #' @aliases rowSums rowSums,madness-method
 #' @rdname colsums
@@ -127,7 +124,6 @@ setMethod("rowSums", signature(x="madness"),
 
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
-#' @rdname colsums
 #' @exportMethod rowMeans
 #' @aliases rowMeans rowMeans,madness-method
 #' @rdname colsums

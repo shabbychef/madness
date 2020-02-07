@@ -20,11 +20,11 @@
 \alias{tcrossprod,ANY,madness-method}
 \title{Basic Matrix Arithmetic Operations.}
 \usage{
-\S4method{\\\%*\\\%}{madness,madness}(x, y)
+\S4method{\%*\%}{madness,madness}(x, y)
 
-\S4method{\\\%*\\\%}{madness,array}(x, y)
+\S4method{\%*\%}{madness,array}(x, y)
 
-\S4method{\\\%*\\\%}{array,madness}(x, y)
+\S4method{\%*\%}{array,madness}(x, y)
 
 \S4method{crossprod}{madness,madness}(x, y)
 

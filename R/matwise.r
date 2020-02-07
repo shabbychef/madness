@@ -54,7 +54,6 @@ NULL
 # 2FIX: add logm, expm
 
 #' @name matwise
-#' @rdname matwise
 #' @aliases sqrtm sqrtm,madness-method
 #' @importFrom expm sqrtm
 #' @exportMethod sqrtm

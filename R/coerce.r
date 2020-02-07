@@ -57,7 +57,6 @@ setAs(from='madness', to='complex', def=function(from) as.complex(val(from)) )
 #setGeneric('as.matrix', signature="x", function(x,...) standardGeneric('as.matrix'))
 #setGeneric('as.numeric', signature="x", function(x,...) standardGeneric('as.numeric'))
 
-#' @rdname as
 #' @aliases as.array
 #' @exportMethod as.array
 #' @param x a \code{madness} object
@@ -66,14 +65,12 @@ setAs(from='madness', to='complex', def=function(from) as.complex(val(from)) )
 #' @aliases as.array,madness-method
 setMethod('as.array', 'madness', function(x,...) { as(x,'array') })
 
-#' @rdname as
 #' @aliases as.matrix
 #' @exportMethod as.matrix
 #' @rdname as
 #' @aliases as.matrix,madness-method
 setMethod('as.matrix', 'madness', function(x,...) { as(x,'matrix') })
 
-#' @rdname as
 #' @aliases as.numeric
 #' @exportMethod as.numeric
 #' @rdname as

@@ -4,8 +4,8 @@ Authors@R: c(person(c("Steven", "E."), "Pav",
     role=c("aut","cre"),
     email="shabbychef@gmail.com",
     comment = c(ORCID = "0000-0002-4197-6195")))
-Version: 0.2.6
-Date: 2019-04-18
+Version: 0.2.7
+Date: 2020-02-07
 License: LGPL-3
 Title: Automatic Differentiation of Multivariate Operations
 BugReports: https://github.com/shabbychef/madness/issues
@@ -33,8 +33,6 @@ URL: https://github.com/shabbychef/madness
 VignetteBuilder: knitr
 Collate:
     'AllClass.r'
-    'utils.r'
-    'Ops.r'
     'bind.r'
     'blockrep.r'
     'coerce.r'
@@ -48,6 +46,7 @@ Collate:
     'max.r'
     'norm.r'
     'numderiv.r'
+    'Ops.r'
     'reshape.r'
     'solve.r'
     'sum.r'
@@ -56,6 +55,6 @@ Collate:
     'to_objective.r'
     'trace.r'
     'twomoments.r'
+    'utils.r'
     'vcov.r'
     'vec.r'
-RoxygenNote: 7.0.0

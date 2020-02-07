@@ -48,7 +48,6 @@ NULL
 
 # transpose#FOLDUP
 
-#' @rdname reshapes
 #' @aliases t
 #' @exportMethod t
 #' @rdname reshapes
@@ -64,7 +63,6 @@ setMethod("t", signature(x="madness"),
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
-#' @rdname reshapes
 #' @aliases tril
 #' @importFrom Matrix tril
 #' @exportMethod tril
@@ -84,7 +82,6 @@ setMethod("tril", signature(x="madness"),
 						new("madness", val=val, dvdx=dvdx, vtag=vtag, xtag=xtag, varx=varx)
 					})
 
-#' @rdname reshapes
 #' @aliases triu
 #' @importFrom Matrix triu
 #' @exportMethod triu

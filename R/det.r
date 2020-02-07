@@ -93,10 +93,8 @@ environment(det) <- environment()
 ## MM: do _NOT_  setGeneric() on existing functions! (==> conflict other pkg methods!)
 #setGeneric('determinant', function(x,logarithm=TRUE,...) standardGeneric('determinant'))
 
-#' @rdname det
 #' @exportMethod determinant
 #' @aliases determinant
-
 #' @rdname det
 #' @aliases determinant,madness,missing-method
 setMethod("determinant", signature(x="madness"),determinant.madness)

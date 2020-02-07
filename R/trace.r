@@ -38,8 +38,8 @@ setGeneric('matrix.trace', function(x) standardGeneric('matrix.trace'))
 
 # det#FOLDUP
 
-##' @rdname matrix.trace
-##' @aliases matrix.trace,matrix-method
+## ' @rdname matrix.trace
+## ' @aliases matrix.trace,matrix-method
 #setMethod("matrix.trace", signature(x="matrix"),function(x) { sum(diag(x)) })
 
 #' @rdname matrix.trace

@@ -86,7 +86,6 @@ NULL
 #setGeneric('eigen', function(x,symmetric,only.values=FALSE,EISPACK=FALSE) standardGeneric('eigen'))
 
 #' @name eigen
-#' @rdname eigen
 #' @exportMethod eigen
 #' @rdname eigen
 #' @aliases eigen,madness-method

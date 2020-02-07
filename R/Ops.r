@@ -504,7 +504,6 @@ setMethod("%*%", signature(x="array",y="madness"),
 
 # cross product!#FOLDUP
 
-#' @rdname marithops
 #' @aliases crossprod
 #' @exportMethod crossprod
 #' @rdname marithops
@@ -527,7 +526,6 @@ setMethod("crossprod", signature(x="madness",y="missing"),
 setMethod("crossprod", signature(x="ANY",y="madness"),
 					function(x,y) { t(x) %*% y })
 
-#' @rdname marithops
 #' @aliases tcrossprod
 #' @exportMethod tcrossprod
 #' @rdname marithops
@@ -586,7 +584,6 @@ setMethod("tcrossprod", signature(x="ANY",y="madness"),
 #' @name outer
 NULL
 
-#' @rdname outer
 #' @aliases outer
 #' @exportMethod outer
 #' @rdname outer
