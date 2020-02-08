@@ -30,6 +30,7 @@ Suggests:
     formatR,
     knitr
 URL: https://github.com/shabbychef/madness
+LazyData: true
 VignetteBuilder: knitr
 Collate:
     'AllClass.r'

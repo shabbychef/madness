@@ -37,6 +37,8 @@ dnl R.rsp,
     formatR,
     knitr
 URL: https://github.com/shabbychef/PKG_NAME()
+dnl need this otherwise data(wff3) throws a warning
+LazyData: true
 VignetteBuilder: knitr
 dnl VignetteBuilder: R.rsp
 Collate:
