@@ -2,7 +2,7 @@
 
 # madness
 
-[![Build Status](https://travis-ci.org/shabbychef/madness.png)](https://travis-ci.org/shabbychef/madness)
+[![Build Status](https://github.com/shabbychef/madness/workflows/R-CMD-check/badge.svg)](https://github.com/shabbychef/madness/actions)
 [![codecov.io](http://codecov.io/github/shabbychef/madness/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/madness?branch=master)
 [![CRAN](http://www.r-pkg.org/badges/version/madness)](https://cran.r-project.org/package=madness)
 [![Downloads](http://cranlogs.r-pkg.org/badges/madness?color=brightgreen)](http://www.r-pkg.org/pkg/madness)
