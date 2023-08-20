@@ -34,6 +34,8 @@ LazyData: true
 VignetteBuilder: knitr
 Collate:
     'AllClass.r'
+    'utils.r'
+    'Ops.r'
     'bind.r'
     'blockrep.r'
     'coerce.r'
@@ -47,7 +49,6 @@ Collate:
     'max.r'
     'norm.r'
     'numderiv.r'
-    'Ops.r'
     'reshape.r'
     'solve.r'
     'sum.r'
@@ -56,6 +57,6 @@ Collate:
     'to_objective.r'
     'trace.r'
     'twomoments.r'
-    'utils.r'
     'vcov.r'
     'vec.r'
+RoxygenNote: 7.1.1

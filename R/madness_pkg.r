@@ -53,7 +53,6 @@
 #' Fackler, Paul L. "Notes on Matrix Calculus." (2005).
 #' \url{http://www4.ncsu.edu/~pfackler/MatCalc.pdf}
 #'
-#' MM: DO use  @importFrom (whimps use full imports ..) !
 #' @import matrixcalc methods
 #' @importFrom methods cbind2
 #' @importFrom methods rbind2
@@ -77,6 +76,7 @@
 #' This package is maintained as a hobby. 
 #'
 #' @keywords internal
+#' @aliases madness-package
 "_PACKAGE"
 
 # for some reason this ^-- is now needed by roxygen2.

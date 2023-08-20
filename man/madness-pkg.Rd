@@ -2,7 +2,8 @@
 % Please edit documentation in R/madness_pkg.r
 \docType{package}
 \name{madness-pkg}
-\alias{madness}
+\alias{madness-pkg}
+\alias{_PACKAGE}
 \alias{madness-package}
 \title{Multivariate Automatic Differentiation.}
 \description{
@@ -41,8 +42,6 @@ Econometric Theory 2 (1986): 157-190.
 
 Fackler, Paul L. "Notes on Matrix Calculus." (2005).
 \url{http://www4.ncsu.edu/~pfackler/MatCalc.pdf}
-
-MM: DO use  @importFrom (whimps use full imports ..) !
 }
 \seealso{
 Useful links:
