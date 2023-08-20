@@ -2,7 +2,8 @@
 % Please edit documentation in R/madness_pkg.r
 \docType{package}
 \name{madness-pkg}
-\alias{madness-pkg}
+\alias{madness}
+\alias{madness-package}
 \title{Multivariate Automatic Differentiation.}
 \description{
 Automatic Differentiation of Matrix Operations.
@@ -43,9 +44,19 @@ Fackler, Paul L. "Notes on Matrix Calculus." (2005).
 
 MM: DO use  @importFrom (whimps use full imports ..) !
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/shabbychef/madness}
+  \item Report bugs at \url{https://github.com/shabbychef/madness/issues}
+}
+
+}
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
 
-Steven E. Pav \email{shabbychef@gmail.com}
+\strong{Maintainer}: Steven E. Pav \email{shabbychef@gmail.com} (\href{https://orcid.org/0000-0002-4197-6195}{ORCID})
+
 }
+\keyword{internal}
 \keyword{package}

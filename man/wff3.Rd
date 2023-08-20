@@ -4,7 +4,8 @@
 \name{wff3}
 \alias{wff3}
 \title{Weekly Fama French 3 Factor Returns}
-\format{A \code{data.frame} object with 4800 observations and 5 columns.
+\format{
+A \code{data.frame} object with 4800 observations and 5 columns.
 The data run from July, 1926 through June, 2018.
 As in the upstream source, the data are given in \emph{percents}, meaning a
 value of 1.00 corresponds to a 1\% movement.
@@ -20,7 +21,8 @@ The columns are defined as follows:
  \item{\code{RF}}{The risk-free rate, presumably as an weekly rate, though note that no corrections have been
  made for weekend effects when adding the risk-free rate back to the market
  rate.}
-}}
+}
+}
 \source{
 Kenneth French data library, via Quandl. 
 See \url{http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html},

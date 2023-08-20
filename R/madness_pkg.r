@@ -30,8 +30,6 @@
 #' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #' GNU Lesser General Public License for more details.
 #'
-#' @template etc
-#'
 #' @references
 #'
 #' Griewank, Andreas and Walther, Andrea. "Evaluating Derivatives: principles and techniques of algorithmic differentiation."
@@ -78,7 +76,12 @@
 #' 
 #' This package is maintained as a hobby. 
 #'
-NULL
+#' @keywords internal
+"_PACKAGE"
+
+# for some reason this ^-- is now needed by roxygen2.
+# see https://r-pkgs.org/man.html#sec-man-package-doc
+# and https://github.com/r-lib/roxygen2/issues/1491
 
 #' @title News for package \sQuote{madness}:
 #'
@@ -89,6 +92,11 @@ NULL
 #' \newcommand{\pkg}{#1}
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\madness}{\CRANpkg{madness}}
+#'
+#' @section \madness{} Version 0.2.8 (2023-08-20) :
+#' \itemize{
+#' \item emergency CRAN release to fix package documentation.
+#' }
 #'
 #' @section \madness{} Version 0.2.7 (2020-02-07) :
 #' \itemize{

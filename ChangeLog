@@ -1,4 +1,12 @@
 
+2023-08-20 Steven E. Pav <shabbychef@gmail.com>
+* CRAN release, version 0.2.8
+* Fix package documentation.
+
+2020-02-07 Steven E. Pav <shabbychef@gmail.com>
+* CRAN release, version 0.2.7
+* Fix ellipsis in documentation.
+
 2019-04-19 Steven E. Pav <shabbychef@gmail.com>
 * CRAN emergency release, version 0.2.6
 * match new generic signature for colSums, colMeans, 

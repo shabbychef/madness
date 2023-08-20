@@ -17,8 +17,9 @@
 \item{i}{
     indices specifying elements to extract or replace.  Indices are
     \code{numeric} or \code{character} vectors or empty (missing) or
-    \code{NULL}.  Numeric values are coerced to integer as by
-    \code{\link[base]{as.integer}} (and hence truncated towards zero).
+    \code{NULL}.  Numeric values are coerced to integer or whole numbers as
+    by \code{\link[base]{as.integer}} or for large values by \code{\link[base]{trunc}}
+    (and hence truncated towards zero).
     Character vectors will be matched to the \code{\link[base]{names}} of the
     object (or for matrices/arrays, the \code{\link[base]{dimnames}}):
     see \sQuote{Character indices} below for further details.

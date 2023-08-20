@@ -4,8 +4,8 @@ Authors@R: c(person(c("Steven", "E."), "Pav",
     role=c("aut","cre"),
     email="shabbychef@gmail.com",
     comment = c(ORCID = "0000-0002-4197-6195")))
-Version: 0.2.7
-Date: 2020-02-07
+Version: 0.2.8
+Date: 2023-08-20
 License: LGPL-3
 Title: Automatic Differentiation of Multivariate Operations
 BugReports: https://github.com/shabbychef/madness/issues
