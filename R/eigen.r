@@ -72,11 +72,11 @@ NULL
 #'
 #' Izenman, Alan Julian. "Reduced-Rank Regression for the Multivariate Linear
 #' Model." Journal of Multivariate Analysis 5, pp 248-264 (1975).
-#' \url{http://www.sciencedirect.com/science/article/pii/0047259X75900421}
+#' \url{https://www.sciencedirect.com/science/article/pii/0047259X75900421}
 #'
 #' Kato, Tosio. "Perturbation Theory for Linear Operators."
 #' Springer (1995).
-#' \url{http://www.maths.ed.ac.uk/~aar/papers/kato1.pdf}
+#' \url{https://www.maths.ed.ac.uk/~v1ranick/papers/kato1.pdf}
 #'
 #' @name eigen
 #' @template etc

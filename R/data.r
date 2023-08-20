@@ -41,9 +41,9 @@
 #' }
 #' @source 
 #' Data were collated from Quandl on August 25, 2018, from
-#' \url{https://www.quandl.com/data/EOD/AAPL-Apple-Inc-AAPL-Stock-Prices-Dividends-and-Splits}
+#' \url{https://data.nasdaq.com/data/EOD/AAPL-Apple-Inc-AAPL-Stock-Prices-Dividends-and-Splits}
 #' and 
-#' \url{https://www.quandl.com/data/EOD/IBM-International-Business-Machines-Corporation-IBM-Stock-Prices-Dividends-and-Splits}.
+#' \url{https://data.nasdaq.com/data/EOD/IBM-International-Business-Machines-Corporation-IBM-Stock-Prices-Dividends-and-Splits}
 #' @template etc
 #' @name stock_returns 
 #' @rdname stock_returns 

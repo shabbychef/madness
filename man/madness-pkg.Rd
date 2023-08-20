@@ -27,7 +27,7 @@ SIAM (2008).
 
 Petersen, Kaare Brandt and Pedersen, Michael Syskind. "The Matrix Cookbook."
 Technical University of Denmark (2012). 
-\url{http://www2.imm.dtu.dk/pubdb/p.php?3274}
+\url{http://www2.imm.dtu.dk/pubdb/pubs/3274-full.html}
 
 Magnus, Jan R. and Neudecker, H. "Matrix Differential Calculus with Applications in Statistics and Econometrics."
 3rd Edition. Wiley Series in Probability and Statistics: Texts and References Section (2007).
@@ -39,9 +39,6 @@ SIAM Journal on Algebraic Discrete Methods 1, no. 4 (1980): 422-449.
 Magnus, Jan R. and Neudecker, H. "Symmetry, 0-1 Matrices and Jacobians,"
 Econometric Theory 2 (1986): 157-190.
 \url{http://www.janmagnus.nl/papers/JRM014.pdf},
-
-Fackler, Paul L. "Notes on Matrix Calculus." (2005).
-\url{http://www4.ncsu.edu/~pfackler/MatCalc.pdf}
 }
 \seealso{
 Useful links:
