@@ -19,10 +19,12 @@ The columns are defined as follows:
 }
 }
 \source{
-Data were collated from Quandl on August 25, 2018, from
-\url{https://data.nasdaq.com/data/EOD/AAPL-Apple-Inc-AAPL-Stock-Prices-Dividends-and-Splits}
+Data were collated from Quandl on August 25, 2018. This data is no longer
+freely available from Quandl, but may be available directly from Nasdaq,
+see:
+\url{https://www.nasdaq.com/market-activity/stocks/aapl/historical}
 and 
-\url{https://data.nasdaq.com/data/EOD/IBM-International-Business-Machines-Corporation-IBM-Stock-Prices-Dividends-and-Splits}
+\url{https://www.nasdaq.com/market-activity/stocks/ibm/historical}.
 }
 \usage{
 data(stock_returns)

@@ -107,7 +107,7 @@ obj2 <- madness(val=matrix(rnorm(10*10),nrow=10), xtag="foo", vtag="foo^2")
 \references{
 Petersen, Kaare Brandt and Pedersen, Michael Syskind. "The Matrix Cookbook."
 Technical University of Denmark (2012). 
-\url{http://www2.imm.dtu.dk/pubdb/p.php?3274}
+\url{http://www2.imm.dtu.dk/pubdb/pubs/3274-full.html}
 
 Magnus, Jan R. and Neudecker, H. "Matrix Differential Calculus with Applications in Statistics and Econometrics."
 3rd Edition. Wiley Series in Probability and Statistics: Texts and References Section (2007).

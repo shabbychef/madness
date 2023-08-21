@@ -85,11 +85,8 @@
 #' @return An object of class \code{madness}.
 #' @keywords differentiation
 #' @keywords multivariate
+#' @template ref-matrix_cookbook
 #' @references
-#'
-#' Petersen, Kaare Brandt and Pedersen, Michael Syskind. "The Matrix Cookbook."
-#' Technical University of Denmark (2012). 
-#' \url{http://www2.imm.dtu.dk/pubdb/p.php?3274}
 #'
 #' Magnus, Jan R. and Neudecker, H. "Matrix Differential Calculus with Applications in Statistics and Econometrics."
 #' 3rd Edition. Wiley Series in Probability and Statistics: Texts and References Section (2007).

@@ -22,12 +22,12 @@ GNU Lesser General Public License for more details.
 }
 
 \references{
-Griewank, Andreas and Walther, Andrea. "Evaluating Derivatives: principles and techniques of algorithmic differentiation."
-SIAM (2008).
-
 Petersen, Kaare Brandt and Pedersen, Michael Syskind. "The Matrix Cookbook."
 Technical University of Denmark (2012). 
 \url{http://www2.imm.dtu.dk/pubdb/pubs/3274-full.html}
+
+Griewank, Andreas and Walther, Andrea. "Evaluating Derivatives: principles and techniques of algorithmic differentiation."
+SIAM (2008).
 
 Magnus, Jan R. and Neudecker, H. "Matrix Differential Calculus with Applications in Statistics and Econometrics."
 3rd Edition. Wiley Series in Probability and Statistics: Texts and References Section (2007).
