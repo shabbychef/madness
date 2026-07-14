@@ -25,9 +25,7 @@ det(x, ...)
 \item{logarithm}{logical; if \code{TRUE} (default) return the
     logarithm of the modulus of the determinant.}
 
-\item{...}{Optional arguments.  At present none are used.  Previous
-    versions of \code{det} allowed an optional \code{method} argument.
-    This argument will be ignored but will not produce an error.}
+\item{...}{optional arguments, currently unused.}
 }
 \value{
 a list with elements \code{modulus} and \code{sign}, 

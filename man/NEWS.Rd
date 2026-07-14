@@ -10,6 +10,13 @@ News for package \sQuote{madness}.
 \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\madness}{\CRANpkg{madness}}
 }
+\section{\madness{} Version 0.2.9 (2026-07-15) }{
+
+\itemize{
+\item Fix vignette references.
+}
+}
+
 \section{\madness{} Version 0.2.8 (2023-08-20) }{
 
 \itemize{

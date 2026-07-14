@@ -3,7 +3,6 @@
 \docType{package}
 \name{madness-pkg}
 \alias{madness-pkg}
-\alias{_PACKAGE}
 \alias{madness-package}
 \title{Multivariate Automatic Differentiation.}
 \description{

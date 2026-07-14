@@ -9,7 +9,7 @@
 
 VMAJOR 						 = 0
 VMINOR 						 = 2
-VPATCH  					 = 8
+VPATCH  					 = 9
 VDEV 							 = 
 #VDEV 							 = .003
 PKG_NAME 					:= madness

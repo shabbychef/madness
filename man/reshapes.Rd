@@ -43,7 +43,8 @@
 \item{resize}{a flag indicating whether the vector should be
     resized as well as having its elements reordered (default \code{TRUE}).}
 
-\item{...}{Optional arguments used by specific methods. (None used at present.)}
+\item{...}{optional arguments passed to methods, currently unused
+    by package \pkg{Matrix}.}
 }
 \description{
 Basic Reshape Operations

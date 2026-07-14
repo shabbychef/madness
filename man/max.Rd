@@ -18,8 +18,8 @@
 
 \item{...}{\code{madness} object arguments.}
 
-\item{na.rm}{a logical indicating whether missing values should be
-    removed.}
+\item{na.rm}{a logical (\code{TRUE} or \code{FALSE}) indicating
+    whether missing values should be removed.}
 }
 \description{
 Return the maxima and minima of the input values.
