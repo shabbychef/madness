@@ -1126,11 +1126,7 @@
 \newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \let\proglang=\textsf
 \let\code=\texttt
-\newcommand{\CRANpkg}[1]{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
-\newcommand{\SharpeR}{\CRANpkg{SharpeR}\xspace}
-\newcommand{\MarkowitzR}{\CRANpkg{MarkowitzR}\xspace}
-\newcommand{\PDQutils}{\CRANpkg{PDQutils}\xspace}
-\newcommand{\sadists}{\CRANpkg{sadists}\xspace}
+\newcommand{\CRANpkg}[1]{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
 %for vim modeline: (do not edit)
 % vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=%%s:syn=latex:ft=latex
