@@ -14,7 +14,9 @@
 \arguments{
 \item{x}{a \code{madness} object.}
 
-\item{j, ...}{further indices specifying elements to extract or 
+\item{i}{indices specifying elements to extract or replace.}
+
+\item{j, ...}{furtheh indices specifying elements to extract or 
 replace.}
 
 \item{drop}{relevant for matrices and arrays.  If \code{TRUE} the result is

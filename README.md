@@ -20,18 +20,12 @@ of objective functions over vectors of parameters, and party tricks.
 ## Installation
 
 This package can be installed from CRAN,
-via [drat](https://github.com/eddelbuettel/drat "drat"), or
 from [github](https://github.com/shabbychef/madness "madness"):
 
 
 ```r
 # via CRAN:
 install.packages("madness")
-# via drat:
-if (require(drat)) {
-    drat:::add("shabbychef")
-    install.packages("madness")
-}
 # via devtools (typically 'master' is stable):
 if (require(devtools)) {
     install_github("shabbychef/madness")

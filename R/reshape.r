@@ -124,7 +124,8 @@ setMethod("dim<-", signature(x="madness",value="ANY"),
 #' Extract parts of a \code{madness} value.
 #'
 #' @param x a \code{madness} object.
-#' @param j,...  further indices specifying elements to extract or 
+#' @param i  indices specifying elements to extract or replace.  
+#' @param j,...  furtheh indices specifying elements to extract or 
 #' replace.  
 #' @inheritParams base::`[`
 #' @name [
