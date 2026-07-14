@@ -42,9 +42,6 @@
 
 %%http://choorucode.com/2010/05/05/how-to-add-draft-watermark-in-latex/
 %\usepackage{draftwatermark}
-%% V1 sent to Mortada.
-%% V2 on paper to JHZD.
-%% V3 sent to s.lee@BR 140826
 %\providecommand{\versnum}{V4}
 %\SetWatermarkText{DRAFT \versnum}
 %\SetWatermarkLightness{0.87}
@@ -1449,7 +1446,7 @@ compute the derivatives of multivariate functions--those producing multivariate
 output--with respect to a multivarite independent variable. While the
 derivatives are essentially computed symbolically, they are applied immediately
 to concrete data. Unlike previous attempts at automatic differentiation in
-\Rlang, \madness takes a `high level' approach.  \cite{tada_package,radx_package}
+\Rlang, \madness takes a `high level' approach.  %\cite{tada_package,radx_package}
 That is, rather than provide methods for computing the derivatives of a few
 basic operators like sum, product, exponent and some trigonometrics, which
 would be applied at the lowest level of more complicated functions, the 
